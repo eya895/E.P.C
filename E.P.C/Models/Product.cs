@@ -9,5 +9,6 @@ namespace E.P.C.Models
         public string Description { get; set; } = string.Empty;
         public double Price { get; set; }
         public string ImageUrl { get; set; } = string.Empty;
+        
     }
 }

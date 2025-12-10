@@ -6,36 +6,39 @@
 
 <h1>Create</h1>
 
-<h4>Product</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+<li class="nav-item">
+    <a class="btn btn-close-white" asp-area="" asp-controller="GPUs" asp-action="Create">Add GPU</a>
+</li>
+<li class="nav-item">
+    <a class="btn btn-close-white" asp-area="" asp-controller="CPUs" asp-action="Create">Add CPU</a>
+</li>
+<li class="nav-item">
+    <a class="btn btn-close-white" asp-area="" asp-controller="PSUs" asp-action="Create">Add PSU</a>
+</li>
+<li class="nav-item">
+    <a class="btn btn-close-white" asp-area="" asp-controller="AIOs" asp-action="Create">Add AIO</a>
+</li>
+<li class="nav-item">
+    <a class="btn btn-close-white" asp-area="" asp-controller="RAMs" asp-action="Create">Add RAM</a>
+</li>
+<li class="nav-item">
+    <a class="btn btn-close-white" asp-area="" asp-controller="Cases" asp-action="Create">Add Case</a>
+</li>
+<li class="nav-item">
+    <a class="btn btn-close-white" asp-area="" asp-controller="CPUFans" asp-action="Create">Add CPU Fan</a>
+</li>
+<li class="nav-item">
+    <a class="btn btn-close-white" asp-area="" asp-controller="Fans" asp-action="Create">Add Fan</a>
+</li>
+<li class="nav-item">
+    <a class="btn btn-close-white" asp-area="" asp-controller="MotherBoards" asp-action="Create">Add Mother-Board</a>
+</li>
+<li class="nav-item">
+    <a class="btn btn-close-white" asp-area="" asp-controller="Storages" asp-action="Create">Add Storage</a>
+</li>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
