@@ -20,9 +20,22 @@ namespace E.P.C.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Products.ToListAsync());
+        //}
+
+        public async Task<IActionResult> Index(string searchDescription)
         {
-            return View(await _context.Products.ToListAsync());
+            var products = from p in _context.Products
+                           select p;
+
+            if (!string.IsNullOrWhiteSpace(searchDescription))
+            {
+                products = products.Where(p => p.Description.Contains(searchDescription));
+            }
+
+            return View(await products.ToListAsync());
         }
 
         // GET: Products/Details/5

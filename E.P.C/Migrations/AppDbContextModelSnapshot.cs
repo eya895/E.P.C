@@ -39,7 +39,6 @@ namespace E.P.C.Migrations
                         .HasColumnType("nvarchar(13)");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Price")
@@ -119,6 +118,9 @@ namespace E.P.C.Migrations
 
                     b.Property<int>("Cores")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IntegratedGraphics")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Model")
                         .IsRequired()

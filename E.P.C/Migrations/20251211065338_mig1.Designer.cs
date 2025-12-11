@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E.P.C.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251204075052_mig1")]
+    [Migration("20251211065338_mig1")]
     partial class mig1
     {
         /// <inheritdoc />
@@ -42,7 +42,6 @@ namespace E.P.C.Migrations
                         .HasColumnType("nvarchar(13)");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Price")
@@ -122,6 +121,9 @@ namespace E.P.C.Migrations
 
                     b.Property<int>("Cores")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IntegratedGraphics")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Model")
                         .IsRequired()

@@ -9,5 +9,6 @@
         public float BaseClock { get; set; } // in GHz
         public float BoostClock { get; set; } // in GHz
         public string SocketType { get; set; } = string.Empty;
+        public bool IntegratedGraphics { get; set; }
     }
 }
