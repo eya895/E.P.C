@@ -13,9 +13,12 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Brand" class="control-label"></label>
-                <input asp-for="Brand" class="form-control" />
-                <span asp-validation-for="Brand" class="text-danger"></span>
+                <label for="Brand">Brand</label>
+                <select id="Brand" name="Brand" asp-for="Brand">
+                    <option value="NVIDIA">NVIDIA</option>
+                    <option value="AMD">AMD</option>
+                    <option value="Intel">Intel</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Model" class="control-label"></label>

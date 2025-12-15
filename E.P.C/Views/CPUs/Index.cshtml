@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Central-Proccessing-Units:</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -73,10 +73,10 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                    @Html.DisplayFor(modelItem => item.Price)₪
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
+                 <img src="@Url.Content(item.ImageUrl)" />
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

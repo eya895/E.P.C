@@ -28,19 +28,24 @@
                 <span asp-validation-for="Capacity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <input asp-for="Type" class="form-control" />
-                <span asp-validation-for="Type" class="text-danger"></span>
-            </div>
+                <label for="Type">DDR Generation</label>
+                <select id="Type" name="Type" asp-for="Type">
+                    <option value="DDR3">DDR3</option>
+                    <option value="DDR4">DDR4</option>
+                    <option value="DDR5">DDR5</option>
+                </select>
             <div class="form-group">
                 <label asp-for="Speed" class="control-label"></label>
                 <input asp-for="Speed" class="form-control" />
                 <span asp-validation-for="Speed" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="sticks" class="control-label"></label>
-                <input asp-for="sticks" class="form-control" />
-                <span asp-validation-for="sticks" class="text-danger"></span>
+                    <label for="sticks">sticks</label>
+                    <select id="sticks" name="sticks" asp-for="sticks">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="4">4</option>
+                    </select>
             </div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">

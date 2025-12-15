@@ -7,34 +7,34 @@
 <h1>Create</h1>
 
 <li class="nav-item">
-    <a class="btn btn-close-white" asp-area="" asp-controller="GPUs" asp-action="Create">Add GPU</a>
+    <a class=" eyal btn btn-close-white" asp-area="" asp-controller="GPUs" asp-action="Create">Add GPU</a>
 </li>
 <li class="nav-item">
-    <a class="btn btn-close-white" asp-area="" asp-controller="CPUs" asp-action="Create">Add CPU</a>
+    <a class="eyal btn btn-close-white" asp-area="" asp-controller="CPUs" asp-action="Create">Add CPU</a>
 </li>
 <li class="nav-item">
-    <a class="btn btn-close-white" asp-area="" asp-controller="PSUs" asp-action="Create">Add PSU</a>
+    <a class="eyal btn btn-close-white" asp-area="" asp-controller="PSUs" asp-action="Create">Add PSU</a>
 </li>
 <li class="nav-item">
-    <a class="btn btn-close-white" asp-area="" asp-controller="AIOs" asp-action="Create">Add AIO</a>
+    <a class="eyal btn btn-close-white" asp-area="" asp-controller="AIOs" asp-action="Create">Add AIO</a>
 </li>
 <li class="nav-item">
-    <a class="btn btn-close-white" asp-area="" asp-controller="RAMs" asp-action="Create">Add RAM</a>
+    <a class="eyal btn btn-close-white" asp-area="" asp-controller="RAMs" asp-action="Create">Add RAM</a>
 </li>
 <li class="nav-item">
-    <a class="btn btn-close-white" asp-area="" asp-controller="Cases" asp-action="Create">Add Case</a>
+    <a class="eyal btn btn-close-white" asp-area="" asp-controller="Cases" asp-action="Create">Add Case</a>
 </li>
 <li class="nav-item">
-    <a class="btn btn-close-white" asp-area="" asp-controller="CPUFans" asp-action="Create">Add CPU Fan</a>
+    <a class="eyal btn btn-close-white" asp-area="" asp-controller="CPUFans" asp-action="Create">Add CPU Fan</a>
 </li>
 <li class="nav-item">
-    <a class="btn btn-close-white" asp-area="" asp-controller="Fans" asp-action="Create">Add Fan</a>
+    <a class="eyal btn btn-close-white" asp-area="" asp-controller="Fans" asp-action="Create">Add Fan</a>
 </li>
 <li class="nav-item">
-    <a class="btn btn-close-white" asp-area="" asp-controller="MotherBoards" asp-action="Create">Add Mother-Board</a>
+    <a class="eyal btn btn-close-white" asp-area="" asp-controller="MotherBoards" asp-action="Create">Add Mother-Board</a>
 </li>
 <li class="nav-item">
-    <a class="btn btn-close-white" asp-area="" asp-controller="Storages" asp-action="Create">Add Storage</a>
+    <a class="eyal btn btn-close-white" asp-area="" asp-controller="Storages" asp-action="Create">Add Storage</a>
 </li>
 
 <div>
@@ -44,3 +44,15 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+ <style>
+
+       .eyal {
+            margin: 5px;
+            background-color: gold;
+        border: dashed black 2px;
+    }
+       .eyal:hover {
+            background-color: goldenrod;
+            border: dashed black 2px;
+    }
+ </style>

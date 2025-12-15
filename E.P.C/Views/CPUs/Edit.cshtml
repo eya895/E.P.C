@@ -13,9 +13,12 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Brand" class="control-label"></label>
-                <input asp-for="Brand" class="form-control" />
-                <span asp-validation-for="Brand" class="text-danger"></span>
+                <label for="Brand">Brand</label>
+                <!-- The fix is adding asp-for="Brand" -->
+                <select id="Brand" name="Brand" asp-for="Brand">
+                    <option value="Intel">Intel</option>
+                    <option value="AMD">AMD</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Model" class="control-label"></label>
@@ -43,9 +46,23 @@
                 <span asp-validation-for="BoostClock" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SocketType" class="control-label"></label>
-                <input asp-for="SocketType" class="form-control" />
-                <span asp-validation-for="SocketType" class="text-danger"></span>
+                <label for="SocketType">Socket:</label>
+                <select id="SocketType" name="SocketType" asp-for="SocketType">
+                    <option value="LGA1200">LGA1200</option>
+                    <option value="LGA1700">LGA1700</option>
+                    <option value="LGA1851">LGA1851</option>
+                    <option value="LGA1150">LGA1150</option>
+                    <option value="LGA1151">LGA1151</option>
+                    <option value="LGA1155">LGA1155</option>
+                    <option value="LGA1156">LGA1156</option>
+                    <option value="LGA2066">LGA2066</option>
+                    <option value="LGA4677">LGA4677</option>
+                    <option value="STRx4">STRx4</option>
+                    <option value="STR4">STR4</option>
+                    <option value="STR5">STR5</option>
+                    <option value="AM4">AM4</option>
+                    <option value="AM5">AM5</option>
+                </select>
             </div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">

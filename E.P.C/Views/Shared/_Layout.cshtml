@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- ... (Head section remains the same) ... -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - E.P.C</title>
@@ -26,8 +27,32 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+
+                        <!-- 👇 START: Add the Bootstrap Dropdown Menu here 👇 -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Products
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="AIOs" asp-action="Index">All-In-One cooling Systems</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Cases" asp-action="Index">PC Cases</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="CPUs" asp-action="Index">Central-Proccessing-Units</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="CPUFans" asp-action="Index">CPU cooler</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Fans" asp-action="Index">Case Fans</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="GPUs" asp-action="Index">Graphic-Proccessign-Units</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="MotherBoards" asp-action="Index">Mother-Boards</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="PSUs" asp-action="Index">Power-Supply-Units</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="RAMs" asp-action="Index">RAM kits</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Storages" asp-action="Index">Storage Units</a></li>
+                                <li><hr class="dropdown-divider"></li> <!-- Optional: adds a horizontal line -->
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index">All Products</a></li>
+                            </ul>
+                        </li>
+                        <!-- 👆 END: Bootstrap Dropdown Menu 👆 -->
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+                            <!-- Note: I moved the original 'Products' link inside the dropdown menu above, but kept this as an example of another nav item -->
+                            @* <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a> *@
                         </li>
                     </ul>
                 </div>
@@ -41,6 +66,7 @@
     </div>
 
     <footer class="border-top footer text-muted">
+        <!-- ... (Footer section remains the same) ... -->
         <div class="container">
             &copy; 2025 - E.P.C - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
