@@ -23,9 +23,13 @@
                 <span asp-validation-for="Model" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FormFactor" class="control-label"></label>
-                <input asp-for="FormFactor" class="form-control" />
-                <span asp-validation-for="FormFactor" class="text-danger"></span>
+                <label for="FormFactor">Form Factor</label>
+                <select id="FormFactor" name="FormFactor">
+                    <option value="ATX">ATX</option>
+                    <option value="MicroATX">MicroATX</option>
+                    <option value="MiniITX">MiniITX</option>
+                    <option value="EATX">EATX</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="MaxGPULength" class="control-label"></label>
