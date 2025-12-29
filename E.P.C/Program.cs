@@ -1,21 +1,29 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using E.P.C.Data;
+using Microsoft.AspNetCore.Identity.UI.Services; // for IEmailSender
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages(); // Needed for Identity UI
 
+// Configure your DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+// Configure ASP.NET Core Identity
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = false;
+    options.SignIn.RequireConfirmedAccount = false; // no email confirmation for testing
 })
-.AddEntityFrameworkStores<AppDbContext>();
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
+
+// ? Add a dummy email sender so Register works
+builder.Services.AddSingleton<IEmailSender, DummyEmailSender>();
 
 var app = builder.Build();
 
@@ -31,11 +39,27 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication();   // ✅ correct order
+// Authentication & Authorization middleware
+app.UseAuthentication();
 app.UseAuthorization();
 
+// Map controllers and Razor Pages
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages(); // Required for Identity UI
 
-app.Run();  
+app.Run();
+
+
+// Dummy email sender implementation
+public class DummyEmailSender : IEmailSender
+{
+    public Task SendEmailAsync(string email, string subject, string htmlMessage)
+    {
+        // Do nothing - just satisfies the dependency
+        return Task.CompletedTask;
+    }
+}
+
+

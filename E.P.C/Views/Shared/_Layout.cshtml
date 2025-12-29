@@ -1,7 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- ... (Head section remains the same) ... -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - E.P.C</title>
@@ -28,7 +27,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
 
-                        <!-- 👇 START: Add the Bootstrap Dropdown Menu here 👇 -->
+                        <!-- Products dropdown -->
                         <li class="nav-item dropdown">
                             <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Products
@@ -44,16 +43,34 @@
                                 <li><a class="dropdown-item" asp-area="" asp-controller="PSUs" asp-action="Index">Power-Supply-Units</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="RAMs" asp-action="Index">RAM kits</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Storages" asp-action="Index">Storage Units</a></li>
-                                <li><hr class="dropdown-divider"></li> <!-- Optional: adds a horizontal line -->
+                                <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index">All Products</a></li>
                             </ul>
                         </li>
-                        <!-- 👆 END: Bootstrap Dropdown Menu 👆 -->
+                        
+    <li>
 
-                        <li class="nav-item">
-                            <!-- Note: I moved the original 'Products' link inside the dropdown menu above, but kept this as an example of another nav item -->
-                            @* <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a> *@
-                        </li>
+    </li>
+    </ul>
+                    <ul class="navbar-nav flex-grow-2"
+                        <!-- Authentication links -->
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-end fw-bold" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <form method="post" asp-area="Identity" asp-page="/Account/Logout" class="d-inline">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                                </form>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -66,7 +83,6 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <!-- ... (Footer section remains the same) ... -->
         <div class="container">
             &copy; 2025 - E.P.C - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
