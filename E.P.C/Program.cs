@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using E.P.C.Data;
 using Microsoft.AspNetCore.Identity.UI.Services; // for IEmailSender
+using E.P.C.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -24,6 +26,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 
 // ? Add a dummy email sender so Register works
 builder.Services.AddSingleton<IEmailSender, DummyEmailSender>();
+builder.Services.AddScoped<ShoppingCartService>();
 
 var app = builder.Build();
 

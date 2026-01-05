@@ -1,14 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace E.P.C.Models
 {
     public class ShoppingCart
     {
         public int Id { get; set; }
-        [Required]
-        public int CustomerId { get; set; }
-        [Required]
-        public List<Product> Products { get; set; } = new List<Product>();
 
+        // Link cart to logged-in user
+        public string UserId { get; set; }
+        public IdentityUser User { get; set; }
+
+        public ICollection<ShoppingCartItem> Items { get; set; } = new List<ShoppingCartItem>();
+
+        public double TotalPrice =>Items.Sum(i => i.Item.Price * i.Quantity);
     }
 }
