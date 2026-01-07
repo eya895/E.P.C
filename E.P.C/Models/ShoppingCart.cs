@@ -12,6 +12,6 @@ namespace E.P.C.Models
 
         public ICollection<ShoppingCartItem> Items { get; set; } = new List<ShoppingCartItem>();
 
-        public double TotalPrice =>Items.Sum(i => i.Item.Price * i.Quantity);
+        public double TotalPrice =>Items.Sum(i => i.Product.Price * i.Quantity);
     }
 }

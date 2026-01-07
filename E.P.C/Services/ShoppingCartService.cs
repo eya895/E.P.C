@@ -23,15 +23,16 @@ namespace E.P.C.Services
 
             var cart = await _context.ShoppingCarts
                 .Include(c => c.Items)
-                .ThenInclude(i => i.Item)
+                .ThenInclude(i => i.Product)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
 
             if (cart == null)
             {
-                    cart = new ShoppingCart { UserId = userId };
-                    _context.ShoppingCarts.Add(cart);
-                    await _context.SaveChangesAsync();
+                cart = new ShoppingCart { UserId = userId };
+                _context.ShoppingCarts.Add(cart);
+                await _context.SaveChangesAsync();
             }
+
             return cart;
         }
     }

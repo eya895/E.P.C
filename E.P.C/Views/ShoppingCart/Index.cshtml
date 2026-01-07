@@ -14,21 +14,26 @@
     @foreach (var item in Model.Items)
     {
         <tr>
-            <td>@item.Item.Description</td>
-                    <td>@item.Item.Price₪</td>
+            <td>@item.Product.Description</td>
+                    <td>@item.Product.Price₪</td>
             <td>@item.Quantity</td>
-                <td>@(item.Item.Price * item.Quantity)₪</td>
+                <td>@(item.Product.Price * item.Quantity)₪</td>
             <td>
                 <form asp-action="Add" method="post">
-                    <input type="hidden" name="itemId" value="@item.ItemId" />
+                    <input type="hidden" name="itemId" value="@item.ProductId" />
                     <button class="btn btn-success">+</button>
                 </form>
 
                 <form asp-action="Remove" method="post">
-                    <input type="hidden" name="itemId" value="@item.ItemId" />
+                    <input type="hidden" name="itemId" value="@item.ProductId" />
                     <button class="btn btn-danger">−</button>
                 </form>
             </td>
+            <a asp-controller="Checkout"
+               asp-action="Index"
+               class="btn btn-success">
+                Checkout
+            </a>
         </tr>
     }
 </table>

@@ -28,10 +28,10 @@ namespace E.P.C.Controllers
         {
             var cart = await _cartService.GetOrCreateCartAsync(User);
 
-            var item = cart.Items.FirstOrDefault(i => i.ItemId == itemId);
+            var item = cart.Items.FirstOrDefault(i => i.ProductId == itemId);
 
             if (item == null)
-                cart.Items.Add(new Models.ShoppingCartItem { ItemId = itemId, Quantity = 1 });
+                cart.Items.Add(new Models.ShoppingCartItem { ProductId = itemId, Quantity = 1 });
             else
                 item.Quantity++;
 
@@ -44,7 +44,7 @@ namespace E.P.C.Controllers
         {
             var cart = await _cartService.GetOrCreateCartAsync(User);
 
-            var item = cart.Items.FirstOrDefault(i => i.ItemId == itemId);
+            var item = cart.Items.FirstOrDefault(i => i.ProductId == itemId);
 
             if (item != null)
             {

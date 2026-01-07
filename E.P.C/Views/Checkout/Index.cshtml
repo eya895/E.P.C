@@ -1,0 +1,28 @@
+﻿@model E.P.C.Models.ShoppingCart
+
+<h2>Checkout</h2>
+
+<table class="table">
+    <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Qty</th>
+        <th>Total</th>
+    </tr>
+
+    @foreach (var item in Model.Items)
+    {
+        <tr>
+            <td>@item.Product.Description</td>
+            <td>@item.Product.Price</td>
+            <td>@item.Quantity</td>
+            <td>@(item.Product.Price * item.Quantity)</td>
+        </tr>
+    }
+</table>
+
+<h3>Total: @Model.TotalPrice</h3>
+
+<form asp-action="PlaceOrder" method="post">
+    <button class="btn btn-success">Place Order</button>
+</form>
