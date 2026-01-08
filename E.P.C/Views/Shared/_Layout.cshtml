@@ -12,6 +12,14 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            @if (User.IsInRole("Admin"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Admin" asp-action="Index">
+                        Admin
+                    </a>
+                </li>
+            }
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">E.P.C</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -33,18 +41,18 @@
                                 Products
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AIOs" asp-action="Index">All-In-One cooling Systems</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index">All Products</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="AIOs" asp-action="Index">AIO Cooling Systems</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Cases" asp-action="Index">PC Cases</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="CPUs" asp-action="Index">Central-Proccessing-Units</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="CPUs" asp-action="Index">CPUs</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="CPUFans" asp-action="Index">CPU cooler</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Fans" asp-action="Index">Case Fans</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="GPUs" asp-action="Index">Graphic-Proccessign-Units</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="MotherBoards" asp-action="Index">Mother-Boards</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="PSUs" asp-action="Index">Power-Supply-Units</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="GPUs" asp-action="Index">GPUs</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="MotherBoards" asp-action="Index">Motherboards</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="PSUs" asp-action="Index">PSUs</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="RAMs" asp-action="Index">RAM kits</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Storages" asp-action="Index">Storage Units</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index">All Products</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">

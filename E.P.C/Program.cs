@@ -1,22 +1,21 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using E.P.C.Data;
-using Microsoft.AspNetCore.Identity.UI.Services; // for IEmailSender
+using Microsoft.AspNetCore.Identity.UI.Services;
 using E.P.C.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages(); // Needed for Identity UI
 
-// Configure your DbContext
+// Configure DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Configure ASP.NET Core Identity
+// Configure ASP.NET Core Identity WITH ROLES
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false; // no email confirmation for testing
@@ -24,11 +23,22 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
-// ? Add a dummy email sender so Register works
+// Dummy email sender so Register works
 builder.Services.AddSingleton<IEmailSender, DummyEmailSender>();
+
+// App services
 builder.Services.AddScoped<ShoppingCartService>();
 
 var app = builder.Build();
+
+
+// 🔐 SEED ADMIN USER + ROLE
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await DbInitializer.SeedAdminAsync(services);
+}
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -42,7 +52,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Authentication & Authorization middleware
+// Authentication & Authorization
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -50,6 +60,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.MapRazorPages(); // Required for Identity UI
 
 app.Run();
@@ -64,5 +75,6 @@ public class DummyEmailSender : IEmailSender
         return Task.CompletedTask;
     }
 }
+
 
 

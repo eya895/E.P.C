@@ -11,6 +11,7 @@
         <th>Actions</th>
     </tr>
 
+    
     @foreach (var item in Model.Items)
     {
         <tr>
@@ -29,14 +30,15 @@
                     <button class="btn btn-danger">−</button>
                 </form>
             </td>
-            <a asp-controller="Checkout"
-               asp-action="Index"
-               class="btn btn-success">
-                Checkout
-            </a>
+            
         </tr>
     }
 </table>
 
 <h3>Total: @Model.TotalPrice₪</h3>
+<a asp-controller="Checkout"
+   asp-action="Index"
+   class="btn btn-success">
+    Checkout
+</a>
 
