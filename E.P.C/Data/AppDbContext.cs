@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using E.P.C.Models;
+using E.P.C.Data.Seeds;
+
 
 namespace E.P.C.Data
 {
@@ -30,7 +32,8 @@ namespace E.P.C.Data
             base.OnModelCreating(builder);
             // Your fluent API configurations and model customizations go here
             builder.Entity<ShoppingCart>().HasIndex(c => c.UserId).IsUnique();
-        }
+            AIOSeed.Seed(builder);
 
+        }
     }
 }
