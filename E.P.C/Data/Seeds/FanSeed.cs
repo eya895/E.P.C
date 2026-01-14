@@ -7,7 +7,7 @@ namespace E.P.C.Data.Seeds
     {
         public static void Seed(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<FanSeed>().HasData(
+            modelBuilder.Entity<Fan>().HasData(
                 new Fan
                 {
                     Id = 1,

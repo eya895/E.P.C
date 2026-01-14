@@ -4,7 +4,6 @@
     {
         public string Brand { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
-        public string Chipset { get; set; } = string.Empty;
         public string SocketType { get; set; } = string.Empty;
         public int RAMSlots { get; set; }
         public int MaxRAMCapacity { get; set; } // in GB

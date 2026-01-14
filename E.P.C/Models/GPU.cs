@@ -11,6 +11,6 @@
         public int TDP { get; set; } // in Watts
         public string Interface { get; set; } = string.Empty; // e.g., PCIe 4.0
         public string dimensions { get; set; } = string.Empty; // e.g., Length x Width x Height in mm
-        public string Ports { get; set; } = new List<string>(); // e.g., HDMI, DisplayPort
+        public string Ports { get; set; } = string.Empty; // e.g., HDMI, DisplayPort
     }
 }

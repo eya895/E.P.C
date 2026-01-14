@@ -7,7 +7,7 @@ namespace E.P.C.Data.Seeds
     {
         public static void Seed(ModelBuilder builder)
         {
-            builder.Entity<CPUSeed>().HasData(
+            builder.Entity<CPU>().HasData(
                 new CPU
                 {
                     Id = 1,
