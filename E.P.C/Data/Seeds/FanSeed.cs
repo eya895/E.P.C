@@ -10,7 +10,7 @@ namespace E.P.C.Data.Seeds
             modelBuilder.Entity<Fan>().HasData(
                 new Fan
                 {
-                    Id = 1,
+                    Id = 13,
                     Brand = "Arctic",
                     Model = "P12 Pro A-RGB 120mm",
                     Size = 120,
@@ -24,7 +24,7 @@ namespace E.P.C.Data.Seeds
                 },
                 new Fan
                 {
-                    Id = 2,
+                    Id = 14,
                     Brand = "Lian Li",
                     Model = "UNI FAN P28",
                     Size = 120,
@@ -38,7 +38,7 @@ namespace E.P.C.Data.Seeds
                 },
                 new Fan
                 {
-                    Id = 3,
+                    Id = 15,
                     Brand = "Cooler Master",
                     Model = "SickleFlow Edge 120 ARGB",
                     Size = 120,

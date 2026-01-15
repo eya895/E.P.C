@@ -10,7 +10,7 @@ namespace E.P.C.Data.Seeds
             modelBuilder.Entity<MotherBoard>().HasData(
                 new MotherBoard
                 {
-                    Id = 1,
+                    Id = 19,
                     Brand = "ASUS",
                     Model = "ROG Strix B550-F Gaming",
                     SocketType = "AM4",
@@ -23,7 +23,7 @@ namespace E.P.C.Data.Seeds
                 },
                 new MotherBoard
                 {
-                    Id = 2,
+                    Id = 20,
                     Brand = "MSI",
                     Model = "MAG B660M Mortar WiFi DDR4",
                     SocketType = "LGA1700",
@@ -36,7 +36,7 @@ namespace E.P.C.Data.Seeds
                 },
                 new MotherBoard
                 {
-                    Id = 3,
+                    Id = 21,
                     Brand = "Gigabyte",
                     Model = "Z790 AORUS ELITE AX",
                     SocketType = "LGA1700",

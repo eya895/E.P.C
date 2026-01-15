@@ -10,7 +10,7 @@ namespace E.P.C.Data.Seeds
             modelBuilder.Entity<RAM>().HasData(
                 new RAM
                 {
-                    Id = 1,
+                    Id = 25,
                     Brand = "Corsair",
                     Model = "Vengeance LPX",
                     Capacity = 16,
@@ -23,7 +23,7 @@ namespace E.P.C.Data.Seeds
                 },
                 new RAM
                 {
-                    Id = 2,
+                    Id = 26,
                     Brand = "G.Skill",
                     Model = "Trident Z RGB",
                     Capacity = 32,
@@ -36,7 +36,7 @@ namespace E.P.C.Data.Seeds
                 },
                 new RAM
                 {
-                    Id = 3,
+                    Id = 27,
                     Brand = "Kingston",
                     Model = "HyperX Fury",
                     Capacity = 128,

@@ -32,7 +32,6 @@ namespace E.P.C.Data
             base.OnModelCreating(builder);
             // Your fluent API configurations and model customizations go here
             builder.Entity<ShoppingCart>().HasIndex(c => c.UserId).IsUnique();
-            DbContextOptionsBuilder.EnableSensitiveDataLogging
             AIOSeed.Seed(builder);
             CaseSeed.Seed(builder);
             CPUFanSeed.Seed(builder);

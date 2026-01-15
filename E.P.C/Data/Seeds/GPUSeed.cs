@@ -10,7 +10,7 @@ namespace E.P.C.Data.Seeds
             modelBuilder.Entity<GPU>().HasData(
                 new GPU
                 {
-                    Id = 1,
+                    Id = 16,
                     Brand = "NVIDIA",
                     Model = "RTX 5070 Ti",
                     MemorySize = 16,
@@ -27,7 +27,7 @@ namespace E.P.C.Data.Seeds
                 },
                 new GPU
                 {
-                    Id = 2,
+                    Id = 17,
                     Brand = "AMD",
                     Model = "Radeon RX 7900 XTX",
                     MemorySize = 24,
@@ -44,7 +44,7 @@ namespace E.P.C.Data.Seeds
                 },
                 new GPU
                 {
-                    Id = 3,
+                    Id = 18,
                     Brand = "NVIDIA",
                     Model = "RTX 4060 Ti",
                     MemorySize = 8,

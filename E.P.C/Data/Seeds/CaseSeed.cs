@@ -10,7 +10,7 @@ namespace E.P.C.Data.Seeds
             builder.Entity<Case>().HasData(
                 new Case
                 {
-                    Id = 1,
+                    Id = 4,
                     Brand = "Cooler Master",
                     Model = "MasterBox Q300L",
                     FormFactor = "Micro-ATX",
@@ -24,7 +24,7 @@ namespace E.P.C.Data.Seeds
                 },
                 new Case
                 {
-                    Id = 2,
+                    Id = 5,
                     Brand = "NZXT",
                     Model = "H510",
                     FormFactor = "ATX",
@@ -38,7 +38,7 @@ namespace E.P.C.Data.Seeds
                 },
                 new Case
                 {
-                    Id = 3,
+                    Id = 6,
                     Brand = "Corsair",
                     Model = "4000D Airflow",
                     FormFactor = "ATX",

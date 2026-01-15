@@ -10,7 +10,7 @@ namespace E.P.C.Data.Seeds
             modelBuilder.Entity<Storage>().HasData(
                 new Storage
                 {
-                    Id = 1,
+                    Id = 28,
                     Brand = "Samsung",
                     Model = "970 EVO Plus",
                     Capacity = 1000,
@@ -23,7 +23,7 @@ namespace E.P.C.Data.Seeds
                 },
                 new Storage
                 {
-                    Id = 2,
+                    Id = 29,
                     Brand = "Western Digital",
                     Model = "Blue 3D NAND",
                     Capacity = 4000,
@@ -36,7 +36,7 @@ namespace E.P.C.Data.Seeds
                 },
                 new Storage
                 {
-                    Id = 3,
+                    Id = 30,
                     Brand = "Seagate",
                     Model = "Barracuda",
                     Capacity = 24000,

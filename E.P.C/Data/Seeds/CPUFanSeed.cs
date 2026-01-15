@@ -10,7 +10,7 @@ namespace E.P.C.Data.Seeds
             builder.Entity<CPUFan>().HasData(
                 new CPUFan
                 {
-                    Id = 1,
+                    Id = 7,
                     Brand = "Arctic",
                     Model = "Freezer 36 A-RGB - Black",
                     Size = 159,
@@ -25,7 +25,7 @@ namespace E.P.C.Data.Seeds
                 },
                 new CPUFan
                 {
-                    Id = 2,
+                    Id = 8,
                     Brand = "Arctic",
                     Model = "Freezer 50 TR",
                     Size = 165,
@@ -40,7 +40,7 @@ namespace E.P.C.Data.Seeds
                 },
                 new CPUFan
                 {
-                    Id = 3,
+                    Id = 9,
                     Brand = "Noctua",
                     Model = "NH-D12L",
                     Size = 145,

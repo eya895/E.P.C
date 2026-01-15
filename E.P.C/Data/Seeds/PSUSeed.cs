@@ -11,7 +11,7 @@ namespace E.P.C.Data.Seeds
             modelBuilder.Entity<PSU>().HasData(
                 new PSU
                 {
-                    Id = 1,
+                    Id = 22,
                     Brand = "Corsair",
                     Model = "RM750x",
                     Wattage = 750,
@@ -25,7 +25,7 @@ namespace E.P.C.Data.Seeds
                 },
                 new PSU
                 {
-                    Id = 2,
+                    Id = 23,
                     Brand = "EVGA",
                     Model = "SuperNOVA 650 G5",
                     Wattage = 650,
@@ -39,7 +39,7 @@ namespace E.P.C.Data.Seeds
                 },
                 new PSU
                 {
-                    Id = 3,
+                    Id = 24,
                     Brand = "Seasonic",
                     Model = "Focus GX-850",
                     Wattage = 850,
