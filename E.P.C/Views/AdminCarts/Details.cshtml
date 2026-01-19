@@ -1,0 +1,30 @@
+﻿@model E.P.C.Models.ShoppingCart
+
+<h2>Cart Details</h2>
+
+<p><strong>User:</strong> @Model.User.Email</p>
+<p><strong>Status:</strong> @(Model.IsCheckedOut ? "Checked Out" : "Active")</p>
+<p><strong>Created:</strong> @Model.CreatedAt</p>
+<p><strong>Checked Out At:</strong> @Model.CheckedOutAt</p>
+
+<table class="table">
+    <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Qty</th>
+        <th>Total</th>
+    </tr>
+
+    @foreach (var item in Model.Items)
+    {
+        <tr>
+            <td>@item.Product.Description</td>
+            <td>@item.Product.Price</td>
+            <td>@item.Quantity</td>
+            <td>@(item.Product.Price * item.Quantity)</td>
+        </tr>
+    }
+</table>
+
+<h4>Total: @Model.TotalPrice</h4>
+

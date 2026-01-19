@@ -6,12 +6,17 @@ namespace E.P.C.Models
     {
         public int Id { get; set; }
 
-        // Link cart to logged-in user
         public string UserId { get; set; }
         public IdentityUser User { get; set; }
 
         public ICollection<ShoppingCartItem> Items { get; set; } = new List<ShoppingCartItem>();
 
-        public double TotalPrice =>Items.Sum(i => i.Product.Price * i.Quantity);
+        // 🔑 NEW
+        public bool IsCheckedOut { get; set; } = false;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? CheckedOutAt { get; set; }
+
+        public double TotalPrice =>
+            Items.Sum(i => i.Product.Price * i.Quantity);
     }
 }

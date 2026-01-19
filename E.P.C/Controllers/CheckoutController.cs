@@ -61,7 +61,8 @@ namespace E.P.C.Controllers
 
             _context.Orders.Add(order);
 
-            _context.ShoppingCartItems.RemoveRange(cart.Items);
+            cart.IsCheckedOut = true;
+            cart.CheckedOutAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Success));

@@ -1,0 +1,35 @@
+﻿@model IEnumerable<E.P.C.Models.ShoppingCart>
+
+<h2>All Shopping Carts</h2>
+
+<table class="table">
+    <tr>
+        <th>User</th>
+        <th>Created</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th></th>
+    </tr>
+
+    @foreach (var cart in Model)
+    {
+        <tr>
+            <td>@cart.User.Email</td>
+            <td>@cart.CreatedAt</td>
+            <td>
+                @if (cart.IsCheckedOut)
+                {
+                    <span class="badge bg-success">Checked Out</span>
+                }
+                else
+                {
+                    <span class="badge bg-warning text-dark">Active</span>
+                }
+            </td>
+            <td>@cart.TotalPrice</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@cart.Id">View</a>
+            </td>
+        </tr>
+    }
+</table>
