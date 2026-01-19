@@ -2,6 +2,19 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div>
-    <img src="/Images/Logo.jpeg" alt="E.P.C Banner" style="width:50%; height:auto;" />
+<style>
+    img {
+        width: 50%;
+        height: auto;
+    }
+    .home-container{
+        width: 100%;
+        height: calc(100vh - 117px - 2rem);
+        display: flex;
+        justify-content:center;
+        align-items:center;
+    }
+</style>
+<div class="home-container">
+    <img src="/Images/Logo.jpeg" alt="E.P.C Banner" />
 </div>
