@@ -1,4 +1,8 @@
-﻿@if (User.IsInRole("Admin"))
+﻿<form asp-action="Index" method="get" class="mb-3">
+    <input type="text" name="searchDescription" value="@Context.Request.Query["searchDescription"]" placeholder="Search for product..." class="form-control" />
+    <button type="submit" class="btn btn-success mt-2">Search</button>
+</form>
+@if (User.IsInRole("Admin"))
 {
     <a asp-action="Create" class="btn btn-success mb-3">
         ➕ Add Product
@@ -10,11 +14,11 @@
     {
         <div class="col-md-4 mb-4">
             <div class="card h-100 shadow-sm">
-                <img src="@product.ImageUrl" class="card-img-top" />
+                <img src="@product.ImageUrl" class="sizable"/>
 
-                <div class="card-header">
-                    <h5 class="card-title">@product.Description</h5>
-                    <p class="card-text fw-bold">₪@product.Price</p>
+                <div class="card-body card-info">
+                    <h5 class="card-title modelname">@product.Brand @product.Model</h5>
+                    <p class="card-text price">₪@product.Price</p>
                 </div>
 
                 <div class="card-body bg-transparent">
@@ -45,3 +49,20 @@
     }
 </div>
 
+
+<style>
+    .sizable {
+        height: 400px;
+        width: 400px;
+    }
+    .price{
+        color:green;
+        font-size: xx-large;
+        font-weight: bold;
+
+    }
+    .modelname{
+        font-size: large;
+    }
+
+</style>
