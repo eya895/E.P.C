@@ -3,9 +3,21 @@
     <h1 class="display-4 mt-3">Build Your Perfect PC</h1>
     <p class="lead">High-quality components. Fair prices.</p>
 
+    
+    @if (!User.IsInRole("Admin"))
+     {
     <a asp-controller="Products"
        asp-action="Index"
        class="btn btn-primary btn-lg mt-3">
         Shop Now
     </a>
+     }
+    @if (User.IsInRole("Admin"))
+     {
+         <a asp-controller="Admin"
+             asp-action="Index"
+             class="btn btn-primary btn-lg mt-3">
+             Manage Shop
+         </a>
+     }
 </div>

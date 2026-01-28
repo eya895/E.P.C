@@ -1,10 +1,19 @@
 ﻿<h2>Admin Dashboard</h2>
 
-<ul>
-    <li><a asp-controller="Products" asp-action="Index">Manage Products</a></li>
-    <li class="nav-item">
-        <a class="nav-link" asp-controller="AdminCarts" asp-action="Index">
-            All Carts
-        </a>
-    </li>
-</ul>
+
+
+
+<div>
+    <a asp-controller="Products"
+       asp-action="Index"
+       class="btn btn-outline-primary">
+        Manage Products
+    </a>
+</div>
+<div>
+    <a asp-controller="AdminCarts"
+       asp-action="Index"
+       class="btn btn-outline-success">
+        All Carts
+    </a>
+</div>
