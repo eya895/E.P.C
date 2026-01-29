@@ -2,9 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using E.P.C.Data;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using E.P.C.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ShoppingCartService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

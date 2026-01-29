@@ -23,27 +23,39 @@
 
                 <div class="card-body bg-transparent">
                     <a asp-action="Details"
-                       asp-route-id="@product.Id"
-                       class="btn btn-outline-primary w-100">
+                    asp-route-id="@product.Id"
+                    class="btn btn-details w-100">
                         View Product
                     </a>
+                    @if (!User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="ShoppingCart"
+                              asp-action="Add"
+                              method="post">
+                            <input type="hidden" name="itemId" value="@product.Id" />
+                            <button type="submit" class="btn btn-shop w-100">
+                                Add to Cart
+                            </button>
+                        </a>
+                    }
                 </div>
                 @if (User.IsInRole("Admin"))
                 {
                     <div class="card-footer bg-transparent d-flex align-items-center gap-2">
-                    <a asp-action="Edit" 
+                        <a asp-action="Edit" 
                         asp-route-id="@product.Id"
                         class="btn btn-outline-dark w-75" >
-                        Edit Product
-                    </a>
-                    <hr class="divider" />
-                    <a asp-action="Delete" 
+                            Edit Product
+                        </a>
+                        <hr class="divider" />
+                        <a asp-action="Delete" 
                         asp-route-id="@product.Id" 
                         class="btn btn-outline-danger w-75" >
-                        Delete Product
-                    </a>
+                            Delete Product
+                        </a>
                     </div>
                 }
+                
             </div>
         </div>
     }
@@ -63,6 +75,36 @@
     }
     .modelname{
         font-size: large;
+    }
+    .btn-shop{
+        color: black;
+        font-size: x-large;
+        background: gold;
+        outline-width: medium;
+        outline-color:black;
+        outline-style: solid;
+        margin-top: 10px;
+        cursor:pointer;
+    }
+    .btn-shop:hover{
+        transform: scale(1.03);
+        background: orange;
+        color: black;
+        overflow-y:clip;
+    }
+    .btn-details{
+        color:black;
+        font-size: x-large;
+        font-weight: bold;
+        background: lightskyblue;
+        outline-color:cornflowerblue;
+        outline-style:solid;
+        outline-width: medium;
+    }
+    .btn-details:hover{
+        transform:scale(1.03);
+        background:cornflowerblue;
+        outline-color:skyblue;
     }
 
 </style>

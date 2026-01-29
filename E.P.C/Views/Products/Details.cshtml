@@ -1,75 +1,306 @@
 ﻿@model E.P.C.Models.Product
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Product Details";
 }
 
-<h1>Product Details</h1>
+@if (Model is GPU gpu)
+{
+    <div class="container mt-4">
+        <div class="row">
 
+            <!-- IMAGE -->
+            <div class="col-md-5">
+                <img src="@gpu.ImageUrl"
+                class="img-fluid"
+                alt="@gpu.Model" />
+            </div>
 
-    @if (Model is GPU gpu)
-    {
-        <hr />
-        <tr>
-            <th>Brand:</th>
-            <td>@gpu.Brand</td>
-        </tr>
-        <hr />
-        <tr>
-            <th>Model:</th>
-            <td>@gpu.Model</td>
-        </tr>
-        <hr />
-        <tr>
-            <th>Memory Size:</th>
-            <td>@gpu.MemorySize</td>
-        </tr>
-        <hr />
-        <tr>
-            <th>Memory Type:</th>
-            <td>@gpu.MemoryType</td>
-        </tr>
-        <hr />
-        <tr>
-            <th>Base Clock:</th>
-            <td>@gpu.CoreClock</td>
-        </tr>
-        <hr />
-        <tr>
-            <th>Max Clock:</th>
-            <td>@gpu.BoostClock</td>
-        </tr>
-        <hr />
-        <tr>
-            <th>TDP:</th>
-            <td>@gpu.TDP</td>
-        </tr>
-        <hr />
-        <tr>
-            <th>Interfaces:</th>
-            <td>@gpu.Interface</td>
-        </tr>
-        <hr />
-        <tr>
-            <th>Dimensions:</th>
-            <td>@gpu.dimensions</td>
-        </tr>
-        <hr />
-        <tr>
-            <th>Prots:</th>
-            <td>@gpu.Ports</td>
-        </tr>
-        <hr />
-    <a asp-action="Index" class="btn btn-outline-dark">Back to List</a>
-    @if (!User.IsInRole("Admin"))
-    {
-        <form asp-controller="ShoppingCart"
-              asp-action="Add"
-              method="post">
-            <input type="hidden" name="itemId" value="@gpu.Id" />
-            <button type="submit" class="btn btn-outline-success">
-                Add to Cart 🛒
-            </button>
-        </form>
-    }
-    }
+            <!-- DETAILS -->
+            <div class="col-md-7">
+
+                <h2 class="fw-bold">@gpu.Brand @gpu.Model</h2>
+                <p class="text-muted">Graphics Card</p>
+
+                <table class="table table-striped table-borderless mt-3">
+                    <tbody>
+                        <tr>
+                            <th>Memory</th>
+                            <td>@gpu.MemorySize GB (@gpu.MemoryType)</td>
+                        </tr>
+                        <tr>
+                            <th>Core Clock</th>
+                            <td>@gpu.CoreClock MHz</td>
+                        </tr>
+                        <tr>
+                            <th>Boost Clock</th>
+                            <td>@gpu.BoostClock MHz</td>
+                        </tr>
+                        <tr>
+                            <th>TDP</th>
+                            <td>@gpu.TDP W</td>
+                        </tr>
+                        <tr>
+                            <th>Interface</th>
+                            <td>@gpu.Interface</td>
+                        </tr>
+                        <tr>
+                            <th>Dimensions</th>
+                            <td>@gpu.dimensions</td>
+                        </tr>
+                        <tr>
+                            <th>Ports</th>
+                            <td>@gpu.Ports</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 class="text-success fw-bold mt-3">@gpu.Price₪</h3>
+
+                <div class="d-flex gap-2 mt-3">
+                    <a asp-action="Index"
+                    class="btn btn-outline-dark">
+                        ← Back to List
+                    </a>
+
+                    @if (!User.IsInRole("Admin"))
+                    {
+                        <form asp-controller="ShoppingCart"
+                        asp-action="Add"
+                        method="post">
+                            <input type="hidden" name="itemId" value="@gpu.Id" />
+                            <button type="submit"
+                            class="btn btn-success">
+                                Add to Cart 🛒
+                            </button>
+                        </form>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+@if (Model is CPU cpu)
+{
+    <div class="container mt-4">
+        <div class="row">
+
+            <!-- IMAGE -->
+            <div class="col-md-5">
+                <img src="@cpu.ImageUrl"
+                class="img-fluid"
+                alt="@cpu.Model" />
+            </div>
+
+            <!-- DETAILS -->
+            <div class="col-md-7">
+
+                <h2 class="fw-bold">@cpu.Brand @cpu.Model</h2>
+                <p class="text-muted">Processor</p>
+
+                <table class="table table-striped table-borderless mt-3">
+                    <tbody>
+                        <tr>
+                            <th>Cores</th>
+                            <td>@cpu.Cores</td>
+                        </tr>
+                        <tr>
+                            <th>Threads</th>
+                            <td>@cpu.Threads</td>
+                        </tr>
+                        <tr>
+                            <th>Base Clock</th>
+                            <td>@cpu.BaseClock GHz</td>
+                        </tr>
+                        <tr>
+                            <th>Boost Clock</th>
+                            <td>@cpu.BoostClock GHz</td>
+                        </tr>
+                        <tr>
+                            <th>Socket</th>
+                            <td>@cpu.SocketType</td>
+                        </tr>
+
+                        @if (cpu.IntegratedGraphics)
+                        {
+                            <tr>
+                                <th>Integrated Graphics</th>
+                                <td>Yes</td>
+                            </tr>
+                        }
+                        @if (!cpu.IntegratedGraphics)
+                        {
+                            <tr>
+                                <th>Integrated Graphics</th>
+                                <td>No</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <h3 class="text-success fw-bold mt-3">$@cpu.Price</h3>
+
+                <div class="d-flex gap-2 mt-3">
+                    <a asp-action="Index"
+                    class="btn btn-outline-dark">
+                        ← Back to List
+                    </a>
+
+                    @if (!User.IsInRole("Admin"))
+                    {
+                        <form asp-controller="ShoppingCart"
+                        asp-action="Add"
+                        method="post">
+                            <input type="hidden" name="itemId" value="@cpu.Id" />
+                            <button type="submit"
+                            class="btn btn-success">
+                                Add to Cart 🛒
+                            </button>
+                        </form>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+@if(Model is AIO aio)
+{
+    <div class="container mt-4">
+        <div class="row">
+
+            <!-- IMAGE -->
+            <div class="col-md-5">
+                <img src="@aio.ImageUrl"
+                class="img-fluid"
+                alt="@aio.Model" />
+            </div>
+
+            <!-- DETAILS -->
+            <div class="col-md-7">
+
+                <h2 class="fw-bold">@aio.Brand @aio.Model</h2>
+                <p class="text-muted">liquid cooling unit</p>
+
+                <table class="table table-striped table-borderless mt-3">
+                    <tbody>
+                        <tr>
+                            <th>Radiator Size</th>
+                            <td>@aio.RadiatorSize</td>
+                        </tr>
+                        <tr>
+                            <th>Pump Speed</th>
+                            <td>@aio.PumpSpeed RPM</td>
+                        </tr>
+                        <tr>
+                            <th>Fan Size</th>
+                            <td>@aio.FanSize</td>
+                        </tr>
+                        <tr>
+                            <th>Fan Speed</th>
+                            <td>@aio.FanRPM RPM</td>
+                        </tr>
+                        <tr>
+                            <th>Supported Sockets</th>
+                            <td>@aio.SupportedSockets</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 class="text-success fw-bold mt-3">$@aio.Price</h3>
+
+                <div class="d-flex gap-2 mt-3">
+                    <a asp-action="Index"
+                    class="btn btn-outline-dark">
+                        ← Back to List
+                    </a>
+
+                    @if (!User.IsInRole("Admin"))
+                    {
+                        <form asp-controller="ShoppingCart"
+                        asp-action="Add"
+                        method="post">
+                            <input type="hidden" name="itemId" value="@aio.Id" />
+                            <button type="submit"
+                            class="btn btn-success">
+                                Add to Cart 🛒
+                            </button>
+                        </form>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+@if(Model is Case pccase)
+{
+        <div class="container mt-4">
+    <div class="row">
+
+        <!-- IMAGE -->
+        <div class="col-md-5">
+            <img src="@pccase.ImageUrl"
+                 class="img-fluid rounded shadow-sm"
+                 alt="@pccase.Model" />
+        </div>
+
+        <!-- DETAILS -->
+        <div class="col-md-7">
+
+            <h2 class="fw-bold">@pccase.Brand @pccase.Model</h2>
+            <p class="text-muted">Pc Case</p>
+
+            <table class="table table-striped table-borderless mt-3">
+                <tbody>
+                    <tr>
+                        <th>Form Factor</th>
+                        <td>@pccase.FormFactor</td>
+                    </tr>
+                    <tr>
+                        <th>Maximum size for graphics card</th>
+                            <td>@pccase.MaxGPULength</td>
+                    </tr>
+                    <tr>
+                        <th>Maximum height for CPU air cooler</th>
+                            <td>@pccase.MaxCPUCoolerHeight</td>
+                    </tr>
+                    <tr>
+                        <th>Drive bays</th>
+                        <td>@pccase.DriveBays</td>
+                    </tr>
+                    <tr>
+                        <th>Fan Slots</th>
+                        <td>@pccase.FanSlots</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="text-success fw-bold mt-3">$@pccase.Price</h3>
+
+            <div class="d-flex gap-2 mt-3">
+                <a asp-action="Index"
+                   class="btn btn-outline-dark">
+                    ← Back to List
+                </a>
+
+                @if (!User.IsInRole("Admin"))
+                {
+                    <form asp-controller="ShoppingCart"
+                          asp-action="Add"
+                          method="post">
+                        <input type="hidden" name="itemId" value="@pccase.Id" />
+                        <button type="submit"
+                                class="btn btn-success">
+                            Add to Cart 🛒
+                        </button>
+                    </form>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+}

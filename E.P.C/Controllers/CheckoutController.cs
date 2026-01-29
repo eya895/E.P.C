@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using E.P.C.Services;
 using E.P.C.Data;
 using E.P.C.Models;
 
@@ -26,7 +25,7 @@ namespace E.P.C.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var cart = await _cartService.GetOrCreateCartAsync(User);
+            var cart = await _cartService.GetOrCreateCartAsync();
 
             if (!cart.Items.Any())
                 return RedirectToAction("Index", "ShoppingCart");
@@ -37,7 +36,7 @@ namespace E.P.C.Controllers
         [HttpPost]
         public async Task<IActionResult> PlaceOrder()
         {
-            var cart = await _cartService.GetOrCreateCartAsync(User);
+            var cart = await _cartService.GetOrCreateCartAsync();
             var userId = _userManager.GetUserId(User);
 
             if (!cart.Items.Any())

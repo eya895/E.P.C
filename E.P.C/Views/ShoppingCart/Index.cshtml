@@ -1,44 +1,101 @@
 ﻿@model E.P.C.Models.ShoppingCart
 
-<h2>Your Shopping Cart</h2>
+<h2 class="mb-4">🛒 Your Shopping Cart</h2>
 
-<table class="table">
-    <tr>
-        <th>Item</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Total</th>
-        <th>Actions</th>
-    </tr>
+@if (!Model.Items.Any())
+{
+    <div class="alert alert-info">
+        Your cart is empty.
+    </div>
 
-    
-    @foreach (var item in Model.Items)
-    {
-        <tr>
-            <td>@item.Product.Description</td>
-                    <td>@item.Product.Price₪</td>
-            <td>@item.Quantity</td>
-                <td>@(item.Product.Price * item.Quantity)₪</td>
-            <td>
-                <form asp-action="Add" method="post">
-                    <input type="hidden" name="itemId" value="@item.ProductId" />
-                    <button class="btn btn-success">+</button>
-                </form>
+    <a asp-controller="Products"
+       asp-action="Index"
+       class="btn btn-outline-dark">
+        ← Start Shopping
+    </a>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Product</th>
+                    <th class="text-center">Price</th>
+                    <th class="text-center">Quantity</th>
+                    <th class="text-center">Subtotal</th>
+                    <th></th>
+                </tr>
+            </thead>
 
-                <form asp-action="Remove" method="post">
-                    <input type="hidden" name="itemId" value="@item.ProductId" />
-                    <button class="btn btn-danger">−</button>
-                </form>
-            </td>
-            
-        </tr>
-    }
-</table>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="@item.Product.ImageUrl"
+                                     style="width:70px; height:auto;"
+                                     class="rounded shadow-sm" />
 
-<h3>Total: @Model.TotalPrice₪</h3>
-<a asp-controller="Checkout"
-   asp-action="Index"
-   class="btn btn-success">
-    Checkout
-</a>
+                                <strong>@item.Product.Description</strong>
+                            </div>
+                        </td>
 
+                        <td class="text-center">
+                            @item.Product.Price₪
+                        </td>
+
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center align-items-center gap-2">
+                                <form asp-action="Remove" method="post">
+                                    <input type="hidden" name="itemId" value="@item.ProductId" />
+                                    <button class="btn btn-outline-danger btn-sm">−</button>
+                                </form>
+
+                                <span class="fw-bold">@item.Quantity</span>
+
+                                <form asp-action="Add" method="post">
+                                    <input type="hidden" name="itemId" value="@item.ProductId" />
+                                    <button class="btn btn-outline-success btn-sm">+</button>
+                                </form>
+                            </div>
+                        </td>
+
+                        <td class="text-center fw-bold">
+                            @(item.Product.Price * item.Quantity)₪
+                        </td>
+
+                        <td class="text-end">
+                            <form asp-action="RemoveAll" method="post">
+                                <input type="hidden" name="itemId" value="@item.ProductId" />
+                                <button class="btn btn-sm btn-outline-secondary">
+                                    Remove
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <a asp-controller="Products"
+           asp-action="Index"
+           class="btn btn-outline-dark">
+            ← Continue Shopping
+        </a>
+
+        <div class="text-end">
+            <h4>Total:</h4>
+            <h2 class="text-success fw-bold">@Model.TotalPrice₪</h2>
+
+            <a asp-controller="Checkout"
+               asp-action="Index"
+               class="btn btn-success btn-lg mt-2">
+                Proceed to Checkout
+            </a>
+        </div>
+    </div>
+}

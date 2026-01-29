@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using E.P.C.Services;
 using E.P.C.Data;
 
 namespace E.P.C.Controllers
@@ -8,53 +7,37 @@ namespace E.P.C.Controllers
     [Authorize]
     public class ShoppingCartController : Controller
     {
-        private readonly ShoppingCartService _cartService;
-        private readonly AppDbContext _context;
+        private readonly ShoppingCartService _cart;
 
-        public ShoppingCartController(ShoppingCartService cartService, AppDbContext context)
+        public ShoppingCartController(ShoppingCartService cart)
         {
-            _cartService = cartService;
-            _context = context;
+            _cart = cart;
         }
 
         public async Task<IActionResult> Index()
         {
-            var cart = await _cartService.GetOrCreateCartAsync(User);
+            var cart =  await _cart.GetCartAsync();
             return View(cart);
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(int itemId)
         {
-            var cart = await _cartService.GetOrCreateCartAsync(User);
-
-            var item = cart.Items.FirstOrDefault(i => i.ProductId == itemId);
-
-            if (item == null)
-                cart.Items.Add(new Models.ShoppingCartItem { ProductId = itemId, Quantity = 1 });
-            else
-                item.Quantity++;
-
-            await _context.SaveChangesAsync();
+            await _cart.AddAsync(itemId);
             return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Remove(int itemId)
+        public  async Task<IActionResult> RemoveAsync(int itemId)
         {
-            var cart = await _cartService.GetOrCreateCartAsync(User);
+             await _cart.RemoveAsync(itemId);
+            return RedirectToAction(nameof(Index));
+        }
 
-            var item = cart.Items.FirstOrDefault(i => i.ProductId == itemId);
-
-            if (item != null)
-            {
-                item.Quantity--;
-                if (item.Quantity <= 0)
-                    _context.ShoppingCartItems.Remove(item);
-
-                await _context.SaveChangesAsync();
-            }
-
+        [HttpPost]
+        public async Task<IActionResult> RemoveAll(int itemId)
+        {
+            await _cart.RemoveAllAsync(itemId);
             return RedirectToAction(nameof(Index));
         }
     }
