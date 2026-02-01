@@ -33,7 +33,7 @@
                               asp-action="Add"
                               method="post">
                             <input type="hidden" name="itemId" value="@product.Id" />
-                            <button type="submit" class="btn btn-shop w-100">
+                            <button type="submit" class="btn btn-buy w-100">
                                 Add to Cart
                             </button>
                         </a>
@@ -76,35 +76,36 @@
     .modelname{
         font-size: large;
     }
-    .btn-shop{
+    .btn-buy{
         color: black;
         font-size: x-large;
-        background: gold;
+        background: khaki;
         outline-width: medium;
         outline-color:black;
         outline-style: solid;
         margin-top: 10px;
         cursor:pointer;
+        font-weight:bold;
     }
-    .btn-shop:hover{
+    .btn-buy:hover{
         transform: scale(1.03);
-        background: orange;
-        color: black;
+        background: gold;
+        color:black;
         overflow-y:clip;
     }
     .btn-details{
         color:black;
         font-size: x-large;
         font-weight: bold;
-        background: lightskyblue;
-        outline-color:cornflowerblue;
-        outline-style:solid;
+        background: orange;
+        outline-color: black;
+        outline-style: solid;
         outline-width: medium;
     }
     .btn-details:hover{
+        color:black;
         transform:scale(1.03);
-        background:cornflowerblue;
-        outline-color:skyblue;
+        background:darkorange;
+        outline-color:black;
     }
-
 </style>
