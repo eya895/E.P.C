@@ -1,23 +1,100 @@
-﻿<div class="text-center mt-4">
-    <img src="/images/Logo.jpeg" class="img-fluid rounded" width=25%/>
-    <h1 class="display-4 mt-3">Build Your Perfect PC</h1>
-    <p class="lead">High-quality components. Fair prices.</p>
+﻿@{
+    ViewData["Title"] = "Home";
+    ViewData["FullWidth"] = true;
+}
 
-    
-    @if (!User.IsInRole("Admin"))
-     {
-    <a asp-controller="Products"
-       asp-action="Index"
-       class="btn btn-primary btn-lg mt-3">
-        Shop Now
-    </a>
-     }
-    @if (User.IsInRole("Admin"))
-     {
-         <a asp-controller="Admin"
-             asp-action="Index"
-             class="btn btn-primary btn-lg mt-3">
-             Manage Shop
-         </a>
-     }
+<div class="epc-hero">
+
+    <div class="hero-card text-center">
+
+        <img src="/images/Logo.jpeg" class="hero-logo" />
+
+        <h1 class="hero-title">Build Your Perfect PC</h1>
+        <p class="hero-subtitle">High-quality components. Fair prices.</p>
+
+        @if (!User.IsInRole("Admin"))
+        {
+            <a asp-controller="Products"
+               asp-action="Index"
+               class="hero-btn">
+                Shop Now
+            </a>
+        }
+
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-controller="Admin"
+               asp-action="Index"
+               class="hero-btn">
+                Manage Shop
+            </a>
+        }
+
+    </div>
+
 </div>
+
+<style>
+    /* ---------- HOME / HERO ---------- */
+    .epc-hero {
+        min-height: calc(100vh - 90px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at center, #1a2235 0%, #0b0f19 100%);
+        color: white;
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .hero-card {
+        background: rgba(22, 30, 46, 0.95);
+        border: 1px solid rgba(0, 242, 254, 0.25);
+        border-radius: 20px;
+        padding: 3rem 2.5rem;
+        max-width: 520px;
+        width: 100%;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+        text-align: center;
+    }
+
+    /* LOGO */
+    .hero-logo {
+        width: 130px;
+        border-radius: 14px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 0 20px rgba(0, 242, 254, 0.35);
+    }
+
+    /* TEXT */
+    .hero-title {
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 0.4rem;
+        letter-spacing: 0.5px;
+    }
+
+    .hero-subtitle {
+        font-size: 0.95rem;
+        color: #64748b;
+        margin-bottom: 2rem;
+    }
+
+    /* BUTTON */
+    .hero-btn {
+        display: inline-block;
+        background: linear-gradient(90deg, #00f2fe, #4facfe);
+        color: #0b0f19;
+        padding: 12px 36px;
+        border-radius: 50px;
+        font-weight: 900;
+        text-decoration: none;
+        box-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
+        transition: 0.25s ease;
+    }
+
+        .hero-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 0 40px rgba(0, 242, 254, 0.8);
+            color: #0b0f19;
+        }
+</style>

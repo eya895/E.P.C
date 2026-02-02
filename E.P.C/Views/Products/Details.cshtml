@@ -1,306 +1,193 @@
-﻿@model E.P.C.Models.Product
+﻿@using E.P.C.Models
+@model E.P.C.Models.Product
 
-@{
-    ViewData["Title"] = "Product Details";
-}
-
-@if (Model is GPU gpu)
-{
-    <div class="container mt-4">
-        <div class="row">
-
-            <!-- IMAGE -->
-            <div class="col-md-5">
-                <img src="@gpu.ImageUrl"
-                class="img-fluid"
-                alt="@gpu.Model" />
+<div class="container py-5">
+    <div class="main-product-wrapper shadow-lg border-0 rounded-4 overflow-hidden bg-white">
+        <div class="row g-0">
+            <!-- אזור התמונה -->
+            <div class="col-lg-5 product-image-section bg-light d-flex align-items-center justify-content-center p-4">
+                <img src="@Model.ImageUrl" alt="Product Image" class="img-fluid floating-img">
             </div>
 
-            <!-- DETAILS -->
-            <div class="col-md-7">
-
-                <h2 class="fw-bold">@gpu.Brand @gpu.Model</h2>
-                <p class="text-muted">Graphics Card</p>
-
-                <table class="table table-striped table-borderless mt-3">
-                    <tbody>
-                        <tr>
-                            <th>Memory</th>
-                            <td>@gpu.MemorySize GB (@gpu.MemoryType)</td>
-                        </tr>
-                        <tr>
-                            <th>Core Clock</th>
-                            <td>@gpu.CoreClock MHz</td>
-                        </tr>
-                        <tr>
-                            <th>Boost Clock</th>
-                            <td>@gpu.BoostClock MHz</td>
-                        </tr>
-                        <tr>
-                            <th>TDP</th>
-                            <td>@gpu.TDP W</td>
-                        </tr>
-                        <tr>
-                            <th>Interface</th>
-                            <td>@gpu.Interface</td>
-                        </tr>
-                        <tr>
-                            <th>Dimensions</th>
-                            <td>@gpu.dimensions</td>
-                        </tr>
-                        <tr>
-                            <th>Ports</th>
-                            <td>@gpu.Ports</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h3 class="text-success fw-bold mt-3">@gpu.Price₪</h3>
-
-                <div class="d-flex gap-2 mt-3">
-                    <a asp-action="Index"
-                    class="btn btn-outline-dark">
-                        ← Back to List
-                    </a>
-
-                    @if (!User.IsInRole("Admin"))
-                    {
-                        <form asp-controller="ShoppingCart"
-                        asp-action="Add"
-                        method="post">
-                            <input type="hidden" name="itemId" value="@gpu.Id" />
-                            <button type="submit"
-                            class="btn btn-success">
-                                Add to Cart 🛒
-                            </button>
-                        </form>
-                    }
+            <!-- אזור התוכן -->
+            <div class="col-lg-7 p-5">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="badge bg-primary text-uppercase px-3 py-2">@Model.GetType().Name</span>
+                    <h2 class="price-tag m-0 text-success fw-bold">₪@Model.Price.ToString("N0")</h2>
                 </div>
 
-            </div>
-        </div>
-    </div>
-}
-@if (Model is CPU cpu)
-{
-    <div class="container mt-4">
-        <div class="row">
-
-            <!-- IMAGE -->
-            <div class="col-md-5">
-                <img src="@cpu.ImageUrl"
-                class="img-fluid"
-                alt="@cpu.Model" />
-            </div>
-
-            <!-- DETAILS -->
-            <div class="col-md-7">
-
-                <h2 class="fw-bold">@cpu.Brand @cpu.Model</h2>
-                <p class="text-muted">Processor</p>
-
-                <table class="table table-striped table-borderless mt-3">
-                    <tbody>
-                        <tr>
-                            <th>Cores</th>
-                            <td>@cpu.Cores</td>
-                        </tr>
-                        <tr>
-                            <th>Threads</th>
-                            <td>@cpu.Threads</td>
-                        </tr>
-                        <tr>
-                            <th>Base Clock</th>
-                            <td>@cpu.BaseClock GHz</td>
-                        </tr>
-                        <tr>
-                            <th>Boost Clock</th>
-                            <td>@cpu.BoostClock GHz</td>
-                        </tr>
-                        <tr>
-                            <th>Socket</th>
-                            <td>@cpu.SocketType</td>
-                        </tr>
-
-                        @if (cpu.IntegratedGraphics)
-                        {
-                            <tr>
-                                <th>Integrated Graphics</th>
-                                <td>Yes</td>
-                            </tr>
-                        }
-                        @if (!cpu.IntegratedGraphics)
-                        {
-                            <tr>
-                                <th>Integrated Graphics</th>
-                                <td>No</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-
-                <h3 class="text-success fw-bold mt-3">$@cpu.Price</h3>
-
-                <div class="d-flex gap-2 mt-3">
-                    <a asp-action="Index"
-                    class="btn btn-outline-dark">
-                        ← Back to List
-                    </a>
-
-                    @if (!User.IsInRole("Admin"))
-                    {
-                        <form asp-controller="ShoppingCart"
-                        asp-action="Add"
-                        method="post">
-                            <input type="hidden" name="itemId" value="@cpu.Id" />
-                            <button type="submit"
-                            class="btn btn-success">
-                                Add to Cart 🛒
-                            </button>
-                        </form>
-                    }
-                </div>
-
-            </div>
-        </div>
-    </div>
-}
-@if(Model is AIO aio)
-{
-    <div class="container mt-4">
-        <div class="row">
-
-            <!-- IMAGE -->
-            <div class="col-md-5">
-                <img src="@aio.ImageUrl"
-                class="img-fluid"
-                alt="@aio.Model" />
-            </div>
-
-            <!-- DETAILS -->
-            <div class="col-md-7">
-
-                <h2 class="fw-bold">@aio.Brand @aio.Model</h2>
-                <p class="text-muted">liquid cooling unit</p>
-
-                <table class="table table-striped table-borderless mt-3">
-                    <tbody>
-                        <tr>
-                            <th>Radiator Size</th>
-                            <td>@aio.RadiatorSize</td>
-                        </tr>
-                        <tr>
-                            <th>Pump Speed</th>
-                            <td>@aio.PumpSpeed RPM</td>
-                        </tr>
-                        <tr>
-                            <th>Fan Size</th>
-                            <td>@aio.FanSize</td>
-                        </tr>
-                        <tr>
-                            <th>Fan Speed</th>
-                            <td>@aio.FanRPM RPM</td>
-                        </tr>
-                        <tr>
-                            <th>Supported Sockets</th>
-                            <td>@aio.SupportedSockets</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h3 class="text-success fw-bold mt-3">$@aio.Price</h3>
-
-                <div class="d-flex gap-2 mt-3">
-                    <a asp-action="Index"
-                    class="btn btn-outline-dark">
-                        ← Back to List
-                    </a>
-
-                    @if (!User.IsInRole("Admin"))
-                    {
-                        <form asp-controller="ShoppingCart"
-                        asp-action="Add"
-                        method="post">
-                            <input type="hidden" name="itemId" value="@aio.Id" />
-                            <button type="submit"
-                            class="btn btn-success">
-                                Add to Cart 🛒
-                            </button>
-                        </form>
-                    }
-                </div>
-
-            </div>
-        </div>
-    </div>
-}
-
-@if(Model is Case pccase)
-{
-        <div class="container mt-4">
-    <div class="row">
-
-        <!-- IMAGE -->
-        <div class="col-md-5">
-            <img src="@pccase.ImageUrl"
-                 class="img-fluid rounded shadow-sm"
-                 alt="@pccase.Model" />
-        </div>
-
-        <!-- DETAILS -->
-        <div class="col-md-7">
-
-            <h2 class="fw-bold">@pccase.Brand @pccase.Model</h2>
-            <p class="text-muted">Pc Case</p>
-
-            <table class="table table-striped table-borderless mt-3">
-                <tbody>
-                    <tr>
-                        <th>Form Factor</th>
-                        <td>@pccase.FormFactor</td>
-                    </tr>
-                    <tr>
-                        <th>Maximum size for graphics card</th>
-                            <td>@pccase.MaxGPULength</td>
-                    </tr>
-                    <tr>
-                        <th>Maximum height for CPU air cooler</th>
-                            <td>@pccase.MaxCPUCoolerHeight</td>
-                    </tr>
-                    <tr>
-                        <th>Drive bays</th>
-                        <td>@pccase.DriveBays</td>
-                    </tr>
-                    <tr>
-                        <th>Fan Slots</th>
-                        <td>@pccase.FanSlots</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3 class="text-success fw-bold mt-3">$@pccase.Price</h3>
-
-            <div class="d-flex gap-2 mt-3">
-                <a asp-action="Index"
-                   class="btn btn-outline-dark">
-                    ← Back to List
-                </a>
-
-                @if (!User.IsInRole("Admin"))
-                {
-                    <form asp-controller="ShoppingCart"
-                          asp-action="Add"
-                          method="post">
-                        <input type="hidden" name="itemId" value="@pccase.Id" />
-                        <button type="submit"
-                                class="btn btn-success">
-                            Add to Cart 🛒
-                        </button>
-                    </form>
+                <!-- שם מותג ודגם כטקסט מרכזי -->
+                @{
+                    dynamic typedModel = Model;
+                    string fullName = $"{typedModel.Brand} {typedModel.Model}";
                 }
-            </div>
+                <h1 class="display-4 fw-bold mb-2 text-dark">@fullName</h1>
+                <p class="text-muted mb-4 fs-5">@Model.Description</p>
 
+                <div class="specs-container bg-white border-top pt-4">
+                    <h5 class="fw-bold mb-4 text-dark text-uppercase ls-1">Full Specifications</h5>
+                    <div class="specs-grid">
+                        @if (Model is GPU gpu)
+                        {
+                            <div class="spec-item"><span>Memory</span><strong>@gpu.MemorySize MB @gpu.MemoryType</strong></div>
+                            <div class="spec-item"><span>Core Clock</span><strong>@gpu.CoreClock MHz</strong></div>
+                            <div class="spec-item"><span>Boost Clock</span><strong>@gpu.BoostClock MHz</strong></div>
+                            <div class="spec-item"><span>TDP</span><strong>@gpu.TDP W</strong></div>
+                            <div class="spec-item"><span>Interface</span><strong>@gpu.Interface</strong></div>
+                            <div class="spec-item"><span>Dimensions</span><strong>@gpu.dimensions</strong></div>
+                            <div class="spec-item"><span>Ports</span><strong>@gpu.Ports</strong></div>
+                        }
+                        else if (Model is CPU cpu)
+                        {
+                            <div class="spec-item"><span>Cores</span><strong>@cpu.Cores</strong></div>
+                            <div class="spec-item"><span>Threads</span><strong>@cpu.Threads</strong></div>
+                            <div class="spec-item"><span>Base Clock</span><strong>@cpu.BaseClock GHz</strong></div>
+                            <div class="spec-item"><span>Boost Clock</span><strong>@cpu.BoostClock GHz</strong></div>
+                            <div class="spec-item"><span>Socket</span><strong>@cpu.SocketType</strong></div>
+                            <div class="spec-item"><span>Integrated Graphics</span><strong>@(cpu.IntegratedGraphics ? "Yes" : "No")</strong></div>
+                        }
+                        else if (Model is MotherBoard mb)
+                        {
+                            <div class="spec-item"><span>Socket</span><strong>@mb.SocketType</strong></div>
+                            <div class="spec-item"><span>Form Factor</span><strong>@mb.FormFactor</strong></div>
+                            <div class="spec-item"><span>RAM Slots</span><strong>@mb.RAMSlots</strong></div>
+                            <div class="spec-item"><span>Max RAM</span><strong>@mb.MaxRAMCapacity GB</strong></div>
+                        }
+                        else if (Model is RAM ram)
+                        {
+                            <div class="spec-item"><span>Capacity</span><strong>@ram.Capacity GB</strong></div>
+                            <div class="spec-item"><span>Speed</span><strong>@ram.Speed MHz</strong></div>
+                            <div class="spec-item"><span>Type</span><strong>@ram.Type</strong></div>
+                            <div class="spec-item"><span>Kit</span><strong>@ram.sticks Sticks</strong></div>
+                        }
+                        else if (Model is Storage st)
+                        {
+                            <div class="spec-item"><span>Capacity</span><strong>@st.Capacity GB</strong></div>
+                            <div class="spec-item"><span>Type</span><strong>@st.Type</strong></div>
+                            <div class="spec-item"><span>Form Factor</span><strong>@st.FormFactor</strong></div>
+                            <div class="spec-item"><span>Interface</span><strong>@st.connectionInterface</strong></div>
+                        }
+                        else if (Model is PSU psu)
+                        {
+                            <div class="spec-item"><span>Wattage</span><strong>@psu.Wattage W</strong></div>
+                            <div class="spec-item"><span>Efficiency</span><strong>@psu.EfficiencyRating</strong></div>
+                            <div class="spec-item"><span>Modular</span><strong>@(psu.Modular ? "Yes" : "No")</strong></div>
+                            <div class="spec-item"><span>Form Factor</span><strong>@psu.FormFactor</strong></div>
+                            <div class="spec-item"><span>Connectors</span><strong>@psu.Connectors</strong></div>
+                        }
+                        else if (Model is Case pcCase)
+                        {
+                            <div class="spec-item"><span>Form Factor</span><strong>@pcCase.FormFactor</strong></div>
+                            <div class="spec-item"><span>Max GPU</span><strong>@pcCase.MaxGPULength mm</strong></div>
+                            <div class="spec-item"><span>Max CPU Cooler</span><strong>@pcCase.MaxCPUCoolerHeight mm</strong></div>
+                            <div class="spec-item"><span>Drive Bays</span><strong>@pcCase.DriveBays</strong></div>
+                            <div class="spec-item"><span>Fan Slots</span><strong>@pcCase.FanSlots</strong></div>
+                        }
+                        else if (Model is AIO aio)
+                        {
+                            <div class="spec-item"><span>Radiator</span><strong>@aio.RadiatorSize mm</strong></div>
+                            <div class="spec-item"><span>Pump Speed</span><strong>@aio.PumpSpeed RPM</strong></div>
+                            <div class="spec-item"><span>Fan Size</span><strong>@aio.FanSize mm</strong></div>
+                            <div class="spec-item"><span>Fan RPM</span><strong>@aio.FanRPM</strong></div>
+                            <div class="spec-item"><span>Noise</span><strong>@aio.NoiseLevel dBA</strong></div>
+                            <div class="spec-item"><span>Sockets</span><strong>@aio.SupportedSockets</strong></div>
+                        }
+                        else if (Model is CPUFan cf)
+                        {
+                            <div class="spec-item"><span>Size</span><strong>@cf.Size mm</strong></div>
+                            <div class="spec-item"><span>RPM</span><strong>@cf.RPM</strong></div>
+                            <div class="spec-item"><span>Airflow</span><strong>@cf.Airflow CFM</strong></div>
+                            <div class="spec-item"><span>Noise</span><strong>@cf.NoiseLevel dBA</strong></div>
+                            <div class="spec-item"><span>Connector</span><strong>@cf.ConnectorType</strong></div>
+                            <div class="spec-item"><span>Sockets</span><strong>@cf.SupportedSockets</strong></div>
+                        }
+                        else if (Model is Fan f)
+                        {
+                            <div class="spec-item"><span>Size</span><strong>@f.Size mm</strong></div>
+                            <div class="spec-item"><span>RPM</span><strong>@f.RPM</strong></div>
+                            <div class="spec-item"><span>Airflow</span><strong>@f.Airflow CFM</strong></div>
+                            <div class="spec-item"><span>Noise</span><strong>@f.NoiseLevel dBA</strong></div>
+                            <div class="spec-item"><span>Connector</span><strong>@f.ConnectorType</strong></div>
+                        }
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3 mt-5">
+                    <a asp-action="Index" class="btn btn-outline-dark px-4 py-3 rounded-3 fw-bold">Back to Shop</a>
+                    @if (!User.IsInRole("Admin"))
+                    {
+                        <form asp-controller="ShoppingCart" asp-action="Add" method="post" class="flex-grow-1">
+                            <input type="hidden" name="itemId" value="@Model.Id" />
+                            <button type="submit" class="btn btn-buy-gradient w-100 py-3 rounded-3 fw-bold shadow">
+                                Add to Cart 🛒
+                            </button>
+                        </form>
+                    }
+                </div>
+            </div>
         </div>
     </div>
 </div>
-}
+
+<style>
+    .ls-1 {
+        letter-spacing: 1px;
+    }
+
+    .product-image-section {
+        background-color: #f8f9fa;
+        border-right: 1px solid #eee;
+    }
+
+    .floating-img {
+        max-height: 500px;
+        object-fit: contain;
+        filter: drop-shadow(0 15px 30px rgba(0,0,0,0.08));
+        transition: 0.3s;
+    }
+
+        .floating-img:hover {
+            transform: scale(1.03);
+        }
+
+    /* Specs Grid - תיקון שגורם להכל להופיע */
+    .specs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 25px 15px;
+    }
+
+    .spec-item {
+        display: flex;
+        flex-direction: column;
+        border-left: 3px solid #0d6efd; /* כחול מודרני */
+        padding-left: 12px;
+    }
+
+        .spec-item span {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #777;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .spec-item strong {
+            font-size: 1.05rem;
+            color: #111;
+            line-height: 1.2;
+        }
+
+    .btn-buy-gradient {
+        background: linear-gradient(135deg, #28a745, #218838);
+        color: white;
+        border: none;
+        transition: 0.3s;
+    }
+
+        .btn-buy-gradient:hover {
+            background: #1e7e34;
+            transform: translateY(-2px);
+            color: white;
+        }
+</style>

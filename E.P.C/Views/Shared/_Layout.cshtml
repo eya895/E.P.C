@@ -4,94 +4,251 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - E.P.C</title>
-    <script type="importmap"></script>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/E.P.C.styles.css" asp-append-version="true" />
+
+    <style>
+        /* ---------- NAVBAR (EPC DARK NEON STYLE) ---------- */
+        .navbar-glass {
+            background: rgba(11, 15, 25, 0.95) !important;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        /* BRAND */
+        .navbar-brand {
+            font-size: 1.6rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: #00f2fe !important;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+        }
+
+        /* LINKS */
+        .nav-link {
+            color: #cbd5f5 !important;
+            font-weight: 500;
+            padding: 10px 16px !important;
+            transition: 0.25s ease;
+        }
+
+            .nav-link:hover {
+                color: #00f2fe !important;
+                text-shadow: 0 0 8px rgba(0, 242, 254, 0.6);
+                transform: translateY(-1px);
+            }
+
+        /* ---------- DROPDOWN ---------- */
+        .dropdown-menu {
+            background: rgba(22, 30, 46, 0.98);
+            border: 1px solid rgba(0, 242, 254, 0.25);
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        .dropdown-item {
+            color: #cbd5f5;
+            border-radius: 8px;
+            padding: 8px 12px;
+            transition: 0.2s;
+        }
+
+            .dropdown-item:hover {
+                background: rgba(0, 242, 254, 0.15);
+                color: #00f2fe;
+            }
+
+        /* ---------- CART BUTTON ---------- */
+        .cart-btn {
+            background: linear-gradient(90deg, #00f2fe, #4facfe);
+            color: #0b0f19 !important;
+            border-radius: 50px;
+            padding: 8px 20px !important;
+            font-weight: 800;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
+            transition: 0.25s;
+        }
+
+            .cart-btn:hover {
+                transform: scale(1.05);
+                box-shadow: 0 0 25px rgba(0, 242, 254, 0.8);
+            }
+
+        /* ---------- AUTH LINKS ---------- */
+        .login-btn,
+        .register-btn {
+            color: #00f2fe !important;
+            font-weight: 600;
+        }
+
+            .login-btn:hover,
+            .register-btn:hover {
+                text-shadow: 0 0 10px rgba(0, 242, 254, 0.6);
+            }
+
+        /* ---------- SEARCH ---------- */
+        .search-box {
+            background: rgba(10, 15, 26, 0.9);
+            border: 1px solid rgba(0, 242, 254, 0.25);
+            border-radius: 30px;
+            padding-left: 15px;
+            color: white;
+        }
+
+            .search-box::placeholder {
+                color: #64748b;
+            }
+
+            .search-box:focus {
+                background: rgba(10, 15, 26, 1);
+                border-color: #00f2fe;
+                box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+                color: white;
+            }
+
+    </style>
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">E.P.C</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
 
-                        <!-- Products dropdown -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Products
+    <!-- ---------- NAVBAR ---------- -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-glass sticky-top py-3">
+        <div class="container-fluid">
+
+            <!-- BRAND -->
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                E.P.C
+            </a>
+
+            <!-- MOBILE BUTTON -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navMenu" aria-controls="navMenu"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+
+            <div class="collapse navbar-collapse" id="navMenu">
+
+                <!-- LEFT SIDE -->
+                <ul class="navbar-nav me-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">
+                            Home
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Privacy">
+                            Privacy
+                        </a>
+                    </li>
+
+                    <!-- PRODUCTS DROPDOWN -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" role="button"
+                           data-bs-toggle="dropdown">
+                            Products
+                        </a>
+
+                        <ul class="dropdown-menu">
+
+                            <li><a class="dropdown-item" asp-controller="Products" asp-action="Index">All Products</a></li>
+                            <li><hr class="dropdown-divider"></li>
+
+                            <li><a class="dropdown-item" asp-controller="AIOs" asp-action="Index">AIOs</a></li>
+                            <li><a class="dropdown-item" asp-controller="Cases" asp-action="Index">PC Cases</a></li>
+                            <li><a class="dropdown-item" asp-controller="CPUs" asp-action="Index">CPUs</a></li>
+                            <li><a class="dropdown-item" asp-controller="CPUFans" asp-action="Index">CPU Coolers</a></li>
+                            <li><a class="dropdown-item" asp-controller="Fans" asp-action="Index">Case Fans</a></li>
+                            <li><a class="dropdown-item" asp-controller="GPUs" asp-action="Index">GPUs</a></li>
+                            <li><a class="dropdown-item" asp-controller="MotherBoards" asp-action="Index">Motherboards</a></li>
+                            <li><a class="dropdown-item" asp-controller="PSUs" asp-action="Index">PSUs</a></li>
+                            <li><a class="dropdown-item" asp-controller="RAMs" asp-action="Index">RAM Kits</a></li>
+                            <li><a class="dropdown-item" asp-controller="Storages" asp-action="Index">Storage Units</a></li>
+
+                        </ul>
+                    </li>
+
+                    <!-- CART -->
+                    @if (!User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item ms-2">
+                            <a class="nav-link cart-btn text-white"
+                               asp-controller="ShoppingCart" asp-action="Index">
+                                🛒 Cart
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index">All Products</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AIOs" asp-action="Index">AIO Cooling Systems</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Cases" asp-action="Index">PC Cases</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="CPUs" asp-action="Index">CPUs</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="CPUFans" asp-action="Index">CPU cooler</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Fans" asp-action="Index">Case Fans</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="GPUs" asp-action="Index">GPUs</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="MotherBoards" asp-action="Index">Motherboards</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="PSUs" asp-action="Index">PSUs</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="RAMs" asp-action="Index">RAM kits</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Storages" asp-action="Index">Storage Units</a></li>
-                            </ul>
                         </li>
-                        @if (!User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="ShoppingCart" asp-action="Index">Your Shopping Cart</a>
-                            </li>
-                        }
+                    }
 
-    <li>
+                </ul>
 
-    </li>
-    </ul>
-                    <ul class="navbar-nav flex-grow-2"
-                        <!-- Authentication links -->
-                        @if (!User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-end fw-bold"  asp-area="Identity" asp-page="/Account/Login">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <form method="post" asp-area="Identity" asp-page="/Account/Logout" class="d-inline">
-                                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                                </form>
-                            </li>
-                        }
-                    </ul>
-                </div>
+
+                <!-- RIGHT SIDE (SEARCH + AUTH) -->
+                <ul class="navbar-nav ms-auto">
+
+                    <!-- SEARCH BAR -->
+                    <form class="d-flex me-3" asp-controller="Products" asp-action="Index" method="get">
+                        <input name="searchDescription"
+                               class="form-control search-box"
+                               type="search"
+                               placeholder="Search products..." />
+                    </form>
+
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link login-btn" asp-area="Identity" asp-page="/Account/Login">
+                                Login
+                            </a>
+                        </li>
+
+                        <li class="nav-item ms-1">
+                            <a class="nav-link register-btn" asp-area="Identity" asp-page="/Account/Register">
+                                Register
+                            </a>
+                        </li>
+
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <form method="post" asp-area="Identity" asp-page="/Account/Logout">
+                                <button class="nav-link btn btn-link">
+                                    Logout (@User.Identity.Name)
+                                </button>
+                            </form>
+                        </li>
+                    }
+                </ul>
+
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+        </div>
+    </nav>
 
-    
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <!-- ---------- MAIN CONTENT ---------- -->
+    @if (ViewData["FullWidth"] as bool? == true)
+    {
+        @RenderBody()
+    }
+    else
+    {
+        <div class="container my-4">
+            <main>
+                @RenderBody()
+            </main>
+        </div>
+    }
+
+
+    <!-- JS -->
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

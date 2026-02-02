@@ -1,19 +1,141 @@
-﻿<h2>Admin Dashboard</h2>
+﻿<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold dashboard-title">Admin Dashboard</h1>
+        <p class="text-muted text-uppercase ls-2">Store Management & Analytics</p>
+    </div>
 
+    <div class="row g-4 justify-content-center">
+        <!-- Manage Products Card -->
+        <div class="col-md-5">
+            <a asp-controller="Products" asp-action="Index" class="card admin-card h-100 shadow-sm border-0">
+                <div class="card-image-wrapper">
+                    <!-- תמונה לבחירתך עבור מוצרים -->
+                    <img src="~/Images/E.P.C.comps.jpg" class="admin-img"  alt="Products">
+                    <div class="overlay"></div>
+                </div>
+                <div class="card-body text-center p-4">
+                    <div class="mb-3"></div>
+                    <h3 class="fw-bold">Manage Products</h3>
+                    <p class="text-muted">Edit prices, add stock, and update your product catalog.</p>
+                    <span class="btn btn-primary rounded-pill px-4">Enter Manager</span>
+                </div>
+            </a>
+        </div>
 
-
-
-<div>
-    <a asp-controller="Products"
-       asp-action="Index"
-       class="btn btn-outline-primary">
-        Manage Products
-    </a>
+        <!-- All Carts Card -->
+        <div class="col-md-5">
+            <a asp-controller="AdminCarts" asp-action="Index" class="card admin-card h-100 shadow-sm border-0">
+                <div class="card-image-wrapper">
+                    <!-- תמונה של עגלה/מכירות -->
+                    <img src="~/Images/E.P.C.cart.jpg" class="admin-img" alt="Carts">
+                    <div class="overlay"></div>
+                </div>
+                <div class="card-body text-center p-4">
+                    <div class="mb-3"></div>
+                    <h3 class="fw-bold">All Carts</h3>
+                    <p class="text-muted">Monitor active customer carts and analyze sales trends.</p>
+                    <span class="btn btn-success rounded-pill px-4">View All Carts</span>
+                </div>
+            </a>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-controller="AdminCarts"
-       asp-action="Index"
-       class="btn btn-outline-success">
-        All Carts
-    </a>
-</div>
+
+<style>
+    :root {
+        --admin-primary: #4361ee;
+        --admin-success: #2ec4b6;
+    }
+
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .dashboard-title {
+        color: #2b2d42;
+        letter-spacing: -1px;
+    }
+
+    .ls-2 {
+        letter-spacing: 2px;
+        font-size: 0.8rem;
+    }
+
+    /* Card Styling */
+    .admin-card {
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+        .admin-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12) !important;
+            color: inherit;
+        }
+
+    /* Image Styling */
+    .card-image-wrapper {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .admin-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .admin-card:hover .admin-img {
+        transform: scale(1.1);
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.4));
+    }
+
+    /* Icon Styling */
+    .icon-circle {
+        width: 60px;
+        height: 60px;
+        background: rgba(67, 97, 238, 0.1);
+        color: var(--admin-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin: -50px auto 15px; /* Pulls icon up over the image */
+        position: relative;
+        font-size: 1.5rem;
+        border: 4px solid white;
+    }
+
+    .icon-success {
+        background: rgba(46, 196, 182, 0.1);
+        color: var(--admin-success);
+    }
+
+    .card-body h3 {
+        color: #2b2d42;
+        margin-bottom: 10px;
+    }
+
+    .btn-primary {
+        background-color: var(--admin-primary);
+        border: none;
+    }
+
+    .btn-success {
+        background-color: var(--admin-success);
+        border: none;
+    }
+</style>

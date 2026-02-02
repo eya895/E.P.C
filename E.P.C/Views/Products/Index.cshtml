@@ -1,111 +1,266 @@
-﻿<form asp-action="Index" method="get" class="mb-3">
-    <input type="text" name="searchDescription" value="@Context.Request.Query["searchDescription"]" placeholder="Search for product..." class="form-control" />
-    <button type="submit" class="btn btn-success mt-2">Search</button>
-</form>
-@if (User.IsInRole("Admin"))
-{
-    <a asp-action="Create" class="btn btn-success mb-3">
-        ➕ Add Product
-    </a>
+﻿@{
+    ViewData["Title"] = "Products";
+    ViewData["FullWidth"] = true;
 }
 
-<div class="row">
-    @foreach (var product in Model)
-    {
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <img src="@product.ImageUrl" class="sizable"/>
+<div class="epc-products">
 
-                <div class="card-body card-info">
-                    <h5 class="card-title modelname">@product.Brand @product.Model</h5>
-                    <p class="card-text price">₪@product.Price</p>
-                </div>
+    <div class="container py-5">
 
-                <div class="card-body bg-transparent">
-                    <a asp-action="Details"
-                    asp-route-id="@product.Id"
-                    class="btn btn-details w-100">
-                        View Product
-                    </a>
-                    @if (!User.IsInRole("Admin"))
+        <!-- SEARCH + ADD -->
+        <div class="row align-items-center mb-5 g-3">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+
+                    <form method="get" class="search-container flex-grow-1">
+                        <input type="text"
+                               name="searchDescription"
+                               value="@Context.Request.Query["searchDescription"]"
+                               placeholder="Search products..."
+                               class="search-input" />
+                        <button type="submit" class="search-button">Search</button>
+                    </form>
+
+                    @if (User.IsInRole("Admin"))
                     {
-                        <a asp-controller="ShoppingCart"
-                              asp-action="Add"
-                              method="post">
-                            <input type="hidden" name="itemId" value="@product.Id" />
-                            <button type="submit" class="btn btn-buy w-100">
-                                Add to Cart
-                            </button>
+                        <a asp-action="Create" class="btn btn-add-product">
+                            ➕ Add Product
                         </a>
                     }
+
                 </div>
-                @if (User.IsInRole("Admin"))
-                {
-                    <div class="card-footer bg-transparent d-flex align-items-center gap-2">
-                        <a asp-action="Edit" 
-                        asp-route-id="@product.Id"
-                        class="btn btn-outline-dark w-75" >
-                            Edit Product
-                        </a>
-                        <hr class="divider" />
-                        <a asp-action="Delete" 
-                        asp-route-id="@product.Id" 
-                        class="btn btn-outline-danger w-75" >
-                            Delete Product
-                        </a>
-                    </div>
-                }
-                
             </div>
         </div>
-    }
+
+        <!-- PRODUCTS GRID -->
+        <div class="row g-4">
+            @foreach (var product in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="product-card h-100">
+
+                        <div class="image-wrapper">
+                            <img src="@product.ImageUrl" class="product-img" />
+                        </div>
+
+                        <div class="card-body text-center">
+                            <h5 class="modelname">@product.Brand @product.Model</h5>
+                            <p class="price">₪@product.Price</p>
+
+                            <div class="d-grid gap-2 mt-4">
+                                <a asp-action="Details"
+                                   asp-route-id="@product.Id"
+                                   class="btn btn-details btn-view">
+                                    View Product
+                                </a>
+
+                                @if (User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
+                                {
+                                    <form asp-controller="ShoppingCart" asp-action="Add" method="post">
+                                        <input type="hidden" name="itemId" value="@product.Id" />
+                                        <button type="submit" class="btn btn-buy btn-view">
+                                            Add to Cart
+                                        </button>
+                                    </form>
+                                }
+                            </div>
+                        </div>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div class="card-footer admin-actions">
+                                <a asp-action="Edit"
+                                   asp-route-id="@product.Id"
+                                   class="btn btn-admin-edit">
+                                    Edit
+                                </a>
+                                <a asp-action="Delete"
+                                   asp-route-id="@product.Id"
+                                   class="btn btn-admin-delete">
+                                    Delete
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
 </div>
 
-
 <style>
-    .sizable {
-        height: 400px;
-        width: 400px;
+    /* ---------- PAGE BACKGROUND ---------- */
+    .epc-products {
+        min-height: calc(100vh - 90px);
+        background: radial-gradient(circle at center, #1a2235 0%, #0b0f19 100%);
+        color: white;
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
-    .price{
-        color:green;
-        font-size: xx-large;
-        font-weight: bold;
 
+    /* ---------- SEARCH ---------- */
+    .search-container {
+        display: flex;
+        background: rgba(10, 15, 26, 0.9);
+        border-radius: 50px;
+        padding: 6px;
+        border: 1px solid rgba(0, 242, 254, 0.25);
+        box-shadow: 0 0 20px rgba(0, 242, 254, 0.15);
+        width: 100%;
+        max-width: none;
     }
-    .modelname{
-        font-size: large;
+
+        .search-container:focus-within {
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.35);
+        }
+
+    .search-input {
+        flex-grow: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        padding: 10px 18px;
+        color: white;
+        font-size: 0.9rem;
     }
-    .btn-buy{
-        color: black;
-        font-size: x-large;
-        background: khaki;
-        outline-width: medium;
-        outline-color:black;
-        outline-style: solid;
-        margin-top: 10px;
-        cursor:pointer;
-        font-weight:bold;
+
+        .search-input::placeholder {
+            color: #64748b;
+        }
+
+    .search-button {
+        background: linear-gradient(90deg, #00f2fe, #4facfe);
+        border: none;
+        border-radius: 50px;
+        padding: 8px 26px;
+        font-weight: 800;
+        color: #0b0f19;
+        transition: 0.25s;
     }
-    .btn-buy:hover{
-        transform: scale(1.03);
-        background: gold;
-        color:black;
-        overflow-y:clip;
+
+        .search-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
+        }
+
+    /* ---------- PRODUCT CARD ---------- */
+    .product-card {
+        background: rgba(22, 30, 46, 0.95);
+        border: 1px solid rgba(0, 242, 254, 0.25);
+        border-radius: 18px;
+        overflow: hidden;
+        transition: 0.3s ease;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        padding-bottom: 16px;
     }
-    .btn-details{
-        color:black;
-        font-size: x-large;
-        font-weight: bold;
-        background: orange;
-        outline-color: black;
-        outline-style: solid;
-        outline-width: medium;
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 242, 254, 0.25);
+        }
+
+    .image-wrapper {
+        height: 240px;
+        background: rgba(10, 15, 26, 0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
     }
-    .btn-details:hover{
-        color:black;
-        transform:scale(1.03);
-        background:darkorange;
-        outline-color:black;
+
+    .product-img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.3));
+    }
+
+    /* ---------- TEXT ---------- */
+    .modelname {
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .price {
+        font-size: 1.6rem;
+        font-weight: 900;
+        color: #00f2fe;
+    }
+
+    /* ---------- BUTTONS ---------- */
+    .btn-view {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .btn-details {
+        background: rgba(0, 242, 254, 0.12);
+        color: #00f2fe;
+        border: 1px solid rgba(0, 242, 254, 0.45);
+        font-weight: 700;
+        padding: 12px;
+        border-radius: 10px;
+        backdrop-filter: blur(6px);
+        transition: 0.25s ease;
+    }
+
+        .btn-details:hover {
+            background: rgba(0, 242, 254, 0.25);
+            box-shadow: 0 0 18px rgba(0, 242, 254, 0.6);
+            transform: translateY(-1px);
+            color: #00f2fe;
+        }
+
+    .btn-buy {
+        background: linear-gradient(90deg, #00f2fe, #4facfe);
+        color: #0b0f19;
+        font-weight: 900;
+        padding: 12px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+        transition: 0.25s;
+    }
+
+        .btn-buy:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 35px rgba(0, 242, 254, 0.8);
+        }
+
+    /* ---------- ADMIN ---------- */
+    .admin-actions {
+        background: transparent;
+        border-top: 1px solid rgba(255,255,255,0.05);
+        display: flex;
+        gap: 10px;
+        padding: 16px;
+    }
+
+    .btn-admin-edit {
+        flex: 1;
+        border: 1px solid rgba(0, 242, 254, 0.4);
+        background: transparent;
+        color: #00f2fe;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .btn-admin-delete {
+        flex: 1;
+        border: 1px solid rgba(255, 77, 77, 0.6);
+        background: transparent;
+        color: #ff4d4d;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .btn-add-product {
+        background: linear-gradient(90deg, #00f2fe, #4facfe);
+        color: #0b0f19;
+        padding: 10px 26px;
+        border-radius: 50px;
+        font-weight: 900;
+        box-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
     }
 </style>

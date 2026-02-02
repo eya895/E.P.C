@@ -1,83 +1,224 @@
 ﻿@page
 @model LoginModel
-
 @{
     ViewData["Title"] = "Log in";
 }
 
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
-                </div>
+<div class="epc-login-page">
+    <div class="login-card">
+        <div class="login-header">
+            <i class="bi bi-cpu brand-icon"></i>
+            <h2 class="login-title">Welcome Back</h2>
+            <p class="login-subtitle">Secure Access to E.P.C</p>
+        </div>
+
+        <form id="account" method="post">
+            <div asp-validation-summary="ModelOnly" class="error-msg"></div>
+
+            <div class="input-field">
+                <label asp-for="Input.Email">Email</label>
+                <input asp-for="Input.Email" placeholder="e.g. build@pc.com" autocomplete="username" />
+                <span asp-validation-for="Input.Email" class="val-text"></span>
+            </div>
+
+            <div class="input-field">
+                <label asp-for="Input.Password">Password</label>
+                <input asp-for="Input.Password" type="password" placeholder="••••••••" autocomplete="current-password" />
+                <span asp-validation-for="Input.Password" class="val-text"></span>
+            </div>
+
+            <div class="login-options">
+                <label class="custom-checkbox">
+                    <input asp-for="Input.RememberMe" />
+                    <span class="checkmark"></span>
+                    Remember Me
+                </label>
+                <a asp-page="./ForgotPassword" class="forgot-link">Forgot?</a>
+            </div>
+
+            <button type="submit" class="submit-btn">LOG IN</button>
+        </form>
+
+        @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+        {
+            <div class="divider">OR</div>
+            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                @foreach (var provider in Model.ExternalLogins!)
+                {
+                    <button type="submit" name="provider" value="@provider.Name" class="google-btn">
+                        Continue with @provider.DisplayName
+                    </button>
+                }
             </form>
-        </section>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
+        }
+
+        <p class="footer-text">
+            New here? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Create Account</a>
+        </p>
     </div>
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+<partial name="_ValidationScriptsPartial" />
+ }
+
+<style>
+    /* הגדרות בסיס למניעת גלילה */
+    html, body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #0b0f19; /* צבע כהה אחיד למקרה שהרקע לא נטען */
+    }
+
+    .epc-login-page {
+        height: calc(100vh - 60px); /* מוריד את גובה ה-Navbar */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at center, #1a2235 0%, #0b0f19 100%);
+        color: white;
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .login-card {
+        background: rgba(22, 30, 46, 0.95);
+        border: 1px solid rgba(0, 242, 254, 0.2);
+        border-radius: 16px;
+        padding: 2rem;
+        width: 100%;
+        max-width: 380px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        text-align: center;
+    }
+
+    .brand-icon {
+        font-size: 2rem;
+        color: #00f2fe;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .login-title {
+        font-size: 1.5rem;
+        margin: 0;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+
+    .login-subtitle {
+        color: #64748b;
+        font-size: 0.85rem;
+        margin-bottom: 1.5rem;
+    }
+
+    /* עיצוב שדות קלט פשוט וחד */
+    .input-field {
+        text-align: left;
+        margin-bottom: 1rem;
+    }
+
+        .input-field label {
+            display: block;
+            font-size: 0.75rem;
+            color: #00f2fe;
+            margin-bottom: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .input-field input {
+            width: 100%;
+            background: rgba(10, 15, 26, 0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+            .input-field input:focus {
+                border-color: #00f2fe;
+                box-shadow: 0 0 8px rgba(0, 242, 254, 0.2);
+            }
+
+    /* אפשרויות וכפתור */
+    .login-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        font-size: 0.8rem;
+    }
+
+    .forgot-link {
+        color: #00f2fe;
+        text-decoration: none;
+    }
+
+    .submit-btn {
+        width: 100%;
+        background: linear-gradient(90deg, #00f2fe, #4facfe);
+        color: #0b0f19;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+    .divider {
+        margin: 1rem 0;
+        color: #475569;
+        font-size: 0.7rem;
+        position: relative;
+    }
+
+    .google-btn {
+        width: 100%;
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.1);
+        color: white;
+        padding: 8px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        cursor: pointer;
+    }
+
+    .footer-text {
+        margin-top: 1.5rem;
+        font-size: 0.85rem;
+        color: #64748b;
+    }
+
+        .footer-text a {
+            color: #00f2fe;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+    /* הסתרת כותרות ופוטר מה-Layout הכללי למקרה שהם מפריעים */
+    footer, .container footer {
+        display: none !important;
+    }
+
+    .val-text {
+        color: #ff4d4d;
+        font-size: 0.7rem;
+        display: block;
+        margin-top: 2px;
+    }
+
+    .error-msg {
+        color: #ff4d4d;
+        font-size: 0.8rem;
+        margin-bottom: 10px;
+    }
+</style>
