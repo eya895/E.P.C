@@ -1,40 +1,41 @@
-﻿<div class="container py-5">
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+    ViewData["FullWidth"] = true;
+}
+
+<div class="container py-5">
     <div class="text-center mb-5">
         <h1 class="display-4 fw-bold dashboard-title">Admin Dashboard</h1>
-        <p class="text-muted text-uppercase ls-2">Store Management & Analytics</p>
+        <p class="ls-2 text-uppercase">Store Management & Analytics</p>
     </div>
 
     <div class="row g-4 justify-content-center">
         <!-- Manage Products Card -->
         <div class="col-md-5">
-            <a asp-controller="Products" asp-action="Index" class="card admin-card h-100 shadow-sm border-0">
+            <a asp-controller="Products" asp-action="Index" class="admin-card h-100">
                 <div class="card-image-wrapper">
-                    <!-- תמונה לבחירתך עבור מוצרים -->
-                    <img src="~/Images/E.P.C.comps.jpg" class="admin-img"  alt="Products">
+                    <img src="~/Images/E.P.C.comps.jpg" class="admin-img" alt="Products">
                     <div class="overlay"></div>
                 </div>
                 <div class="card-body text-center p-4">
-                    <div class="mb-3"></div>
-                    <h3 class="fw-bold">Manage Products</h3>
-                    <p class="text-muted">Edit prices, add stock, and update your product catalog.</p>
-                    <span class="btn btn-primary rounded-pill px-4">Enter Manager</span>
+                    <h3>Manage Products</h3>
+                    <p>Update your product catalog</p>
+                    <span class="admin-btn">Enter Manager</span>
                 </div>
             </a>
         </div>
 
         <!-- All Carts Card -->
         <div class="col-md-5">
-            <a asp-controller="AdminCarts" asp-action="Index" class="card admin-card h-100 shadow-sm border-0">
+            <a asp-controller="AdminCarts" asp-action="Index" class="admin-card h-100">
                 <div class="card-image-wrapper">
-                    <!-- תמונה של עגלה/מכירות -->
                     <img src="~/Images/E.P.C.cart.jpg" class="admin-img" alt="Carts">
                     <div class="overlay"></div>
                 </div>
                 <div class="card-body text-center p-4">
-                    <div class="mb-3"></div>
-                    <h3 class="fw-bold">All Carts</h3>
-                    <p class="text-muted">Monitor active customer carts and analyze sales trends.</p>
-                    <span class="btn btn-success rounded-pill px-4">View All Carts</span>
+                    <h3>All Carts</h3>
+                    <p>Monitor all customer carts</p>
+                    <span class="admin-btn">View All Carts</span>
                 </div>
             </a>
         </div>
@@ -42,41 +43,57 @@
 </div>
 
 <style>
+    /* ---------- ADMIN DASHBOARD (NEON STYLE) ---------- */
+
     :root {
-        --admin-primary: #4361ee;
-        --admin-success: #2ec4b6;
+        --neon-main: #00f2fe;
+        --neon-alt: #4facfe;
+        --bg-dark: #0b0f19;
+        --bg-card: rgba(22, 30, 46, 0.95);
+        --text-muted-neon: #64748b;
     }
 
     body {
-        background-color: #f8f9fa;
+        background: radial-gradient(circle at center, #1a2235 0%, #0b0f19 100%);
+        color: white;
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
+    /* TITLES */
     .dashboard-title {
-        color: #2b2d42;
-        letter-spacing: -1px;
+        color: white;
+        letter-spacing: 0.5px;
+        text-shadow: 0 0 12px rgba(0, 242, 254, 0.35);
     }
 
     .ls-2 {
-        letter-spacing: 2px;
-        font-size: 0.8rem;
+        letter-spacing: 1.5px;
+        font-size: 1.25rem;
+        color: lightgray;
+        text-shadow: 0 0 12px rgba(0, 242, 254, 0.50);
     }
 
-    /* Card Styling */
+    /* ---------- CARDS ---------- */
+
     .admin-card {
-        text-decoration: none;
-        color: inherit;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: var(--bg-card);
         border-radius: 20px;
+        border: 1px solid rgba(0, 242, 254, 0.25);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        text-decoration: none;
+        color: white;
         overflow: hidden;
+        transition: 0.35s ease;
+        display: block;
     }
 
         .admin-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.12) !important;
-            color: inherit;
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 0 40px rgba(0, 242, 254, 0.6);
+            color: white;
         }
 
-    /* Image Styling */
+    /* IMAGE */
     .card-image-wrapper {
         position: relative;
         height: 200px;
@@ -87,6 +104,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+        filter: brightness(0.8);
         transition: transform 0.6s ease;
     }
 
@@ -94,48 +112,42 @@
         transform: scale(1.1);
     }
 
+    /* IMAGE OVERLAY */
     .overlay {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.4));
+        inset: 0;
+        background: linear-gradient( to bottom, rgba(11,15,25,0.2), rgba(11,15,25,0.85) );
     }
 
-    /* Icon Styling */
-    .icon-circle {
-        width: 60px;
-        height: 60px;
-        background: rgba(67, 97, 238, 0.1);
-        color: var(--admin-primary);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        margin: -50px auto 15px; /* Pulls icon up over the image */
-        position: relative;
-        font-size: 1.5rem;
-        border: 4px solid white;
-    }
-
-    .icon-success {
-        background: rgba(46, 196, 182, 0.1);
-        color: var(--admin-success);
-    }
-
+    /* CARD BODY */
     .card-body h3 {
-        color: #2b2d42;
-        margin-bottom: 10px;
+        font-weight: 800;
+        margin-bottom: 0.6rem;
     }
 
-    .btn-primary {
-        background-color: var(--admin-primary);
-        border: none;
+    .card-body p {
+        color: var(--text-muted-neon);
+        font-size: 0.9rem;
     }
 
-    .btn-success {
-        background-color: var(--admin-success);
-        border: none;
+    /* ---------- NEON BUTTON ---------- */
+
+    .admin-btn {
+        display: inline-block;
+        margin-top: 1rem;
+        padding: 10px 30px;
+        border-radius: 50px;
+        background: linear-gradient(90deg, var(--neon-main), var(--neon-alt));
+        color: #0b0f19;
+        font-weight: 900;
+        text-decoration: none;
+        box-shadow: 0 0 25px rgba(0, 242, 254, 0.45);
+        transition: 0.25s ease;
     }
+
+        .admin-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 0 40px rgba(0, 242, 254, 0.8);
+            color: #0b0f19;
+        }
 </style>

@@ -4,55 +4,146 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<div class="create-page">
+    <h1 class="create-title">Add a New Product</h1>
 
-<li class="nav-item">
-    <a class=" eyal btn btn-close-white" asp-area="" asp-controller="GPUs" asp-action="Create">Add GPU</a>
-</li>
-<li class="nav-item">
-    <a class="eyal btn btn-close-white" asp-area="" asp-controller="CPUs" asp-action="Create">Add CPU</a>
-</li>
-<li class="nav-item">
-    <a class="eyal btn btn-close-white" asp-area="" asp-controller="PSUs" asp-action="Create">Add PSU</a>
-</li>
-<li class="nav-item">
-    <a class="eyal btn btn-close-white" asp-area="" asp-controller="AIOs" asp-action="Create">Add AIO</a>
-</li>
-<li class="nav-item">
-    <a class="eyal btn btn-close-white" asp-area="" asp-controller="RAMs" asp-action="Create">Add RAM</a>
-</li>
-<li class="nav-item">
-    <a class="eyal btn btn-close-white" asp-area="" asp-controller="Cases" asp-action="Create">Add Case</a>
-</li>
-<li class="nav-item">
-    <a class="eyal btn btn-close-white" asp-area="" asp-controller="CPUFans" asp-action="Create">Add CPU Fan</a>
-</li>
-<li class="nav-item">
-    <a class="eyal btn btn-close-white" asp-area="" asp-controller="Fans" asp-action="Create">Add Fan</a>
-</li>
-<li class="nav-item">
-    <a class="eyal btn btn-close-white" asp-area="" asp-controller="MotherBoards" asp-action="Create">Add Mother-Board</a>
-</li>
-<li class="nav-item">
-    <a class="eyal btn btn-close-white" asp-area="" asp-controller="Storages" asp-action="Create">Add Storage</a>
-</li>
+    <div class="circle-grid">
+        <a class="circle" asp-controller="GPUs" asp-action="Create">
+            <span>GPU</span>
+        </a>
 
-<div>
-    <a class="btn btn-primary" asp-action="Index">Back to List</a>
+        <a class="circle" asp-controller="CPUs" asp-action="Create">
+            <span>CPU</span>
+        </a>
+
+        <a class="circle" asp-controller="PSUs" asp-action="Create">
+            <span>PSU</span>
+        </a>
+
+        <a class="circle" asp-controller="AIOs" asp-action="Create">
+            <span>AIO</span>
+        </a>
+
+        <a class="circle" asp-controller="RAMs" asp-action="Create">
+            <span>RAM</span>
+        </a>
+
+        <a class="circle" asp-controller="Cases" asp-action="Create">
+            <span>CASE</span>
+        </a>
+
+        <a class="circle" asp-controller="CPUFans" asp-action="Create">
+            <span>CPU FAN</span>
+        </a>
+
+        <a class="circle" asp-controller="Fans" asp-action="Create">
+            <span>FAN</span>
+        </a>
+
+        <a class="circle" asp-controller="MotherBoards" asp-action="Create">
+            <span>MOTHERBOARD</span>
+        </a>
+
+        <a class="circle" asp-controller="Storages" asp-action="Create">
+            <span>STORAGE</span>
+        </a>
+    </div>
+
+    <div class="back-btn">
+        <a class="btn neon-back" asp-action="Index">Back to List</a>
+    </div>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
- <style>
+<style>
+    .create-page {
+        min-height: calc(100vh - 90px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+        background: radial-gradient(circle at center, #1a2235 0%, #0b0f19 100%);
+        color: white;
+        padding: 40px 20px;
+    }
 
-       .eyal {
-            margin: 5px;
-            background-color: gold;
-        border: dashed black 2px;
+    .create-title {
+        font-size: 2.5rem;
+        letter-spacing: 2px;
+        text-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
     }
-       .eyal:hover {
-            background-color: goldenrod;
-            border: dashed black 2px;
+
+    .circle-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 25px;
+        width: 100%;
+        max-width: 1100px;
     }
- </style>
+
+    .circle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        text-decoration: none;
+        color: white;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 0 20px rgba(0, 242, 254, 0.45);
+        background: radial-gradient(circle at center, rgba(0, 242, 254, 0.25), rgba(79, 172, 254, 0.1));
+        border: 2px solid rgba(0, 242, 254, 0.4);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+        .circle:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 0 35px rgba(0, 242, 254, 0.8);
+            border-color: rgba(0, 242, 254, 0.9);
+        }
+
+    .back-btn {
+        margin-top: 20px;
+    }
+
+    .neon-back {
+        background: linear-gradient(90deg, #00f2fe, #4facfe);
+        color: #0b0f19;
+        font-weight: 900;
+        border-radius: 50px;
+        padding: 12px 28px;
+        box-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
+        text-decoration: none;
+    }
+
+        .neon-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(0, 242, 254, 0.8);
+        }
+
+    @@media (max-width: 1200px) {
+        .circle-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    @@media (max-width: 900px) {
+        .circle-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @@media (max-width: 650px) {
+        .circle-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .circle {
+            width: 140px;
+            height: 140px;
+        }
+    }
+</style>

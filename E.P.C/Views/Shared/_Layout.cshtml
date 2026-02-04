@@ -9,6 +9,20 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
     <style>
+        /* REMOVE DEFAULT BODY MARGIN + SET DARK BACKGROUND */
+        body {
+            margin: 0;
+            background: #0b0f19; /* DARK BACKGROUND */
+            color: white;
+        }
+
+        /* FULL WIDTH PAGE FIX */
+        .full-width-page {
+            width: 100vw;
+            padding: 0;
+            margin: 0;
+        }
+
         /* ---------- NAVBAR (EPC DARK NEON STYLE) ---------- */
         .navbar-glass {
             background: rgba(11, 15, 25, 0.95) !important;
@@ -38,27 +52,6 @@
                 color: #00f2fe !important;
                 text-shadow: 0 0 8px rgba(0, 242, 254, 0.6);
                 transform: translateY(-1px);
-            }
-
-        /* ---------- DROPDOWN ---------- */
-        .dropdown-menu {
-            background: rgba(22, 30, 46, 0.98);
-            border: 1px solid rgba(0, 242, 254, 0.25);
-            border-radius: 12px;
-            padding: 10px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        }
-
-        .dropdown-item {
-            color: #cbd5f5;
-            border-radius: 8px;
-            padding: 8px 12px;
-            transition: 0.2s;
-        }
-
-            .dropdown-item:hover {
-                background: rgba(0, 242, 254, 0.15);
-                color: #00f2fe;
             }
 
         /* ---------- CART BUTTON ---------- */
@@ -108,7 +101,6 @@
                 box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
                 color: white;
             }
-
     </style>
 </head>
 
@@ -130,17 +122,10 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-
             <div class="collapse navbar-collapse" id="navMenu">
 
                 <!-- LEFT SIDE -->
                 <ul class="navbar-nav me-auto">
-
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="Index">
-                            Home
-                        </a>
-                    </li>
 
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="Home" asp-action="Privacy">
@@ -148,34 +133,14 @@
                         </a>
                     </li>
 
-                    <!-- PRODUCTS DROPDOWN -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" role="button"
-                           data-bs-toggle="dropdown">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Products" asp-action="Index">
                             Products
                         </a>
-
-                        <ul class="dropdown-menu">
-
-                            <li><a class="dropdown-item" asp-controller="Products" asp-action="Index">All Products</a></li>
-                            <li><hr class="dropdown-divider"></li>
-
-                            <li><a class="dropdown-item" asp-controller="AIOs" asp-action="Index">AIOs</a></li>
-                            <li><a class="dropdown-item" asp-controller="Cases" asp-action="Index">PC Cases</a></li>
-                            <li><a class="dropdown-item" asp-controller="CPUs" asp-action="Index">CPUs</a></li>
-                            <li><a class="dropdown-item" asp-controller="CPUFans" asp-action="Index">CPU Coolers</a></li>
-                            <li><a class="dropdown-item" asp-controller="Fans" asp-action="Index">Case Fans</a></li>
-                            <li><a class="dropdown-item" asp-controller="GPUs" asp-action="Index">GPUs</a></li>
-                            <li><a class="dropdown-item" asp-controller="MotherBoards" asp-action="Index">Motherboards</a></li>
-                            <li><a class="dropdown-item" asp-controller="PSUs" asp-action="Index">PSUs</a></li>
-                            <li><a class="dropdown-item" asp-controller="RAMs" asp-action="Index">RAM Kits</a></li>
-                            <li><a class="dropdown-item" asp-controller="Storages" asp-action="Index">Storage Units</a></li>
-
-                        </ul>
                     </li>
 
                     <!-- CART -->
-                    @if (!User.IsInRole("Admin"))
+                    @if (User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
                     {
                         <li class="nav-item ms-2">
                             <a class="nav-link cart-btn text-white"
@@ -186,7 +151,6 @@
                     }
 
                 </ul>
-
 
                 <!-- RIGHT SIDE (SEARCH + AUTH) -->
                 <ul class="navbar-nav ms-auto">
@@ -212,7 +176,6 @@
                                 Register
                             </a>
                         </li>
-
                     }
                     else
                     {
@@ -230,11 +193,12 @@
         </div>
     </nav>
 
-
     <!-- ---------- MAIN CONTENT ---------- -->
     @if (ViewData["FullWidth"] as bool? == true)
     {
-        @RenderBody()
+        <div class="full-width-page">
+            @RenderBody()
+        </div>
     }
     else
     {
@@ -244,7 +208,6 @@
             </main>
         </div>
     }
-
 
     <!-- JS -->
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

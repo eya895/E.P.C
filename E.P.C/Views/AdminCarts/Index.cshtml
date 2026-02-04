@@ -1,35 +1,193 @@
 ﻿@model IEnumerable<E.P.C.Models.ShoppingCart>
 
-<h2>All Shopping Carts</h2>
+@{
+    ViewData["Title"] = "All Shopping Carts";
+    ViewData["FullWidth"] = true;
+}
 
-<table class="table">
-    <tr>
-        <th>User</th>
-        <th>Created</th>
-        <th>Status</th>
-        <th>Total</th>
-        <th></th>
-    </tr>
+<div class="epc-hero">
+    <div class="carts-card">
 
-    @foreach (var cart in Model)
-    {
-        <tr>
-            <td>@cart.User.Email</td>
-            <td>@cart.CreatedAt</td>
-            <td>
-                @if (cart.IsCheckedOut)
-                {
-                    <span class="badge bg-success">Checked Out</span>
-                }
-                else
-                {
-                    <span class="badge bg-warning text-dark">Active</span>
-                }
-            </td>
-            <td>@cart.TotalPrice</td>
-            <td>
-                <a asp-action="Details" asp-route-id="@cart.Id">View</a>
-            </td>
-        </tr>
+        <h2 class="carts-title">All Shopping Carts</h2>
+
+        <div class="table-wrapper">
+            <table class="carts-table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Created</th>
+                        <th>Status</th>
+                        <th>Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cart in Model)
+                    {
+                        <tr>
+                            <td>@cart.User.Email</td>
+                            <td>@cart.CreatedAt</td>
+                            <td>
+                                @if (cart.IsCheckedOut)
+                                {
+                                    <span class="status-checked">Checked Out</span>
+                                }
+                                else
+                                {
+                                    <span class="status-active">Active</span>
+                                }
+                            </td>
+                            <td>@cart.TotalPrice</td>
+                            <td>
+                                <a asp-action="Details"
+                                   asp-route-id="@cart.Id"
+                                   class="view-link">
+                                    View Cart   
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="carts-footer">
+            <a asp-controller="Admin"
+               asp-action="Index"
+               class="neon-btn">
+                Back To Dashboard
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    /* ---------- HARD RESET ---------- */
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+        background: #0b0f19;
     }
-</table>
+
+    /* ---------- HERO ---------- */
+    .epc-hero {
+        height: calc(100vh - 90px);
+        overflow: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at center, #1a2235 0%, #0b0f19 100%);
+        color: white;
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        scrollbar-gutter: stable both-edges;
+    }
+
+    /* ---------- CART CARD ---------- */
+    .carts-card {
+        background: rgba(22, 30, 46, 0.95);
+        border: 1px solid rgba(0, 242, 254, 0.25);
+        border-radius: 20px;
+        padding: 2.5rem;
+        max-width: 1000px;
+        width: 100%;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    }
+
+    .carts-title {
+        text-align: center;
+        font-weight: 800;
+        margin-bottom: 2rem;
+        text-shadow: 0 0 12px rgba(0, 242, 254, 0.35);
+    }
+
+    /* ---------- TABLE ---------- */
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    .carts-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .carts-table th,
+        .carts-table td {
+            padding: 14px 12px;
+            text-align: left;
+        }
+
+        .carts-table thead {
+            background: rgba(0, 242, 254, 0.08);
+        }
+
+        .carts-table th {
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #7dd3fc;
+        }
+
+        .carts-table tbody tr {
+            border-bottom: 1px solid rgba(0, 242, 254, 0.12);
+        }
+
+            .carts-table tbody tr:hover {
+                background: rgba(0, 242, 254, 0.05);
+            }
+
+        .carts-table td {
+            color: #e5e7eb;
+            font-size: 0.95rem;
+        }
+
+    /* ---------- STATUS ---------- */
+    .status-active {
+        color: #00f2fe;
+        font-weight: 700;
+    }
+
+    .status-checked {
+        color: #4facfe;
+        font-weight: 700;
+    }
+
+    /* ---------- VIEW LINK ---------- */
+    .view-link {
+        color: #00f2fe;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+        .view-link:hover {
+            text-decoration: underline;
+            color: #4facfe;
+        }
+
+    /* ---------- FOOTER ---------- */
+    .carts-footer {
+        margin-top: 2rem;
+        text-align: center;
+    }
+
+    /* ---------- NEON BUTTON ---------- */
+    .neon-btn {
+        display: inline-block;
+        padding: 12px 32px;
+        border-radius: 50px;
+        background: linear-gradient(90deg, #00f2fe, #4facfe);
+        color: #0b0f19;
+        font-weight: 900;
+        text-decoration: none;
+        box-shadow: 0 0 25px rgba(0, 242, 254, 0.45);
+        transition: 0.25s ease;
+    }
+
+        .neon-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 0 40px rgba(0, 242, 254, 0.8);
+            color: #0b0f19;
+        }
+</style>

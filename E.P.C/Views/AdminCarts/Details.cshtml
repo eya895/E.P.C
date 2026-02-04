@@ -1,30 +1,189 @@
 ﻿@model E.P.C.Models.ShoppingCart
 
-<h2>Cart Details</h2>
+@{
+    ViewData["Title"] = "Cart Details";
+    ViewData["FullWidth"] = true;
+}
 
-<p><strong>User:</strong> @Model.User.Email</p>
-<p><strong>Status:</strong> @(Model.IsCheckedOut ? "Checked Out" : "Active")</p>
-<p><strong>Created:</strong> @Model.CreatedAt</p>
-<p><strong>Checked Out At:</strong> @Model.CheckedOutAt</p>
+<div class="epc-hero">
+    <div class="cart-card">
 
-<table class="table">
-    <tr>
-        <th>Product</th>
-        <th>Price</th>
-        <th>Qty</th>
-        <th>Total</th>
-    </tr>
+        <h2 class="cart-title">Cart Details</h2>
 
-    @foreach (var item in Model.Items)
-    {
-        <tr>
-            <td>@item.Product.Description</td>
-            <td>@item.Product.Price</td>
-            <td>@item.Quantity</td>
-            <td>@(item.Product.Price * item.Quantity)</td>
-        </tr>
+        <div class="cart-meta">
+            <p><strong>User:</strong> @Model.User.Email</p>
+            <p>
+                <strong>Status:</strong>
+                <span class="@(Model.IsCheckedOut ? "status-checked" : "status-active")">
+                    @(Model.IsCheckedOut ? "Checked Out" : "Active")
+                </span>
+            </p>
+            <p><strong>Created:</strong> @Model.CreatedAt</p>
+
+            @if (Model.IsCheckedOut)
+            {
+                <p><strong>Checked Out At:</strong> @Model.CheckedOutAt</p>
+            }
+        </div>
+
+        <div class="table-wrapper">
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Qty</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>@item.Product.Description</td>
+                            <td>@item.Product.Price</td>
+                            <td>@item.Quantity</td>
+                            <td>@(item.Product.Price * item.Quantity)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="cart-footer">
+            <h4 class="cart-total">Total: @Model.TotalPrice</h4>
+
+            <a asp-action="Index" class="neon-btn">Back To List</a>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    /* ---------- SHARED NEON BASE ---------- */
+
+    .epc-hero {
+        min-height: calc(100vh - 90px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at center, #1a2235 0%, #0b0f19 100%);
+        color: white;
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
-</table>
 
-<h4>Total: @Model.TotalPrice</h4>
+    /* ---------- CART CARD ---------- */
 
+    .cart-card {
+        background: rgba(22, 30, 46, 0.95);
+        border: 1px solid rgba(0, 242, 254, 0.25);
+        border-radius: 20px;
+        padding: 2.5rem;
+        max-width: 900px;
+        width: 100%;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    }
+
+    .cart-title {
+        text-align: center;
+        font-weight: 800;
+        margin-bottom: 2rem;
+        text-shadow: 0 0 12px rgba(0, 242, 254, 0.35);
+    }
+
+    /* ---------- META INFO ---------- */
+
+    .cart-meta p {
+        margin-bottom: 0.4rem;
+        color: #cbd5f5;
+    }
+
+    .status-active {
+        color: #00f2fe;
+        font-weight: 700;
+    }
+
+    .status-checked {
+        color: #4facfe;
+        font-weight: 700;
+    }
+
+    /* ---------- TABLE ---------- */
+
+    .table-wrapper {
+        margin-top: 2rem;
+        overflow-x: auto;
+    }
+
+    .cart-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .cart-table th,
+        .cart-table td {
+            padding: 14px 12px;
+            text-align: left;
+        }
+
+        .cart-table thead {
+            background: rgba(0, 242, 254, 0.08);
+        }
+
+        .cart-table th {
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #7dd3fc;
+        }
+
+        .cart-table tbody tr {
+            border-bottom: 1px solid rgba(0, 242, 254, 0.12);
+        }
+
+            .cart-table tbody tr:hover {
+                background: rgba(0, 242, 254, 0.05);
+            }
+
+        .cart-table td {
+            color: #e5e7eb;
+            font-size: 0.95rem;
+        }
+
+    /* ---------- FOOTER ---------- */
+
+    .cart-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .cart-total {
+        font-weight: 800;
+        color: #00f2fe;
+        text-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+    }
+
+    /* ---------- NEON BUTTON ---------- */
+
+    .neon-btn {
+        display: inline-block;
+        padding: 12px 32px;
+        border-radius: 50px;
+        background: linear-gradient(90deg, #00f2fe, #4facfe);
+        color: #0b0f19;
+        font-weight: 900;
+        text-decoration: none;
+        box-shadow: 0 0 25px rgba(0, 242, 254, 0.45);
+        transition: 0.25s ease;
+    }
+
+        .neon-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 0 40px rgba(0, 242, 254, 0.8);
+            color: #0b0f19;
+        }
+</style>
