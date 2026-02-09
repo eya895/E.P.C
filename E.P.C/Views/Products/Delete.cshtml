@@ -1,39 +1,274 @@
-﻿@model E.P.C.Models.Product
+﻿
+@using E.P.C.Models
+@model E.P.C.Models.Product
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete Product";
+    ViewData["FullWidth"] = true;
 }
 
-<h1>Delete</h1>
+<div class="epc-hero">
+    <div class="product-card danger">
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Product</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageUrl)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+        <div class="row g-0">
+            <!-- IMAGE -->
+            <div class="col-lg-5 product-image-section">
+                <div class="image-card">
+                    <img src="@Model.ImageUrl" alt="Product Image" class="floating-img">
+                </div>
+            </div>
+
+            <!-- CONTENT -->
+            <div class="col-lg-7 p-5">
+
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="neon-badge danger">DELETE CONFIRMATION</span>
+                    <h2 class="price-tag">₪@Model.Price.ToString("N0")</h2>
+                </div>
+
+                @{
+                    dynamic typedModel = Model;
+                    string fullName = $"{typedModel.Brand} {typedModel.Model}";
+                }
+
+                <h1 class="product-title">@fullName</h1>
+                <p class="product-description warning-text">
+                    This action is permanent. This product will be removed from the system.
+                </p>
+
+                <div class="specs-container">
+                    <h5 class="specs-title">Product Specifications</h5>
+
+                    <div class="specs-grid">
+                        @if (Model is GPU gpu)
+                        {
+                            <div class="spec-item"><span>Memory</span><strong>@gpu.MemorySize MB @gpu.MemoryType</strong></div>
+                            <div class="spec-item"><span>Core Clock</span><strong>@gpu.CoreClock MHz</strong></div>
+                            <div class="spec-item"><span>Boost Clock</span><strong>@gpu.BoostClock MHz</strong></div>
+                            <div class="spec-item"><span>TDP</span><strong>@gpu.TDP W</strong></div>
+                            <div class="spec-item"><span>Interface</span><strong>@gpu.Interface</strong></div>
+                            <div class="spec-item"><span>Dimensions</span><strong>@gpu.dimensions</strong></div>
+                            <div class="spec-item"><span>Ports</span><strong>@gpu.Ports</strong></div>
+                        }
+                        else if (Model is CPU cpu)
+                        {
+                            <div class="spec-item"><span>Cores</span><strong>@cpu.Cores</strong></div>
+                            <div class="spec-item"><span>Threads</span><strong>@cpu.Threads</strong></div>
+                            <div class="spec-item"><span>Base Clock</span><strong>@cpu.BaseClock GHz</strong></div>
+                            <div class="spec-item"><span>Boost Clock</span><strong>@cpu.BoostClock GHz</strong></div>
+                            <div class="spec-item"><span>Socket</span><strong>@cpu.SocketType</strong></div>
+                            <div class="spec-item"><span>Integrated Graphics</span><strong>@(cpu.IntegratedGraphics ? "Yes" : "No")</strong></div>
+                        }
+                        else if (Model is MotherBoard mb)
+                        {
+                            <div class="spec-item"><span>Socket</span><strong>@mb.SocketType</strong></div>
+                            <div class="spec-item"><span>Form Factor</span><strong>@mb.FormFactor</strong></div>
+                            <div class="spec-item"><span>RAM Slots</span><strong>@mb.RAMSlots</strong></div>
+                            <div class="spec-item"><span>Max RAM</span><strong>@mb.MaxRAMCapacity GB</strong></div>
+                        }
+                        else if (Model is RAM ram)
+                        {
+                            <div class="spec-item"><span>Capacity</span><strong>@ram.Capacity GB</strong></div>
+                            <div class="spec-item"><span>Speed</span><strong>@ram.Speed MHz</strong></div>
+                            <div class="spec-item"><span>Type</span><strong>@ram.Type</strong></div>
+                            <div class="spec-item"><span>Kit</span><strong>@ram.sticks Sticks</strong></div>
+                        }
+                        else if (Model is Storage st)
+                        {
+                            <div class="spec-item"><span>Capacity</span><strong>@st.Capacity GB</strong></div>
+                            <div class="spec-item"><span>Type</span><strong>@st.Type</strong></div>
+                            <div class="spec-item"><span>Form Factor</span><strong>@st.FormFactor</strong></div>
+                            <div class="spec-item"><span>Interface</span><strong>@st.connectionInterface</strong></div>
+                        }
+                        else if (Model is PSU psu)
+                        {
+                            <div class="spec-item"><span>Wattage</span><strong>@psu.Wattage W</strong></div>
+                            <div class="spec-item"><span>Efficiency</span><strong>@psu.EfficiencyRating</strong></div>
+                            <div class="spec-item"><span>Modular</span><strong>@(psu.Modular ? "Yes" : "No")</strong></div>
+                            <div class="spec-item"><span>Form Factor</span><strong>@psu.FormFactor</strong></div>
+                            <div class="spec-item"><span>Connectors</span><strong>@psu.Connectors</strong></div>
+                        }
+                        else if (Model is Case pcCase)
+                        {
+                            <div class="spec-item"><span>Form Factor</span><strong>@pcCase.FormFactor</strong></div>
+                            <div class="spec-item"><span>Max GPU</span><strong>@pcCase.MaxGPULength mm</strong></div>
+                            <div class="spec-item"><span>Max CPU Cooler</span><strong>@pcCase.MaxCPUCoolerHeight mm</strong></div>
+                            <div class="spec-item"><span>Drive Bays</span><strong>@pcCase.DriveBays</strong></div>
+                            <div class="spec-item"><span>Fan Slots</span><strong>@pcCase.FanSlots</strong></div>
+                        }
+                        else if (Model is AIO aio)
+                        {
+                            <div class="spec-item"><span>Radiator</span><strong>@aio.RadiatorSize mm</strong></div>
+                            <div class="spec-item"><span>Pump Speed</span><strong>@aio.PumpSpeed RPM</strong></div>
+                            <div class="spec-item"><span>Fan Size</span><strong>@aio.FanSize mm</strong></div>
+                            <div class="spec-item"><span>Fan RPM</span><strong>@aio.FanRPM</strong></div>
+                            <div class="spec-item"><span>Noise</span><strong>@aio.NoiseLevel dBA</strong></div>
+                            <div class="spec-item"><span>Sockets</span><strong>@aio.SupportedSockets</strong></div>
+                        }
+                        else if (Model is CPUFan cf)
+                        {
+                            <div class="spec-item"><span>Size</span><strong>@cf.Size mm</strong></div>
+                            <div class="spec-item"><span>RPM</span><strong>@cf.RPM</strong></div>
+                            <div class="spec-item"><span>Airflow</span><strong>@cf.Airflow CFM</strong></div>
+                            <div class="spec-item"><span>Noise</span><strong>@cf.NoiseLevel dBA</strong></div>
+                            <div class="spec-item"><span>Connector</span><strong>@cf.ConnectorType</strong></div>
+                            <div class="spec-item"><span>Sockets</span><strong>@cf.SupportedSockets</strong></div>
+                        }
+                        else if (Model is Fan f)
+                        {
+                            <div class="spec-item"><span>Size</span><strong>@f.Size mm</strong></div>
+                            <div class="spec-item"><span>RPM</span><strong>@f.RPM</strong></div>
+                            <div class="spec-item"><span>Airflow</span><strong>@f.Airflow CFM</strong></div>
+                            <div class="spec-item"><span>Noise</span><strong>@f.NoiseLevel dBA</strong></div>
+                            <div class="spec-item"><span>Connector</span><strong>@f.ConnectorType</strong></div>
+                        }
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <a asp-action="Index" class="neon-outline-btn">Cancel</a>
+
+                    <form asp-action="DeleteConfirmed" method="post" class="flex-grow-1">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="neon-btn danger w-100">
+                            Delete Product
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 </div>
+
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+        background: #0b0f19;
+    }
+
+    .epc-hero {
+        height: calc(100vh - 90px);
+        overflow-y: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at center, #1a2235 0%, #0b0f19 100%);
+        color: white;
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .product-card {
+        background: rgba(22, 30, 46, 0.95);
+        border-radius: 20px;
+        max-width: 1100px;
+        width: 100%;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+        overflow: hidden;
+        border: 1px solid rgba(0, 242, 254, 0.25);
+    }
+
+        .product-card.danger {
+            border-color: rgba(255, 77, 77, 0.5);
+        }
+
+    .product-image-section {
+        padding: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .image-card {
+        background: white;
+        border-radius: 18px;
+        padding: 18px;
+        max-width: 420px;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+    }
+
+    .floating-img {
+        max-height: 420px;
+        object-fit: contain;
+    }
+
+    .neon-badge {
+        background: rgba(0, 242, 254, 0.15);
+        color: #7dd3fc;
+        padding: 6px 16px;
+        border-radius: 50px;
+        font-weight: 700;
+    }
+
+        .neon-badge.danger {
+            background: rgba(255, 77, 77, 0.15);
+            color: #ff4d4d;
+        }
+
+    .price-tag {
+        color: #00f2fe;
+        font-weight: 900;
+    }
+
+    .product-title {
+        font-weight: 900;
+        margin-bottom: 1rem;
+    }
+
+    .product-description.warning-text {
+        color: #fca5a5;
+        font-weight: 600;
+        margin-bottom: 2.5rem;
+    }
+
+    .specs-title {
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        color: #7dd3fc;
+    }
+
+    .specs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 22px 14px;
+    }
+
+    .spec-item {
+        border-left: 3px solid #00f2fe;
+        padding-left: 12px;
+    }
+
+    .actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 3rem;
+    }
+
+    .neon-btn {
+        padding: 14px 28px;
+        border-radius: 50px;
+        background: linear-gradient(90deg, #00f2fe, #4facfe);
+        color: #0b0f19;
+        font-weight: 900;
+        border: none;
+        transition: 0.25s;
+    }
+
+        .neon-btn.danger {
+            background: linear-gradient(90deg, #ff4d4d, #ff1a1a);
+            color: white;
+        }
+
+    .neon-outline-btn {
+        padding: 14px 28px;
+        border-radius: 50px;
+        border: 2px solid rgba(0, 242, 254, 0.5);
+        color: #7dd3fc;
+        font-weight: 800;
+        text-decoration: none;
+    }
+</style>

@@ -8,45 +8,75 @@
     <h1 class="create-title">Add a New Product</h1>
 
     <div class="circle-grid">
-        <a class="circle" asp-controller="GPUs" asp-action="Create">
-            <span>GPU</span>
-        </a>
+        <div class="circle-item">
+            <span class="circle-title">GPU</span>
+            <a class="circle" asp-controller="GPUs" asp-action="Create">
+                <img src="~/images/E.P.C.GPU.jpg" alt="GPU">
+            </a>
+        </div>
 
-        <a class="circle" asp-controller="CPUs" asp-action="Create">
-            <span>CPU</span>
-        </a>
+        <div class="circle-item">
+            <span class="circle-title">CPU</span>
+            <a class="circle" asp-controller="CPUs" asp-action="Create">
+                <img src="~/images/E.P.C.CPU.jpg" alt="CPU">
+            </a>
+        </div>
 
-        <a class="circle" asp-controller="PSUs" asp-action="Create">
-            <span>PSU</span>
-        </a>
+        <div class="circle-item">
+            <span class="circle-title">PSU</span>
+            <a class="circle" asp-controller="PSUs" asp-action="Create">
+                <img src="~/images/E.P.C.PSU.jpg" alt="PSU">
+            </a>
+        </div>
 
-        <a class="circle" asp-controller="AIOs" asp-action="Create">
-            <span>AIO</span>
-        </a>
+        <div class="circle-item">
+            <span class="circle-title">AIO</span>
+            <a class="circle" asp-controller="AIOs" asp-action="Create">
+                <img src="~/images/E.P.C.AIO.jpg" alt="AIO">
+            </a>
+        </div>
 
-        <a class="circle" asp-controller="RAMs" asp-action="Create">
-            <span>RAM</span>
-        </a>
+        <div class="circle-item">
+            <span class="circle-title">RAM</span>
+            <a class="circle" asp-controller="RAMs" asp-action="Create">
+                <img src="~/images/E.P.C.RAM.jpg" alt="RAM">
+            </a>
+        </div>
 
-        <a class="circle" asp-controller="Cases" asp-action="Create">
-            <span>CASE</span>
-        </a>
+        <div class="circle-item">
+            <span class="circle-title">Case</span>
+            <a class="circle" asp-controller="Cases" asp-action="Create">
+                <img src="~/images/E.P.C.Case.jpg" alt="Case">
+            </a>
+        </div>
 
-        <a class="circle" asp-controller="CPUFans" asp-action="Create">
-            <span>CPU FAN</span>
-        </a>
+        <div class="circle-item">
+            <span class="circle-title">CPU Fan</span>
+            <a class="circle" asp-controller="CPUFans" asp-action="Create">
+                <img src="~/images/E.P.C.CPUFan.jpg" alt="CPU Fan">
+            </a>
+        </div>
 
-        <a class="circle" asp-controller="Fans" asp-action="Create">
-            <span>FAN</span>
-        </a>
+        <div class="circle-item">
+            <span class="circle-title">Fan</span>
+            <a class="circle" asp-controller="Fans" asp-action="Create">
+                <img src="~/images/E.P.C.Fan.jpg" alt="Fan">
+            </a>
+        </div>
 
-        <a class="circle" asp-controller="MotherBoards" asp-action="Create">
-            <span>MOTHERBOARD</span>
-        </a>
+        <div class="circle-item">
+            <span class="circle-title">Motherboard</span>
+            <a class="circle" asp-controller="MotherBoards" asp-action="Create">
+                <img src="~/images/E.P.C.motherboard.jpg" alt="Motherboard">
+            </a>
+        </div>
 
-        <a class="circle" asp-controller="Storages" asp-action="Create">
-            <span>STORAGE</span>
-        </a>
+        <div class="circle-item">
+            <span class="circle-title">Storage</span>
+            <a class="circle" asp-controller="Storages" asp-action="Create">
+                <img src="~/images/E.P.C.storage.png" alt="Storage">
+            </a>
+        </div>
     </div>
 
     <div class="back-btn">
@@ -55,16 +85,23 @@
 </div>
 
 <style>
+    /* HARD STOP for page scrolling */
+    html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
     .create-page {
         min-height: calc(100vh - 90px);
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
         gap: 40px;
+        padding: 40px 20px;
         background: radial-gradient(circle at center, #1a2235 0%, #0b0f19 100%);
         color: white;
-        padding: 40px 20px;
     }
 
     .create-title {
@@ -79,25 +116,47 @@
         gap: 25px;
         width: 100%;
         max-width: 1100px;
+        justify-items: center;
     }
 
-    .circle {
+    .circle-item {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
+        gap: 12px;
+    }
+
+    .circle-title {
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        color: white;
+        text-shadow: 0 0 10px rgba(0, 242, 254, 0.6);
+    }
+
+    /* ORIGINAL NEON CIRCLE — UNCHANGED */
+    .circle {
         width: 160px;
         height: 160px;
         border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
         text-decoration: none;
-        color: white;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        background: radial-gradient( circle at center, rgba(0, 242, 254, 0.25), rgba(79, 172, 254, 0.1) );
         box-shadow: 0 0 20px rgba(0, 242, 254, 0.45);
-        background: radial-gradient(circle at center, rgba(0, 242, 254, 0.25), rgba(79, 172, 254, 0.1));
         border: 2px solid rgba(0, 242, 254, 0.4);
         transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        background:white;
     }
+
+        .circle img {
+            width: 90%;
+            height: 90%;
+            object-fit: cover;
+        }
 
         .circle:hover {
             transform: translateY(-6px);
@@ -106,7 +165,7 @@
         }
 
     .back-btn {
-        margin-top: 20px;
+        margin-top: 10px;
     }
 
     .neon-back {

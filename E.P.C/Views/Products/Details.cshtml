@@ -39,85 +39,85 @@
                     <div class="specs-grid">
                         @if (Model is GPU gpu)
                         {
-                            <div class="spec-item"><span>Memory</span><strong>@gpu.MemorySize MB @gpu.MemoryType</strong></div>
-                            <div class="spec-item"><span>Core Clock</span><strong>@gpu.CoreClock MHz</strong></div>
-                            <div class="spec-item"><span>Boost Clock</span><strong>@gpu.BoostClock MHz</strong></div>
-                            <div class="spec-item"><span>TDP</span><strong>@gpu.TDP W</strong></div>
-                            <div class="spec-item"><span>Interface</span><strong>@gpu.Interface</strong></div>
-                            <div class="spec-item"><span>Dimensions</span><strong>@gpu.dimensions</strong></div>
-                            <div class="spec-item"><span>Ports</span><strong>@gpu.Ports</strong></div>
+                            <div class="spec-item"><span>Memory </span><strong>@gpu.MemorySize MB @gpu.MemoryType</strong></div>
+                            <div class="spec-item"><span>Core Clock </span><strong>@gpu.CoreClock MHz</strong></div>
+                            <div class="spec-item"><span>Boost Clock </span><strong>@gpu.BoostClock MHz</strong></div>
+                            <div class="spec-item"><span>TDP </span><strong>@gpu.TDP W</strong></div>
+                            <div class="spec-item"><span>Interface </span><strong>@gpu.Interface</strong></div>
+                            <div class="spec-item"><span>Dimensions </span><strong>@gpu.dimensions</strong></div>
+                            <div class="spec-item"><span>Ports </span><strong>@gpu.Ports</strong></div>
                         }
                         else if (Model is CPU cpu)
                         {
-                            <div class="spec-item"><span>Cores</span><strong>@cpu.Cores</strong></div>
-                            <div class="spec-item"><span>Threads</span><strong>@cpu.Threads</strong></div>
-                            <div class="spec-item"><span>Base Clock</span><strong>@cpu.BaseClock GHz</strong></div>
-                            <div class="spec-item"><span>Boost Clock</span><strong>@cpu.BoostClock GHz</strong></div>
-                            <div class="spec-item"><span>Socket</span><strong>@cpu.SocketType</strong></div>
-                            <div class="spec-item"><span>Integrated Graphics</span><strong>@(cpu.IntegratedGraphics ? "Yes" : "No")</strong></div>
+                            <div class="spec-item"><span>Cores </span><strong>@cpu.Cores</strong></div>
+                            <div class="spec-item"><span>Threads </span><strong>@cpu.Threads</strong></div>
+                            <div class="spec-item"><span>Base Clock </span><strong>@cpu.BaseClock GHz</strong></div>
+                            <div class="spec-item"><span>Boost Clock </span><strong>@cpu.BoostClock GHz</strong></div>
+                            <div class="spec-item"><span>Socket </span><strong>@cpu.SocketType</strong></div>
+                            <div class="spec-item"><span>Integrated Graphics </span><strong>@(cpu.IntegratedGraphics ? "Yes" : "No")</strong></div>
                         }
                         else if (Model is MotherBoard mb)
                         {
-                            <div class="spec-item"><span>Socket</span><strong>@mb.SocketType</strong></div>
-                            <div class="spec-item"><span>Form Factor</span><strong>@mb.FormFactor</strong></div>
-                            <div class="spec-item"><span>RAM Slots</span><strong>@mb.RAMSlots</strong></div>
-                            <div class="spec-item"><span>Max RAM</span><strong>@mb.MaxRAMCapacity GB</strong></div>
+                            <div class="spec-item"><span>Socket </span><strong>@mb.SocketType</strong></div>
+                            <div class="spec-item"><span>Form Factor </span><strong>@mb.FormFactor</strong></div>
+                            <div class="spec-item"><span>RAM Slots </span><strong>@mb.RAMSlots</strong></div>
+                            <div class="spec-item"><span>Max RAM </span><strong>@mb.MaxRAMCapacity GB</strong></div>
                         }
                         else if (Model is RAM ram)
                         {
-                            <div class="spec-item"><span>Capacity</span><strong>@ram.Capacity GB</strong></div>
-                            <div class="spec-item"><span>Speed</span><strong>@ram.Speed MHz</strong></div>
-                            <div class="spec-item"><span>Type</span><strong>@ram.Type</strong></div>
-                            <div class="spec-item"><span>Kit</span><strong>@ram.sticks Sticks</strong></div>
+                            <div class="spec-item"><span>Capacity </span><strong>@ram.Capacity GB</strong></div>
+                            <div class="spec-item"><span>Speed </span><strong>@ram.Speed MHz</strong></div>
+                            <div class="spec-item"><span>Type </span><strong>@ram.Type</strong></div>
+                            <div class="spec-item"><span>Kit </span><strong>@ram.sticks Sticks</strong></div>
                         }
                         else if (Model is Storage st)
                         {
-                            <div class="spec-item"><span>Capacity</span><strong>@st.Capacity GB</strong></div>
-                            <div class="spec-item"><span>Type</span><strong>@st.Type</strong></div>
-                            <div class="spec-item"><span>Form Factor</span><strong>@st.FormFactor</strong></div>
-                            <div class="spec-item"><span>Interface</span><strong>@st.connectionInterface</strong></div>
+                            <div class="spec-item"><span>Capacity </span><strong>@st.Capacity GB</strong></div>
+                            <div class="spec-item"><span>Type </span><strong>@st.Type</strong></div>
+                            <div class="spec-item"><span>Form Factor </span><strong>@st.FormFactor</strong></div>
+                            <div class="spec-item"><span>Interface </span><strong>@st.connectionInterface</strong></div>
                         }
                         else if (Model is PSU psu)
                         {
-                            <div class="spec-item"><span>Wattage</span><strong>@psu.Wattage W</strong></div>
-                            <div class="spec-item"><span>Efficiency</span><strong>@psu.EfficiencyRating</strong></div>
-                            <div class="spec-item"><span>Modular</span><strong>@(psu.Modular ? "Yes" : "No")</strong></div>
-                            <div class="spec-item"><span>Form Factor</span><strong>@psu.FormFactor</strong></div>
-                            <div class="spec-item"><span>Connectors</span><strong>@psu.Connectors</strong></div>
+                            <div class="spec-item"><span>Wattage </span><strong>@psu.Wattage W</strong></div>
+                            <div class="spec-item"><span>Efficiency </span><strong>@psu.EfficiencyRating</strong></div>
+                            <div class="spec-item"><span>Modular </span><strong>@(psu.Modular ? "Yes" : "No")</strong></div>
+                            <div class="spec-item"><span>Form Factor </span><strong>@psu.FormFactor</strong></div>
+                            <div class="spec-item"><span>Connectors </span><strong>@psu.Connectors</strong></div>
                         }
                         else if (Model is Case pcCase)
                         {
-                            <div class="spec-item"><span>Form Factor</span><strong>@pcCase.FormFactor</strong></div>
-                            <div class="spec-item"><span>Max GPU</span><strong>@pcCase.MaxGPULength mm</strong></div>
-                            <div class="spec-item"><span>Max CPU Cooler</span><strong>@pcCase.MaxCPUCoolerHeight mm</strong></div>
-                            <div class="spec-item"><span>Drive Bays</span><strong>@pcCase.DriveBays</strong></div>
-                            <div class="spec-item"><span>Fan Slots</span><strong>@pcCase.FanSlots</strong></div>
+                            <div class="spec-item"><span>Form Factor </span><strong>@pcCase.FormFactor</strong></div>
+                            <div class="spec-item"><span>Max GPU </span><strong>@pcCase.MaxGPULength mm</strong></div>
+                            <div class="spec-item"><span>Max CPU Cooler </span><strong>@pcCase.MaxCPUCoolerHeight mm</strong></div>
+                            <div class="spec-item"><span>Drive Bays </span><strong>@pcCase.DriveBays</strong></div>
+                            <div class="spec-item"><span>Fan Slots </span><strong>@pcCase.FanSlots</strong></div>
                         }
                         else if (Model is AIO aio)
                         {
-                            <div class="spec-item"><span>Radiator</span><strong>@aio.RadiatorSize mm</strong></div>
-                            <div class="spec-item"><span>Pump Speed</span><strong>@aio.PumpSpeed RPM</strong></div>
-                            <div class="spec-item"><span>Fan Size</span><strong>@aio.FanSize mm</strong></div>
-                            <div class="spec-item"><span>Fan RPM</span><strong>@aio.FanRPM</strong></div>
-                            <div class="spec-item"><span>Noise</span><strong>@aio.NoiseLevel dBA</strong></div>
-                            <div class="spec-item"><span>Sockets</span><strong>@aio.SupportedSockets</strong></div>
+                            <div class="spec-item"><span>Radiator </span><strong>@aio.RadiatorSize mm</strong></div>
+                            <div class="spec-item"><span>Pump Speed </span><strong>@aio.PumpSpeed RPM</strong></div>
+                            <div class="spec-item"><span>Fan Size </span><strong>@aio.FanSize mm</strong></div>
+                            <div class="spec-item"><span>Fan RPM </span><strong>@aio.FanRPM</strong></div>
+                            <div class="spec-item"><span>Noise </span><strong>@aio.NoiseLevel dBA</strong></div>
+                            <div class="spec-item"><span>Sockets </span><strong>@aio.SupportedSockets</strong></div>
                         }
                         else if (Model is CPUFan cf)
                         {
-                            <div class="spec-item"><span>Size</span><strong>@cf.Size mm</strong></div>
-                            <div class="spec-item"><span>RPM</span><strong>@cf.RPM</strong></div>
-                            <div class="spec-item"><span>Airflow</span><strong>@cf.Airflow CFM</strong></div>
-                            <div class="spec-item"><span>Noise</span><strong>@cf.NoiseLevel dBA</strong></div>
-                            <div class="spec-item"><span>Connector</span><strong>@cf.ConnectorType</strong></div>
-                            <div class="spec-item"><span>Sockets</span><strong>@cf.SupportedSockets</strong></div>
+                            <div class="spec-item"><span>Size </span><strong>@cf.Size mm</strong></div>
+                            <div class="spec-item"><span>RPM </span><strong>@cf.RPM</strong></div>
+                            <div class="spec-item"><span>Airflow </span><strong>@cf.Airflow CFM</strong></div>
+                            <div class="spec-item"><span>Noise </span><strong>@cf.NoiseLevel dBA</strong></div>
+                            <div class="spec-item"><span>Connector </span><strong>@cf.ConnectorType</strong></div>
+                            <div class="spec-item"><span>Sockets </span><strong>@cf.SupportedSockets</strong></div>
                         }
                         else if (Model is Fan f)
                         {
-                            <div class="spec-item"><span>Size</span><strong>@f.Size mm</strong></div>
-                            <div class="spec-item"><span>RPM</span><strong>@f.RPM</strong></div>
-                            <div class="spec-item"><span>Airflow</span><strong>@f.Airflow CFM</strong></div>
-                            <div class="spec-item"><span>Noise</span><strong>@f.NoiseLevel dBA</strong></div>
-                            <div class="spec-item"><span>Connector</span><strong>@f.ConnectorType</strong></div>
+                            <div class="spec-item"><span>Size </span><strong>@f.Size mm</strong></div>
+                            <div class="spec-item"><span>RPM </span><strong>@f.RPM</strong></div>
+                            <div class="spec-item"><span>Airflow </span><strong>@f.Airflow CFM</strong></div>
+                            <div class="spec-item"><span>Noise </span><strong>@f.NoiseLevel dBA</strong></div>
+                            <div class="spec-item"><span>Connector </span><strong>@f.ConnectorType</strong></div>
                         }
                     </div>
                 </div>
@@ -125,7 +125,7 @@
                 <div class="actions">
                     <a asp-action="Index" class="neon-outline-btn">Back to Shop</a>
 
-                    @if (!User.IsInRole("Admin"))
+                    @if ((User.Identity.IsAuthenticated && !User.IsInRole("Admin")))
                     {
                         <form asp-controller="ShoppingCart" asp-action="Add" method="post" class="flex-grow-1">
                             <input type="hidden" name="itemId" value="@Model.Id" />
