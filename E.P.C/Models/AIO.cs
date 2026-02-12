@@ -9,6 +9,6 @@
         public int FanSize { get; set; } // in mm
         public int FanRPM { get; set; } // Revolutions per minute
         public int NoiseLevel { get; set; } // in dBA
-        public string SupportedSockets { get; set; } = string.Empty; // e.g., LGA1200, AM4
+        public string SupportedSockets { get; set; } // e.g., LGA1200, AM4
     }
 }

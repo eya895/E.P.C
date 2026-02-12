@@ -1,55 +1,69 @@
 ﻿@model E.P.C.Models.AIO
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create AIO";
 }
 
-<h1>Create</h1>
+<div class="edit-form-container">
 
-<h4>AIO</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <h1>Create AIO</h1>
+    <hr />
+
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-grid">
+
             <div class="form-group">
-                <label asp-for="Brand" class="control-label"></label>
+                <label asp-for="Brand"></label>
                 <input asp-for="Brand" class="form-control" />
                 <span asp-validation-for="Brand" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
+                <label asp-for="Model"></label>
                 <input asp-for="Model" class="form-control" />
                 <span asp-validation-for="Model" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="RadiatorSize" class="control-label"></label>
+                <label asp-for="RadiatorSize"></label>
                 <input asp-for="RadiatorSize" class="form-control" />
                 <span asp-validation-for="RadiatorSize" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="PumpSpeed" class="control-label"></label>
+                <label asp-for="PumpSpeed"></label>
                 <input asp-for="PumpSpeed" class="form-control" />
                 <span asp-validation-for="PumpSpeed" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="FanSize" class="control-label"></label>
+                <label asp-for="FanSize"></label>
                 <input asp-for="FanSize" class="form-control" />
                 <span asp-validation-for="FanSize" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="FanRPM" class="control-label"></label>
+                <label asp-for="FanRPM"></label>
                 <input asp-for="FanRPM" class="form-control" />
                 <span asp-validation-for="FanRPM" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="NoiseLevel" class="control-label"></label>
+                <label asp-for="NoiseLevel"></label>
                 <input asp-for="NoiseLevel" class="form-control" />
                 <span asp-validation-for="NoiseLevel" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label for="SupportedSockets">Socket Support:</label>
-                <select id="SupportedSockets" name="SupportedSockets">
+                <label asp-for="SupportedSockets">Socket Support</label>
+
+                <select name="SupportedSockets"
+                        class="form-control"
+                        multiple
+                        size="8">
+
                     <option value="LGA1200">LGA1200</option>
                     <option value="LGA1700">LGA1700</option>
                     <option value="LGA1851">LGA1851</option>
@@ -66,34 +80,131 @@
                     <option value="AM5">AM5</option>
                 </select>
             </div>
+
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label asp-for="Description"></label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
+                <label asp-for="Price"></label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
+                <label asp-for="ImageUrl"></label>
                 <input asp-for="ImageUrl" class="form-control" />
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+
+        </div>
+
+        <div class="form-group mt-4">
+            <input type="submit" value="Create AIO" />
+        </div>
+    </form>
+
+    <div class="mt-3">
+        <a asp-controller="Products" asp-action="Index">← Back to Products</a>
     </div>
 </div>
 
-<a asp-controller="Products"
-   asp-action="Index"
-   class="hero-btn">
-    Back To Product List
-</a>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+
+<style>
+    .edit-form-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 40px;
+        background: rgba(10, 15, 26, 0.95);
+        border-radius: 18px;
+        border: 1px solid rgba(0, 242, 254, 0.15);
+        box-shadow: 0 5px 25px rgba(0, 242, 254, 0.2);
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        color: #00f2fe;
+    }
+
+        .edit-form-container h1 {
+            color: #00f2fe;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 0 6px rgba(0, 242, 254, 0.7);
+        }
+
+    hr {
+        border-color: rgba(0, 242, 254, 0.25);
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #00f2fe;
+            text-shadow: 0 0 4px rgba(0, 242, 254, 0.6);
+        }
+
+    .form-control {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(0, 242, 254, 0.25);
+        background: rgba(10, 15, 26, 0.85);
+        color: #00f2fe;
+        transition: 0.25s;
+        box-shadow: 0 0 6px rgba(0, 242, 254, 0.1);
+    }
+
+        .form-control:focus {
+            border-color: #00f2fe;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.25);
+            outline: none;
+        }
+
+    input[type="submit"] {
+        background: linear-gradient(90deg, #00f2fe, #4facfe);
+        color: #0b0f19;
+        font-weight: 700;
+        padding: 14px 24px;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
+        cursor: pointer;
+        transition: 0.25s;
+    }
+
+        input[type="submit"]:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 18px rgba(0, 242, 254, 0.45);
+        }
+
+    .edit-form-container a {
+        color: #00f2fe;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+        .edit-form-container a:hover {
+            text-decoration: underline;
+        }
+
+    .text-danger {
+        color: #ff4d4d;
+        font-size: 0.9rem;
+        text-shadow: 0 0 3px rgba(255, 77, 77, 0.5);
+    }
+</style>

@@ -9,24 +9,59 @@
     <h1>Edit Product</h1>
     <hr />
 
-    <form asp-action="Edit">
+    <form asp-action="Edit" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
 
-        @* Dynamically generate inputs for all public properties except Id *@
         <div class="form-grid">
+
             @foreach (var prop in Model.GetType().GetProperties())
             {
                 if (prop.Name == "Id") continue;
 
+                var value = prop.GetValue(Model)?.ToString();
+                var labelText = System.Text.RegularExpressions.Regex.Replace(prop.Name, "([a-z])([A-Z])", "$1 $2");
+
                 <div class="form-group">
-                    <label>@System.Text.RegularExpressions.Regex.Replace(prop.Name, "([a-z])([A-Z])", "$1 $2")</label>
-                    <input type="text"
-                           name="@prop.Name"
-                           value="@(prop.GetValue(Model) ?? "")"
-                           class="form-control" />
+
+                    <label>@labelText</label>
+
+                    @* Special case for SupportedSockets (AIO only) *@
+                    @if (prop.Name == "SupportedSockets" && Model is E.P.C.Models.AIO)
+                    {
+                        var selectedSockets = value?
+                        .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                        .Select(s => s.Trim())
+                        .ToList() ?? new List<string>();
+
+                        <div class="socket-checkboxes">
+                            @{
+                                var sockets = new List<string>
+                                        {
+                                        "LGA1200","LGA1700","LGA1851",
+                                        "LGA1150","LGA1151","LGA1155","LGA1156",
+                                        "LGA2066","LGA4677",
+                                        "STRx4","STR4","STR5",
+                                        "AM4","AM5"
+                                        };
+                            }
+                            @foreach (var socket in sockets)
+                            {
+                                var isChecked = selectedSockets.Contains(socket);
+                                <label class="socket-label">
+                                    <input type="checkbox" name="SupportedSockets" value="@socket" @(isChecked ? "checked" : "") />
+                                    @socket
+                                </label>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <input type="text" name="@prop.Name" value="@(value ?? "")" class="form-control" />
+                    }
                 </div>
             }
+
         </div>
 
         <div class="form-group mt-4">
@@ -46,7 +81,6 @@
 }
 
 <style>
-    /* ---------- CONTAINER ---------- */
     .edit-form-container {
         max-width: 1200px;
         margin: 40px auto;
@@ -54,31 +88,27 @@
         background: rgba(10, 15, 26, 0.95);
         border-radius: 18px;
         border: 1px solid rgba(0, 242, 254, 0.15);
-        box-shadow: 0 5px 25px rgba(0, 242, 254, 0.2); /* gentle neon glow */
+        box-shadow: 0 5px 25px rgba(0, 242, 254, 0.2);
         font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         color: #00f2fe;
     }
 
-        /* ---------- HEADER ---------- */
         .edit-form-container h1 {
-            color: #00f2fe;
             font-weight: 700;
             margin-bottom: 20px;
-            text-shadow: 0 0 6px rgba(0, 242, 254, 0.7); /* neon glow */
+            text-shadow: 0 0 6px rgba(0, 242, 254, 0.7);
         }
 
     hr {
         border-color: rgba(0, 242, 254, 0.25);
     }
 
-    /* ---------- FORM GRID ---------- */
     .form-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 20px;
     }
 
-    /* ---------- FORM GROUP ---------- */
     .form-group {
         display: flex;
         flex-direction: column;
@@ -87,8 +117,7 @@
         .form-group label {
             font-weight: 600;
             margin-bottom: 6px;
-            color: #00f2fe;
-            text-shadow: 0 0 4px rgba(0, 242, 254, 0.6); /* subtle glow */
+            text-shadow: 0 0 4px rgba(0, 242, 254, 0.6);
         }
 
     .form-control {
@@ -98,16 +127,14 @@
         background: rgba(10, 15, 26, 0.85);
         color: #00f2fe;
         transition: 0.25s;
-        box-shadow: 0 0 6px rgba(0, 242, 254, 0.1); /* subtle input glow */
     }
 
         .form-control:focus {
             border-color: #00f2fe;
-            box-shadow: 0 0 10px rgba(0, 242, 254, 0.25); /* slightly stronger glow on focus */
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.25);
             outline: none;
         }
 
-    /* ---------- SUBMIT BUTTON ---------- */
     input[type="submit"] {
         background: linear-gradient(90deg, #00f2fe, #4facfe);
         color: #0b0f19;
@@ -115,31 +142,47 @@
         padding: 14px 24px;
         border-radius: 10px;
         border: none;
-        box-shadow: 0 0 12px rgba(0, 242, 254, 0.3); /* neon glow */
+        box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
         cursor: pointer;
         transition: 0.25s;
     }
 
         input[type="submit"]:hover {
             transform: scale(1.02);
-            box-shadow: 0 0 18px rgba(0, 242, 254, 0.45); /* slightly stronger on hover */
+            box-shadow: 0 0 18px rgba(0, 242, 254, 0.45);
         }
 
-    /* ---------- BACK LINK ---------- */
-    .edit-form-container a {
-        color: #00f2fe;
-        font-weight: 600;
-        text-decoration: none;
-    }
-
-        .edit-form-container a:hover {
-            text-decoration: underline;
-        }
-
-    /* ---------- VALIDATION ---------- */
     .text-danger {
         color: #ff4d4d;
         font-size: 0.9rem;
-        text-shadow: 0 0 3px rgba(255, 77, 77, 0.5); /* red neon glow */
+        text-shadow: 0 0 3px rgba(255, 77, 77, 0.5);
     }
+
+    /* ---------- SOCKET CHECKBOXES ---------- */
+    .socket-checkboxes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .socket-label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        border: 1px solid rgba(0, 242, 254, 0.25);
+        background: rgba(10, 15, 26, 0.85);
+        color: #00f2fe;
+        cursor: pointer;
+        transition: 0.25s;
+    }
+
+        .socket-label input[type="checkbox"] {
+            accent-color: #00f2fe;
+        }
+
+        .socket-label:hover {
+            background: rgba(0, 242, 254, 0.1);
+        }
 </style>
