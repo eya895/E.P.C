@@ -1,128 +1,113 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using E.P.C.Data;
 using E.P.C.Models;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace E.P.C.Controllers
 {
     public class AIOsController : Controller
     {
         private readonly AppDbContext _context;
+        public AIOsController(AppDbContext context) => _context = context;
 
-        public AIOsController(AppDbContext context)
-        {
-            _context = context;
-        }
-
-        // GET: AIOs
+        // INDEX
         public async Task<IActionResult> Index()
         {
             return View(await _context.AIOs.ToListAsync());
         }
 
-        // GET: AIOs/Details/5
+        // DETAILS
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
-
-            var aIO = await _context.AIOs.FirstOrDefaultAsync(m => m.Id == id);
-            if (aIO == null) return NotFound();
-
-            return View(aIO);
+            var aio = await _context.AIOs.FirstOrDefaultAsync(a => a.Id == id);
+            if (aio == null) return NotFound();
+            return View(aio);
         }
 
-        // GET: AIOs/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        // CREATE GET
+        public IActionResult Create() => View();
 
-        // POST: AIOs/Create
+        // CREATE POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(
-            [Bind("Brand,Model,RadiatorSize,PumpSpeed,FanSize,FanRPM,NoiseLevel,Id,Description,Price,ImageUrl")] AIO aIO,
-            [FromForm] string[] SupportedSockets)
+        public async Task<IActionResult> Create(AIO aio, string[] SupportedSockets)
         {
-            if (ModelState.IsValid)
-            {
-                aIO.SupportedSockets = SupportedSockets != null ? string.Join(", ", SupportedSockets) : "";
-                _context.Add(aIO);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(aIO);
+            if (!ModelState.IsValid) return View(aio);
+
+            aio.SupportedSockets = SupportedSockets != null ? string.Join(", ", SupportedSockets) : "";
+
+            _context.Add(aio);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Products"); // back to Products Index
         }
 
-        // GET: AIOs/Edit/5
+        // EDIT GET
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
 
-            var aIO = await _context.AIOs.FindAsync(id);
-            if (aIO == null) return NotFound();
+            var aio = await _context.AIOs.FindAsync(id);
+            if (aio == null) return NotFound();
 
-            return View(aIO);
+            return View(aio);
         }
 
-        // POST: AIOs/Edit/5
+        // EDIT POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(
-            int id,
-            [Bind("Brand,Model,RadiatorSize,PumpSpeed,FanSize,FanRPM,NoiseLevel,Id,Description,Price,ImageUrl")] AIO aIO,
-            [FromForm] string[] SupportedSockets)
+        public async Task<IActionResult> Edit(int id, AIO aio, string[] SupportedSockets)
         {
-            if (id != aIO.Id) return NotFound();
+            if (id != aio.Id) return NotFound();
+            if (!ModelState.IsValid) return View(aio);
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    aIO.SupportedSockets = SupportedSockets != null ? string.Join(", ", SupportedSockets) : "";
-                    _context.Update(aIO);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AIOExists(aIO.Id)) return NotFound();
-                    else throw;
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(aIO);
+            var dbAio = await _context.AIOs.FindAsync(id);
+            if (dbAio == null) return NotFound();
+
+            // Update all fields
+            dbAio.Brand = aio.Brand;
+            dbAio.Model = aio.Model;
+            dbAio.RadiatorSize = aio.RadiatorSize;
+            dbAio.PumpSpeed = aio.PumpSpeed;
+            dbAio.FanSize = aio.FanSize;
+            dbAio.FanRPM = aio.FanRPM;
+            dbAio.NoiseLevel = aio.NoiseLevel;
+            dbAio.Description = aio.Description;
+            dbAio.Price = aio.Price;
+            dbAio.ImageUrl = aio.ImageUrl;
+            dbAio.SupportedSockets = SupportedSockets != null ? string.Join(", ", SupportedSockets) : "";
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Products"); // back to Products Index
         }
 
-        // GET: AIOs/Delete/5
+        // DELETE GET
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
 
-            var aIO = await _context.AIOs.FirstOrDefaultAsync(m => m.Id == id);
-            if (aIO == null) return NotFound();
+            var aio = await _context.AIOs.FirstOrDefaultAsync(a => a.Id == id);
+            if (aio == null) return NotFound();
 
-            return View(aIO);
+            return View(aio);
         }
 
-        // POST: AIOs/Delete/5
+        // DELETE POST
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var aIO = await _context.AIOs.FindAsync(id);
-            if (aIO != null) _context.AIOs.Remove(aIO);
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool AIOExists(int id)
-        {
-            return _context.AIOs.Any(e => e.Id == id);
+            var aio = await _context.AIOs.FindAsync(id);
+            if (aio != null)
+            {
+                _context.AIOs.Remove(aio);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Index", "Products");
         }
     }
 }

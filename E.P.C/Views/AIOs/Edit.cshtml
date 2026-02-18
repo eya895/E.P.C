@@ -1,0 +1,227 @@
+﻿@model E.P.C.Models.AIO
+
+@{
+    ViewData["Title"] = "Edit AIO";
+}
+
+<div class="edit-form-container">
+    <h1>Edit AIO</h1>
+    <hr />
+
+    <form asp-action="Edit" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Brand</label>
+                <input asp-for="Brand" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Model</label>
+                <input asp-for="Model" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Radiator Size (mm)</label>
+                <input asp-for="RadiatorSize" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Pump Speed (RPM)</label>
+                <input asp-for="PumpSpeed" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Fan Size (mm)</label>
+                <input asp-for="FanSize" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Fan RPM</label>
+                <input asp-for="FanRPM" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Noise Level (dBA)</label>
+                <input asp-for="NoiseLevel" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <input asp-for="Description" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Price</label>
+                <input asp-for="Price" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Image URL</label>
+                <input asp-for="ImageUrl" class="form-control" />
+            </div>
+        </div>
+
+        <!-- ---------- SOCKETS ROW ABOVE SAVE BUTTON ---------- -->
+        <div class="form-group mt-3">
+            <label>Supported Sockets</label>
+            <div class="socket-checkboxes">
+                @{
+                    var selected = Model.SupportedSockets?.Split(',', System.StringSplitOptions.RemoveEmptyEntries)
+                    .Select(s => s.Trim()).ToList() ?? new List<string>();
+
+                    var sockets = new List<string>
+                                {
+                                "LGA1200","LGA1700","LGA1851",
+                                "LGA1150","LGA1151","LGA1155","LGA1156",
+                                "LGA2066","LGA4677",
+                                "STRx4","STR4","STR5",
+                                "AM4","AM5"
+                                };
+                }
+                @foreach (var socket in sockets)
+                {
+                    var isChecked = selected.Contains(socket);
+                    <label class="socket-label">
+                        <input type="checkbox" name="SupportedSockets" value="@socket" @(isChecked ? "checked" : "") />
+                        <span>@socket</span>
+                    </label>
+                }
+            </div>
+        </div>
+
+        <div class="form-group mt-4">
+            <input type="submit" value="Save Changes" />
+        </div>
+    </form>
+
+    <div class="mt-3">
+        <a asp-controller="Products" asp-action="Index">← Back to Products</a>
+    </div>
+</div>
+
+<style>
+    /* ---------- FORM CONTAINER ---------- */
+    .edit-form-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 40px;
+        background: rgba(10, 15, 26, 0.95);
+        border-radius: 18px;
+        border: 1px solid rgba(0, 242, 254, 0.15);
+        box-shadow: 0 5px 25px rgba(0, 242, 254, 0.2);
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        color: #00f2fe;
+    }
+
+        .edit-form-container h1 {
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 0 6px rgba(0,242,254,0.7);
+        }
+
+    hr {
+        border-color: rgba(0,242,254,0.25);
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+        gap: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            text-shadow: 0 0 4px rgba(0,242,254,0.6);
+        }
+
+    .form-control {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(0,242,254,0.25);
+        background: rgba(10,15,26,0.85);
+        color: #00f2fe;
+        transition: 0.25s;
+    }
+
+        .form-control:focus {
+            border-color: #00f2fe;
+            box-shadow: 0 0 10px rgba(0,242,254,0.25);
+            outline: none;
+        }
+
+    /* ---------- SAVE BUTTON ---------- */
+    input[type="submit"] {
+        background: linear-gradient(90deg,#00f2fe,#4facfe);
+        color: #0b0f19;
+        font-weight: 700;
+        padding: 14px 24px;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 0 12px rgba(0,242,254,0.3);
+        cursor: pointer;
+        transition: 0.25s;
+    }
+
+        input[type="submit"]:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 18px rgba(0,242,254,0.45);
+        }
+
+    /* ---------- SOCKET TOGGLE PILL BUTTONS FULL-FILL ---------- */
+    .socket-checkboxes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .socket-label {
+        position: relative;
+        display: inline-block;
+        min-width: 60px;
+        text-align: center;
+        padding: 10px 18px;
+        border-radius: 20px;
+        background: rgba(10, 15, 26, 0.85);
+        border: 2px solid rgba(0, 242, 254, 0.25);
+        color: #00f2fe;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        box-shadow: 0 4px 12px rgba(0, 242, 254, 0.15);
+        overflow: hidden;
+    }
+
+        .socket-label input[type="checkbox"] {
+            display: none;
+        }
+
+        .socket-label span {
+            display: block;
+            width: 100%;
+            padding: 8px 0;
+            border-radius: 20px;
+            transition: all 0.25s ease;
+        }
+
+        /* FULL-FILL WHEN CHECKED */
+        .socket-label input[type="checkbox"]:checked + span {
+            background: linear-gradient(90deg, #00f2fe, #4facfe);
+            color: #0b0f19;
+            box-shadow: 0 0 15px rgba(0,242,254,0.7), inset 0 0 25px rgba(0,242,254,0.3);
+        }
+
+        /* HOVER EFFECT */
+        .socket-label:hover span {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(0,242,254,0.35);
+        }
+</style>
