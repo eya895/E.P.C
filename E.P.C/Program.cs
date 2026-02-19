@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using E.P.C.Data;
+using E.P.C.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ShoppingCartService>();
 
@@ -27,11 +29,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 // Dummy email sender so Register works
 builder.Services.AddSingleton<IEmailSender, DummyEmailSender>();
 
-// App services
-builder.Services.AddScoped<ShoppingCartService>();
-
 var app = builder.Build();
-
 
 // 🔐 SEED ADMIN USER + ROLE
 using (var scope = app.Services.CreateScope())
@@ -39,7 +37,6 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     await DbInitializer.SeedAdminAsync(services);
 }
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -66,7 +63,6 @@ app.MapRazorPages(); // Required for Identity UI
 
 app.Run();
 
-
 // Dummy email sender implementation
 public class DummyEmailSender : IEmailSender
 {
@@ -76,6 +72,3 @@ public class DummyEmailSender : IEmailSender
         return Task.CompletedTask;
     }
 }
-
-
-

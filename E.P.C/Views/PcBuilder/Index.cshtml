@@ -1,0 +1,74 @@
+﻿@model E.P.C.Models.ViewModels.PcBuildViewModel
+
+<h2>Build Your PC</h2>
+
+@if (Model.Errors.Any())
+{
+    <div style="color:red;">
+        @foreach (var error in Model.Errors)
+        {
+            <p>@error</p>
+        }
+    </div>
+}
+
+<form asp-action="Build" method="post">
+
+    <label>CPU</label>
+    <select asp-for="CpuId">
+        <option value="">Select CPU</option>
+        @foreach (var item in Model.CPUs)
+        {
+            <option value="@item.Id">@item.Brand @item.Model - ₪@item.Price</option>
+        }
+    </select>
+
+    <label>Motherboard</label>
+    <select asp-for="MotherboardId">
+        <option value="">Select Motherboard</option>
+        @foreach (var item in Model.MotherBoards)
+        {
+            <option value="@item.Id">@item.Brand @item.Model - ₪@item.Price</option>
+        }
+    </select>
+
+    <label>RAM</label>
+    <select asp-for="RamId">
+        <option value="">Select RAM</option>
+        @foreach (var item in Model.RAMs)
+        {
+            <option value="@item.Id">@item.Brand @item.Model - ₪@item.Price</option>
+        }
+    </select>
+
+    <label>GPU</label>
+    <select asp-for="GpuId">
+        <option value="">Select GPU</option>
+        @foreach (var item in Model.GPUs)
+        {
+            <option value="@item.Id">@item.Brand @item.Model - ₪@item.Price</option>
+        }
+    </select>
+
+    <label>PSU</label>
+    <select asp-for="PsuId">
+        <option value="">Select PSU</option>
+        @foreach (var item in Model.PSUs)
+        {
+            <option value="@item.Id">@item.Brand @item.Model - ₪@item.Price</option>
+        }
+    </select>
+
+    <label>Storage</label>
+    <select asp-for="StorageId">
+        <option value="">Select Storage</option>
+        @foreach (var item in Model.Storages)
+        {
+            <option value="@item.Id">@item.Brand @item.Model - ₪@item.Price</option>
+        }
+    </select>
+
+    <br /><br />
+    <button type="submit">Build PC</button>
+
+</form>

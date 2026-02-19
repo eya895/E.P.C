@@ -2,26 +2,29 @@
 using E.P.C.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
 
 public class ShoppingCartService
+{
+    private readonly AppDbContext _context;
+    private readonly IHttpContextAccessor _http;
+
+    public ShoppingCartService(AppDbContext context, IHttpContextAccessor http)
     {
-        private readonly AppDbContext _context;
-        private readonly IHttpContextAccessor _http;
+        _context = context;
+        _http = http;
+    }
 
-        public ShoppingCartService(
-            AppDbContext context,
-            IHttpContextAccessor http)
-        {
-            _context = context;
-            _http = http;
-        }
+    // 🔑 Get current user ID from claims
+    private string GetUserId()
+    {
+        return _http.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+    }
 
-    // 🔑 Find or create active cart
+    // 🔑 Find or create active cart for the current user
     public async Task<ShoppingCart> GetOrCreateCartAsync()
     {
-        var userId = _http.HttpContext.User
-            .FindFirstValue(ClaimTypes.NameIdentifier);
+        var userId = GetUserId();
+        if (userId == null) throw new InvalidOperationException("User must be logged in.");
 
         var cart = await _context.ShoppingCarts
             .Include(c => c.Items)
@@ -33,7 +36,7 @@ public class ShoppingCartService
             cart = new ShoppingCart
             {
                 UserId = userId,
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
                 IsCheckedOut = false,
                 Items = new List<ShoppingCartItem>()
             };
@@ -45,28 +48,36 @@ public class ShoppingCartService
         return cart;
     }
 
-    // 📦 Used by ShoppingCartController.Index
+    // 📦 Get current cart
     public async Task<ShoppingCart> GetCartAsync()
     {
         return await GetOrCreateCartAsync();
     }
 
-    // ➕ Add item
-    public async Task AddAsync(int productId)
+    // ➕ Add a product to the cart (or increase quantity)
+    public async Task AddAsync(int productId, int quantity = 1)
     {
         var cart = await GetOrCreateCartAsync();
 
         var item = cart.Items.FirstOrDefault(i => i.ProductId == productId);
 
         if (item == null)
-            cart.Items.Add(new ShoppingCartItem { ProductId = productId, Quantity = 1 });
+        {
+            cart.Items.Add(new ShoppingCartItem
+            {
+                ProductId = productId,
+                Quantity = quantity
+            });
+        }
         else
-            item.Quantity++;
+        {
+            item.Quantity += quantity;
+        }
 
         await _context.SaveChangesAsync();
     }
 
-    // ➖ Remove ONE quantity
+    // ➖ Remove one quantity of a product
     public async Task RemoveAsync(int productId)
     {
         var cart = await GetOrCreateCartAsync();
@@ -82,7 +93,7 @@ public class ShoppingCartService
         await _context.SaveChangesAsync();
     }
 
-    // ❌ Remove ALL quantities of an item
+    // ❌ Remove all quantities of a product
     public async Task RemoveAllAsync(int productId)
     {
         var cart = await GetOrCreateCartAsync();
@@ -94,5 +105,12 @@ public class ShoppingCartService
             await _context.SaveChangesAsync();
         }
     }
-}
 
+    // ✅ Optional: Clear entire cart
+    public async Task ClearCartAsync()
+    {
+        var cart = await GetOrCreateCartAsync();
+        cart.Items.Clear();
+        await _context.SaveChangesAsync();
+    }
+}
