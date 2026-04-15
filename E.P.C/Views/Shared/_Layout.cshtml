@@ -138,11 +138,14 @@
                             Products
                         </a>
                     </li>
+                    @if (User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
+                    {
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="PcBuilder" asp-action="Index">
                             Build a PC
                         </a>
                     </li>
+                    }
 
 
                     <!-- CART -->

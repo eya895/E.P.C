@@ -15,13 +15,7 @@
 <form asp-action="Build" method="post">
 
     <label>CPU</label>
-    <select asp-for="CpuId">
-        <option value="">Select CPU</option>
-        @foreach (var item in Model.CPUs)
-        {
-            <option value="@item.Id">@item.Brand @item.Model - ₪@item.Price</option>
-        }
-    </select>
+    <a asp-controller="CPUs" asp-action="Index" class="btn btn-sm btn-primary mb-2">ChooseCPU</a>
 
     <label>Motherboard</label>
     <select asp-for="MotherboardId">
