@@ -1,68 +1,188 @@
-﻿@model E.P.C.Models.ViewModels.PcBuildViewModel
+﻿@model E.P.C.Models.ViewModels.PcBuildSession
 
-<h2>Build Your PC</h2>
+<div class="epc-products">
+    <div class="container py-5">
 
-@if (Model.Errors.Any())
-{
-    <div style="color:red;">
-        @foreach (var error in Model.Errors)
-        {
-            <p>@error</p>
-        }
+        <h2 class="text-white mb-4">Your PC Build</h2>
+
+        <div class="row g-4">
+
+            <!-- CPU -->
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card text-center p-4">
+                    <h5>CPU</h5>
+                    <p>
+                        @(Model.Cpu != null
+                            ? $"{Model.Cpu.Brand} {Model.Cpu.Model}"
+                            : "Not selected")
+                    </p>
+                    <a href="/CPUs" class="btn-details">Choose CPU</a>
+                </div>
+            </div>
+
+            <!-- GPU -->
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card text-center p-4">
+                    <h5>GPU</h5>
+                    <p>
+                        @(Model.Gpu != null
+                            ? $"{Model.Gpu.Brand} {Model.Gpu.Model}"
+                            : "Not selected")
+                    </p>
+                    <a href="/GPUs" class="btn-details">Choose GPU</a>
+                </div>
+            </div>
+
+            <!-- RAM -->
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card text-center p-4">
+                    <h5>RAM</h5>
+                    <p>
+                        @(Model.Ram != null
+                            ? $"{Model.Ram.Brand} {Model.Ram.Model}"
+                            : "Not selected")
+                    </p>
+                    <a href="/RAMs" class="btn-details">Choose RAM</a>
+                </div>
+            </div>
+
+            <!-- Motherboard -->
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card text-center p-4">
+                    <h5>Motherboard</h5>
+                    <p>
+                        @(Model.Motherboard != null
+                            ? $"{Model.Motherboard.Brand} {Model.Motherboard.Model}"
+                            : "Not selected")
+                    </p>
+                    <a href="/MotherBoards" class="btn-details">Choose Board</a>
+                </div>
+            </div>
+
+            <!-- PSU -->
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card text-center p-4">
+                    <h5>PSU</h5>
+                    <p>
+                        @(Model.Psu != null
+                            ? $"{Model.Psu.Brand} {Model.Psu.Model}"
+                            : "Not selected")
+                    </p>
+                    <a href="/PSUs" class="btn-details">Choose PSU</a>
+                </div>
+            </div>
+
+            <!-- Storage -->
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card text-center p-4">
+                    <h5>Storage</h5>
+                    <p>
+                        @(Model.Storage != null
+                            ? $"{Model.Storage.Brand} {Model.Storage.Model}"
+                            : "Not selected")
+                    </p>
+                    <a href="/Storages" class="btn-details">Choose Storage</a>
+                </div>
+            </div>
+
+            <!-- CPU Cooling -->
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card text-center p-4">
+                    <h5>CPU Cooling</h5>
+
+                    <p>
+                        @if (Model.CpuFan != null)
+                        {
+                            <span>@Model.CpuFan.Brand @Model.CpuFan.Model</span>
+                        }
+                        else if (Model.Aio != null)
+                        {
+                            <span>@Model.Aio.Brand @Model.Aio.Model</span>
+                        }
+                        else
+                        {
+                            <span>Not selected</span>
+                        }
+                    </p>
+
+                    <a href="/CPUFans" class="btn-details">CPU Fan</a>
+                    <a href="/AIOs" class="btn-details">AIO</a>
+                </div>
+            </div>
+
+            <!-- Case Fan -->
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card text-center p-4">
+                    <h5>Case Fan</h5>
+                    <p>
+                        @(Model.Fan != null
+                            ? $"{Model.Fan.Brand} {Model.Fan.Model}"
+                            : "Not selected")
+                    </p>
+                    <a href="/Fans" class="btn-details">Choose Fan</a>
+                </div>
+            </div>
+
+            <!-- Case -->
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card text-center p-4">
+                    <h5>Case</h5>
+                    <p>
+                        @(Model.Case != null
+                            ? $"{Model.Case.Brand} {Model.Case.Model}"
+                            : "Not selected")
+                    </p>
+                    <a href="/Cases" class="btn-details">Choose Case</a>
+                </div>
+            </div>
+
+        </div>
+
     </div>
-}
+</div>
 
-<form asp-action="Build" method="post">
+<style>
+    .epc-products {
+        min-height: 100vh;
+        background: radial-gradient(circle at top, rgba(0,242,254,0.08), transparent 40%), radial-gradient(circle at bottom, rgba(79,172,254,0.06), transparent 50%), radial-gradient(circle at center, #1a2235 0%, #0b0f19 100%);
+        color: white;
+    }
 
-    <label>CPU</label>
-    <a asp-controller="CPUs" asp-action="Index" class="btn btn-sm btn-primary mb-2">ChooseCPU</a>
+    .product-card {
+        background: rgba(22, 30, 46, 0.95);
+        border: 1px solid rgba(0, 242, 254, 0.25);
+        border-radius: 18px;
+        padding: 20px;
+        transition: 0.3s ease;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
 
-    <label>Motherboard</label>
-    <select asp-for="MotherboardId">
-        <option value="">Select Motherboard</option>
-        @foreach (var item in Model.MotherBoards)
-        {
-            <option value="@item.Id">@item.Brand @item.Model - ₪@item.Price</option>
+        .product-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 70px rgba(0, 242, 254, 0.18), 0 0 25px rgba(0, 242, 254, 0.12);
+            border-color: rgba(0, 242, 254, 0.5);
         }
-    </select>
 
-    <label>RAM</label>
-    <select asp-for="RamId">
-        <option value="">Select RAM</option>
-        @foreach (var item in Model.RAMs)
-        {
-            <option value="@item.Id">@item.Brand @item.Model - ₪@item.Price</option>
+    /* BUTTONS */
+    .btn-details {
+        background: rgba(0, 242, 254, 0.12);
+        color: #00f2fe;
+        border: 1px solid rgba(0, 242, 254, 0.45);
+        font-weight: 800;
+        padding: 12px;
+        border-radius: 10px;
+        display: block;
+        text-align: center;
+        text-decoration: none;
+        transition: 0.25s ease;
+        margin-top: 10px;
+        backdrop-filter: blur(6px);
+        box-shadow: 0 0 12px rgba(0, 242, 254, 0.15);
+    }
+
+        .btn-details:hover {
+            background: rgba(0, 242, 254, 0.25);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4), 0 0 35px rgba(0, 242, 254, 0.25);
+            transform: scale(1.03);
         }
-    </select>
-
-    <label>GPU</label>
-    <select asp-for="GpuId">
-        <option value="">Select GPU</option>
-        @foreach (var item in Model.GPUs)
-        {
-            <option value="@item.Id">@item.Brand @item.Model - ₪@item.Price</option>
-        }
-    </select>
-
-    <label>PSU</label>
-    <select asp-for="PsuId">
-        <option value="">Select PSU</option>
-        @foreach (var item in Model.PSUs)
-        {
-            <option value="@item.Id">@item.Brand @item.Model - ₪@item.Price</option>
-        }
-    </select>
-
-    <label>Storage</label>
-    <select asp-for="StorageId">
-        <option value="">Select Storage</option>
-        @foreach (var item in Model.Storages)
-        {
-            <option value="@item.Id">@item.Brand @item.Model - ₪@item.Price</option>
-        }
-    </select>
-
-    <br /><br />
-    <button type="submit">Build PC</button>
-
-</form>
+</style>

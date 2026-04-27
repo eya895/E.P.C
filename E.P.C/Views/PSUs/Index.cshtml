@@ -1,35 +1,34 @@
-﻿@model List<E.P.C.Models.CPU>
+﻿@model List<E.P.C.Models.PSU>
 
 <div class="epc-products">
     <div class="container py-5">
 
-        <h2 class="text-white mb-4">CPUs</h2>
+        <h2 class="text-white mb-4">PSUs</h2>
 
         <div class="row g-4">
 
-            @foreach (var cpu in Model)
+            @foreach (var psu in Model)
             {
                 <div class="col-md-6 col-lg-4">
                     <div class="product-card">
 
                         <div class="image-wrapper">
-                            <img src="@cpu.ImageUrl" class="product-img" />
+                            <img src="@psu.ImageUrl" class="product-img" />
                         </div>
 
                         <div class="text-center p-3">
-                            <h5 class="modelname">@cpu.Brand @cpu.Model</h5>
-                            <p class="price">₪@cpu.Price</p>
+                            <h5 class="modelname">@psu.Brand @psu.Model</h5>
+                            <p class="price">₪@psu.Price</p>
 
                             <a asp-action="Details"
-                               asp-route-id="@cpu.Id"
-                               class="btn-details">
+                                   asp-route-id="@psu.Id"
+                                   class="btn-details">
                                 View Details
                             </a>
 
                             <a asp-controller="PcBuilder"
-                                   asp-action="SelectCpu"
-                                   method="post"
-                                   asp-route-id="@cpu.Id"
+                                   asp-action="SelectPsu"
+                                   asp-route-id="@psu.Id"
                                    class="btn-buy">
                                 Select
                             </a>
@@ -123,7 +122,7 @@
         border-radius: 10px;
         box-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
         transition: 0.25s;
-        text-decoration: none; 
+        text-decoration: none;
     }
 
         .btn-buy:hover {

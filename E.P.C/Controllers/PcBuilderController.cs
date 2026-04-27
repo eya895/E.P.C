@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using E.P.C.Data;
 using E.P.C.Models;
 using E.P.C.Models.ViewModels;
-using System.Linq;
+using E.P.C.Helpers;
 
 namespace E.P.C.Controllers
 {
@@ -16,87 +16,186 @@ namespace E.P.C.Controllers
             _context = context;
         }
 
+        // ✅ MAIN BUILDER PAGE
         public IActionResult Index()
         {
-            var model = new PcBuildViewModel
-            {
-                CPUs = _context.Products.OfType<CPU>().ToList(),
-                MotherBoards = _context.Products.OfType<MotherBoard>().ToList(),
-                RAMs = _context.Products.OfType<RAM>().ToList(),
-                GPUs = _context.Products.OfType<GPU>().ToList(),
-                PSUs = _context.Products.OfType<PSU>().ToList(),
-                Storages = _context.Products.OfType<Storage>().ToList()
-            };
+            var session = HttpContext.Session.GetObject<PcBuildSession>("PC_BUILD")
+                          ?? new PcBuildSession();
 
-            return View(model);
+            // 🔥 LOAD FULL PRODUCTS FROM DB
+            session.Cpu = _context.Products.OfType<CPU>()
+                .FirstOrDefault(x => x.Id == session.CpuId);
+
+            session.Gpu = _context.Products.OfType<GPU>()
+                .FirstOrDefault(x => x.Id == session.GpuId);
+
+            session.Ram = _context.Products.OfType<RAM>()
+                .FirstOrDefault(x => x.Id == session.RamId);
+
+            session.Motherboard = _context.Products.OfType<MotherBoard>()
+                .FirstOrDefault(x => x.Id == session.MotherboardId);
+
+            session.Psu = _context.Products.OfType<PSU>()
+                .FirstOrDefault(x => x.Id == session.PsuId);
+
+            session.Storage = _context.Products.OfType<Storage>()
+                .FirstOrDefault(x => x.Id == session.StorageId);
+
+            session.Fan = _context.Products.OfType<Fan>()
+                .FirstOrDefault(x => x.Id == session.FanId);
+
+            session.Case = _context.Products.OfType<Case>()
+                .FirstOrDefault(x => x.Id == session.CaseId);
+
+            session.CpuFan = _context.Products.OfType<CPUFan>()
+                .FirstOrDefault(x => x.Id == session.CpuFanId);
+
+            session.Aio = _context.Products.OfType<AIO>()
+                .FirstOrDefault(x => x.Id == session.AioId);
+
+            return View(session);
         }
 
+        // ✅ CPU SELECT
         [HttpPost]
-        public IActionResult Build(PcBuildViewModel model)
+        public IActionResult SelectCpu(int id)
         {
-            var cpu = _context.Products.OfType<CPU>()
-                .FirstOrDefault(x => x.Id == model.CpuId);
+            var session = HttpContext.Session.GetObject<PcBuildSession>("PC_BUILD")
+                          ?? new PcBuildSession();
 
-            var motherboard = _context.Products.OfType<MotherBoard>()
-                .FirstOrDefault(x => x.Id == model.MotherboardId);
+            session.CpuId = id;
 
-            var ram = _context.Products.OfType<RAM>()
-                .FirstOrDefault(x => x.Id == model.RamId);
+            HttpContext.Session.SetObject("PC_BUILD", session);
 
-            var gpu = _context.Products.OfType<GPU>()
-                .FirstOrDefault(x => x.Id == model.GpuId);
-
-            var psu = _context.Products.OfType<PSU>()
-                .FirstOrDefault(x => x.Id == model.PsuId);
-
-            var storage = _context.Products.OfType<Storage>()
-                .FirstOrDefault(x => x.Id == model.StorageId);
-
-            // Compatibility Checks
-
-            if (cpu != null && motherboard != null &&
-                cpu.SocketType != motherboard.SocketType)
-            {
-                model.Errors.Add("CPU and Motherboard sockets do not match.");
-            }
-
-            if (ram != null && motherboard != null &&
-                ram.Type != motherboard.RAMType)
-            {
-                model.Errors.Add("RAM type is not compatible with motherboard.");
-            }
-
-            if (gpu != null && psu != null &&
-                psu.Wattage < gpu.TDP + 150)
-            {
-                model.Errors.Add("PSU wattage is too low for GPU.");
-            }
-
-            if (model.Errors.Any())
-            {
-                return View("Index", LoadLists(model));
-            }
-
-            model.TotalPrice =
-                (cpu?.Price ?? 0) +
-                (motherboard?.Price ?? 0) +
-                (ram?.Price ?? 0) +
-                (gpu?.Price ?? 0) +
-                (psu?.Price ?? 0) +
-                (storage?.Price ?? 0);
-
-            return View("Summary", model);
+            return RedirectToAction("Index");
         }
 
-        private PcBuildViewModel LoadLists(PcBuildViewModel model)
+        // ✅ GPU SELECT
+        [HttpPost]
+        public IActionResult SelectGpu(int id)
         {
-            model.CPUs = _context.Products.OfType<CPU>().ToList();
-            model.MotherBoards = _context.Products.OfType<MotherBoard>().ToList();
-            model.RAMs = _context.Products.OfType<RAM>().ToList();
-            model.GPUs = _context.Products.OfType<GPU>().ToList();
-            model.PSUs = _context.Products.OfType<PSU>().ToList();
-            model.Storages = _context.Products.OfType<Storage>().ToList();
-            return model;
+            var session = HttpContext.Session.GetObject<PcBuildSession>("PC_BUILD")
+                          ?? new PcBuildSession();
+
+            session.GpuId = id;
+
+            HttpContext.Session.SetObject("PC_BUILD", session);
+
+            return RedirectToAction("Index");
+        }
+
+        // ✅ RAM SELECT
+        [HttpPost]
+        public IActionResult SelectRam(int id)
+        {
+            var session = HttpContext.Session.GetObject<PcBuildSession>("PC_BUILD")
+                          ?? new PcBuildSession();
+
+            session.RamId = id;
+
+            HttpContext.Session.SetObject("PC_BUILD", session);
+
+            return RedirectToAction("Index");
+        }
+
+        // ✅ MOTHERBOARD SELECT
+        [HttpPost]
+        public IActionResult SelectMotherboard(int id)
+        {
+            var session = HttpContext.Session.GetObject<PcBuildSession>("PC_BUILD")
+                          ?? new PcBuildSession();
+
+            session.MotherboardId = id;
+
+            HttpContext.Session.SetObject("PC_BUILD", session);
+
+            return RedirectToAction("Index");
+        }
+
+        // ✅ PSU SELECT
+        [HttpPost]
+        public IActionResult SelectPsu(int id)
+        {
+            var session = HttpContext.Session.GetObject<PcBuildSession>("PC_BUILD")
+                          ?? new PcBuildSession();
+
+            session.PsuId = id;
+
+            HttpContext.Session.SetObject("PC_BUILD", session);
+
+            return RedirectToAction("Index");
+        }
+
+        // ✅ STORAGE SELECT
+        [HttpPost]
+        public IActionResult SelectStorage(int id)
+        {
+            var session = HttpContext.Session.GetObject<PcBuildSession>("PC_BUILD")
+                          ?? new PcBuildSession();
+
+            session.StorageId = id;
+
+            HttpContext.Session.SetObject("PC_BUILD", session);
+
+            return RedirectToAction("Index");
+        }
+
+        // ✅ CASE SELECT
+        [HttpPost]
+        public IActionResult SelectCase(int id)
+        {
+            var session = HttpContext.Session.GetObject<PcBuildSession>("PC_BUILD")
+                          ?? new PcBuildSession();
+
+            session.CaseId = id;
+
+            HttpContext.Session.SetObject("PC_BUILD", session);
+
+            return RedirectToAction("Index");
+        }
+
+        // ✅ CASE FAN SELECT
+        [HttpPost]
+        public IActionResult SelectFan(int id)
+        {
+            var session = HttpContext.Session.GetObject<PcBuildSession>("PC_BUILD")
+                          ?? new PcBuildSession();
+
+            session.FanId = id;
+
+            HttpContext.Session.SetObject("PC_BUILD", session);
+
+            return RedirectToAction("Index");
+        }
+
+        // ✅ CPU FAN SELECT (mutually exclusive with AIO)
+        [HttpPost]
+        public IActionResult SelectCpuFan(int id)
+        {
+            var session = HttpContext.Session.GetObject<PcBuildSession>("PC_BUILD")
+                          ?? new PcBuildSession();
+
+            session.CpuFanId = id;
+            session.AioId = null; // ❗ enforce exclusivity
+
+            HttpContext.Session.SetObject("PC_BUILD", session);
+
+            return RedirectToAction("Index");
+        }
+
+        // ✅ AIO SELECT (mutually exclusive with CPU FAN)
+        [HttpPost]
+        public IActionResult SelectAio(int id)
+        {
+            var session = HttpContext.Session.GetObject<PcBuildSession>("PC_BUILD")
+                          ?? new PcBuildSession();
+
+            session.AioId = id;
+            session.CpuFanId = null; // ❗ enforce exclusivity
+
+            HttpContext.Session.SetObject("PC_BUILD", session);
+
+            return RedirectToAction("Index");
         }
     }
 }

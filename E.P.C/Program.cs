@@ -9,36 +9,45 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ShoppingCartService>();
 
-// Add services to the container.
+// Add MVC + Razor Pages
 builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages(); // Needed for Identity UI
+builder.Services.AddRazorPages();
 
-// Configure DbContext
+// ===================== DATABASE =====================
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Configure ASP.NET Core Identity WITH ROLES
+// ===================== IDENTITY =====================
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = false; // no email confirmation for testing
+    options.SignIn.RequireConfirmedAccount = false;
 })
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
-// Dummy email sender so Register works
+// ===================== SESSION (ADDED - REQUIRED FOR PC BUILDER) =====================
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(2); // keeps build alive longer
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+
+// Dummy email sender so Identity works without real SMTP
 builder.Services.AddSingleton<IEmailSender, DummyEmailSender>();
 
 var app = builder.Build();
 
-// 🔐 SEED ADMIN USER + ROLE
+// ===================== SEED ADMIN =====================
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     await DbInitializer.SeedAdminAsync(services);
 }
 
-// Configure the HTTP request pipeline.
+// ===================== PIPELINE =====================
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -50,25 +59,26 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Authentication & Authorization
+// ===================== SESSION (MUST BE HERE) =====================
+app.UseSession();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Map controllers and Razor Pages
+// ===================== ROUTES =====================
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapRazorPages(); // Required for Identity UI
+app.MapRazorPages();
 
 app.Run();
 
-// Dummy email sender implementation
+// ===================== DUMMY EMAIL =====================
 public class DummyEmailSender : IEmailSender
 {
     public Task SendEmailAsync(string email, string subject, string htmlMessage)
     {
-        // Do nothing - just satisfies the dependency
         return Task.CompletedTask;
     }
 }
