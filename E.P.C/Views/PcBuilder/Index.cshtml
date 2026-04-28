@@ -85,6 +85,21 @@
                 </div>
             </div>
 
+            
+
+            <!-- Case Fan -->
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card text-center p-4">
+                    <h5>Case Fan</h5>
+                    <p>
+                        @(Model.Fan != null
+                            ? $"{Model.Fan.Brand} {Model.Fan.Model}"
+                            : "Not selected")
+                    </p>
+                    <a href="/Fans" class="btn-details">Choose Fan</a>
+                </div>
+            </div>
+
             <!-- CPU Cooling -->
             <div class="col-md-6 col-lg-4">
                 <div class="product-card text-center p-4">
@@ -107,19 +122,6 @@
 
                     <a href="/CPUFans" class="btn-details">CPU Fan</a>
                     <a href="/AIOs" class="btn-details">AIO</a>
-                </div>
-            </div>
-
-            <!-- Case Fan -->
-            <div class="col-md-6 col-lg-4">
-                <div class="product-card text-center p-4">
-                    <h5>Case Fan</h5>
-                    <p>
-                        @(Model.Fan != null
-                            ? $"{Model.Fan.Brand} {Model.Fan.Model}"
-                            : "Not selected")
-                    </p>
-                    <a href="/Fans" class="btn-details">Choose Fan</a>
                 </div>
             </div>
 

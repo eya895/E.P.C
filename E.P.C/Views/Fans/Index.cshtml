@@ -26,12 +26,12 @@
                                 View Details
                             </a>
 
-                            <a asp-controller="PcBuilder"
-                                   asp-action="SelectFan"
-                                   asp-route-id="@fan.Id"
-                                   class="btn-buy">
-                                Select
-                            </a>
+                            <form asp-controller="PcBuilder" asp-action="SelectPsu" method="post" class="flex-grow-1">
+                                <input type="hidden" name="id" value="@fan.Id" />
+                                <button type="submit" class="btn-buy w-100">
+                                    Select
+                                </button>
+                            </form>
                         </div>
 
                     </div>
