@@ -10,19 +10,20 @@ namespace E.P.C.Controllers
     public class PcBuilderController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly ShoppingCartService _cart;
 
-        public PcBuilderController(AppDbContext context)
+        public PcBuilderController(AppDbContext context, ShoppingCartService cart)
         {
             _context = context;
+            _cart = cart;
         }
 
-        // ✅ MAIN BUILDER PAGE
+        // MAIN BUILDER PAGE
         public IActionResult Index()
         {
             var session = HttpContext.Session.GetObject<PcBuildSession>("PC_BUILD")
                           ?? new PcBuildSession();
 
-            // 🔥 LOAD FULL PRODUCTS FROM DB
             session.Cpu = _context.Products.OfType<CPU>()
                 .FirstOrDefault(x => x.Id == session.CpuId);
 
@@ -56,7 +57,7 @@ namespace E.P.C.Controllers
             return View(session);
         }
 
-        // ✅ CPU SELECT
+        // CPU SELECT
         [HttpPost]
         public IActionResult SelectCpu(int id)
         {
@@ -64,13 +65,12 @@ namespace E.P.C.Controllers
                           ?? new PcBuildSession();
 
             session.CpuId = id;
-
             HttpContext.Session.SetObject("PC_BUILD", session);
 
             return RedirectToAction("Index");
         }
 
-        // ✅ GPU SELECT
+        // GPU SELECT
         [HttpPost]
         public IActionResult SelectGpu(int id)
         {
@@ -78,13 +78,12 @@ namespace E.P.C.Controllers
                           ?? new PcBuildSession();
 
             session.GpuId = id;
-
             HttpContext.Session.SetObject("PC_BUILD", session);
 
             return RedirectToAction("Index");
         }
 
-        // ✅ RAM SELECT
+        // RAM SELECT
         [HttpPost]
         public IActionResult SelectRam(int id)
         {
@@ -92,13 +91,12 @@ namespace E.P.C.Controllers
                           ?? new PcBuildSession();
 
             session.RamId = id;
-
             HttpContext.Session.SetObject("PC_BUILD", session);
 
             return RedirectToAction("Index");
         }
 
-        // ✅ MOTHERBOARD SELECT
+        // MOTHERBOARD SELECT
         [HttpPost]
         public IActionResult SelectMotherboard(int id)
         {
@@ -106,13 +104,12 @@ namespace E.P.C.Controllers
                           ?? new PcBuildSession();
 
             session.MotherboardId = id;
-
             HttpContext.Session.SetObject("PC_BUILD", session);
 
             return RedirectToAction("Index");
         }
 
-        // ✅ PSU SELECT
+        // PSU SELECT
         [HttpPost]
         public IActionResult SelectPsu(int id)
         {
@@ -120,13 +117,12 @@ namespace E.P.C.Controllers
                           ?? new PcBuildSession();
 
             session.PsuId = id;
-
             HttpContext.Session.SetObject("PC_BUILD", session);
 
             return RedirectToAction("Index");
         }
 
-        // ✅ STORAGE SELECT
+        // STORAGE SELECT
         [HttpPost]
         public IActionResult SelectStorage(int id)
         {
@@ -134,13 +130,12 @@ namespace E.P.C.Controllers
                           ?? new PcBuildSession();
 
             session.StorageId = id;
-
             HttpContext.Session.SetObject("PC_BUILD", session);
 
             return RedirectToAction("Index");
         }
 
-        // ✅ CASE SELECT
+        // CASE SELECT
         [HttpPost]
         public IActionResult SelectCase(int id)
         {
@@ -148,13 +143,12 @@ namespace E.P.C.Controllers
                           ?? new PcBuildSession();
 
             session.CaseId = id;
-
             HttpContext.Session.SetObject("PC_BUILD", session);
 
             return RedirectToAction("Index");
         }
 
-        // ✅ CASE FAN SELECT
+        // FAN SELECT
         [HttpPost]
         public IActionResult SelectFan(int id)
         {
@@ -162,13 +156,12 @@ namespace E.P.C.Controllers
                           ?? new PcBuildSession();
 
             session.FanId = id;
-
             HttpContext.Session.SetObject("PC_BUILD", session);
 
             return RedirectToAction("Index");
         }
 
-        // ✅ CPU FAN SELECT (mutually exclusive with AIO)
+        // CPU FAN SELECT
         [HttpPost]
         public IActionResult SelectCpuFan(int id)
         {
@@ -176,14 +169,14 @@ namespace E.P.C.Controllers
                           ?? new PcBuildSession();
 
             session.CpuFanId = id;
-            session.AioId = null; // ❗ enforce exclusivity
+            session.AioId = null;
 
             HttpContext.Session.SetObject("PC_BUILD", session);
 
             return RedirectToAction("Index");
         }
 
-        // ✅ AIO SELECT (mutually exclusive with CPU FAN)
+        // AIO SELECT
         [HttpPost]
         public IActionResult SelectAio(int id)
         {
@@ -191,11 +184,40 @@ namespace E.P.C.Controllers
                           ?? new PcBuildSession();
 
             session.AioId = id;
-            session.CpuFanId = null; // ❗ enforce exclusivity
+            session.CpuFanId = null;
 
             HttpContext.Session.SetObject("PC_BUILD", session);
 
             return RedirectToAction("Index");
+        }
+
+        // ADD FULL BUILD TO CART (NEW)
+        [HttpPost]
+        public async Task<IActionResult> AddBuildToCart()
+        {
+            var session = HttpContext.Session.GetObject<PcBuildSession>("PC_BUILD");
+
+            if (session == null)
+                return RedirectToAction("Index");
+
+            async Task Add(int? id)
+            {
+                if (id.HasValue)
+                    await _cart.AddAsync(id.Value);
+            }
+
+            await Add(session.CpuId);
+            await Add(session.GpuId);
+            await Add(session.RamId);
+            await Add(session.MotherboardId);
+            await Add(session.PsuId);
+            await Add(session.StorageId);
+            await Add(session.CaseId);
+            await Add(session.FanId);
+            await Add(session.CpuFanId);
+            await Add(session.AioId);
+
+            return RedirectToAction("Index", "ShoppingCart");
         }
     }
 }

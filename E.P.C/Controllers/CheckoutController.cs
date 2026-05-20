@@ -34,6 +34,7 @@ namespace E.P.C.Controllers
         }
 
         [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> PlaceOrder()
         {
             var cart = await _cartService.GetOrCreateCartAsync();
@@ -60,9 +61,14 @@ namespace E.P.C.Controllers
 
             _context.Orders.Add(order);
 
+            // ✅ LOCK CART AS CHECKED OUT
             cart.IsCheckedOut = true;
             cart.CheckedOutAt = DateTime.UtcNow;
+
             await _context.SaveChangesAsync();
+
+            // ✅ FORCE CLEAR TRACKING ISSUE (IMPORTANT FIX)
+            _context.Entry(cart).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
 
             return RedirectToAction(nameof(Success));
         }

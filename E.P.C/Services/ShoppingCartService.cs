@@ -24,26 +24,30 @@ public class ShoppingCartService
     public async Task<ShoppingCart> GetOrCreateCartAsync()
     {
         var userId = GetUserId();
-        if (userId == null) throw new InvalidOperationException("User must be logged in.");
 
+        if (userId == null)
+            throw new InvalidOperationException("User must be logged in.");
+
+        // ONLY active cart
         var cart = await _context.ShoppingCarts
             .Include(c => c.Items)
             .ThenInclude(i => i.Product)
             .FirstOrDefaultAsync(c => c.UserId == userId && !c.IsCheckedOut);
 
-        if (cart == null)
-        {
-            cart = new ShoppingCart
-            {
-                UserId = userId,
-                CreatedAt = DateTime.UtcNow,
-                IsCheckedOut = false,
-                Items = new List<ShoppingCartItem>()
-            };
+        if (cart != null)
+            return cart;
 
-            _context.ShoppingCarts.Add(cart);
-            await _context.SaveChangesAsync();
-        }
+        // Create new cart
+        cart = new ShoppingCart
+        {
+            UserId = userId,
+            CreatedAt = DateTime.UtcNow,
+            IsCheckedOut = false,
+            Items = new List<ShoppingCartItem>()
+        };
+
+        _context.ShoppingCarts.Add(cart);
+        await _context.SaveChangesAsync();
 
         return cart;
     }
