@@ -1,4 +1,6 @@
-﻿namespace E.P.C.Models.ViewModels
+﻿using E.P.C.Services;
+
+namespace E.P.C.Models.ViewModels
 {
     public class PcBuildSession
     {
@@ -25,5 +27,9 @@
         public Case Case { get; set; }
         public CPUFan CpuFan { get; set; }
         public AIO Aio { get; set; }
+
+        // Populated by the controller on every Index load – not serialized to session
+        [System.Text.Json.Serialization.JsonIgnore]
+        public List<CompatibilityIssue> CompatibilityIssues { get; set; } = new();
     }
 }

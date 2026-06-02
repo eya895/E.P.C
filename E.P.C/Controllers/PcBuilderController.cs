@@ -4,6 +4,7 @@ using E.P.C.Data;
 using E.P.C.Models;
 using E.P.C.Models.ViewModels;
 using E.P.C.Helpers;
+using E.P.C.Services;
 
 namespace E.P.C.Controllers
 {
@@ -53,6 +54,8 @@ namespace E.P.C.Controllers
 
             session.Aio = _context.Products.OfType<AIO>()
                 .FirstOrDefault(x => x.Id == session.AioId);
+
+            session.CompatibilityIssues = CompatibilityService.Check(session);
 
             return View(session);
         }

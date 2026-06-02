@@ -35,10 +35,12 @@ namespace E.P.C.Data
         {
             base.OnModelCreating(builder);
 
-            // Each user has one cart
+            // A user can have many checked-out (historical) carts,
+            // but only one active cart at a time.
+            // Active-cart uniqueness is enforced in GetOrCreateCartAsync.
             builder.Entity<ShoppingCart>()
                 .HasIndex(c => c.UserId)
-                .IsUnique();
+                .IsUnique(false);
 
             // Cart -> Items relationship
             builder.Entity<ShoppingCart>()

@@ -1,198 +1,359 @@
 ﻿@model E.P.C.Models.ViewModels.PcBuildSession
+@using E.P.C.Services
 
-<div class="epc-products">
+@{
+    ViewData["Title"] = "Build Your PC";
+    ViewData["FullWidth"] = true;
+
+    var errors = Model.CompatibilityIssues.Where(i => i.Severity == Severity.Error).ToList();
+    var warnings = Model.CompatibilityIssues.Where(i => i.Severity == Severity.Warning).ToList();
+
+    // Map slot names to the issues that affect them
+    // A slot is "in error" if any issue's Component string contains that slot's key
+    bool SlotHasError(string key) =>
+        errors.Any(i => i.Component.Contains(key, StringComparison.OrdinalIgnoreCase));
+    bool SlotHasWarning(string key) =>
+        warnings.Any(i => i.Component.Contains(key, StringComparison.OrdinalIgnoreCase));
+
+    string SlotIssueClass(string key)
+    {
+        if (SlotHasError(key)) return "slot-error";
+        if (SlotHasWarning(key)) return "slot-warning";
+        return "";
+    }
+
+    // Collect the messages relevant to a slot for its tooltip
+    string SlotMessages(string key) => string.Join(" | ",
+        Model.CompatibilityIssues
+             .Where(i => i.Component.Contains(key, StringComparison.OrdinalIgnoreCase))
+             .Select(i => i.Message));
+
+    double total = 0;
+    if (Model.Cpu != null) total += Model.Cpu.Price;
+    if (Model.Gpu != null) total += Model.Gpu.Price;
+    if (Model.Ram != null) total += Model.Ram.Price;
+    if (Model.Motherboard != null) total += Model.Motherboard.Price;
+    if (Model.Psu != null) total += Model.Psu.Price;
+    if (Model.Storage != null) total += Model.Storage.Price;
+    if (Model.Fan != null) total += Model.Fan.Price;
+    if (Model.CpuFan != null) total += Model.CpuFan.Price;
+    if (Model.Aio != null) total += Model.Aio.Price;
+    if (Model.Case != null) total += Model.Case.Price;
+}
+
+<div class="builder-page">
     <div class="container py-5">
 
-        <h2 class="text-white mb-4">Your PC Build</h2>
+        <h2 class="builder-title">⚙️ Build Your PC</h2>
 
+        <!-- ── COMPONENT SLOTS ────────────────────────────────────── -->
         <div class="row g-4">
 
-            <!-- CPU -->
+            @{
+                void SlotCard(string title, string slotKey, string chosen, string href)
+                {
+                    bool selected = !string.IsNullOrEmpty(chosen);
+                    string issueClass = SlotIssueClass(slotKey);
+                    string messages = SlotMessages(slotKey);
+                    bool hasError = issueClass == "slot-error";
+                    bool hasWarning = issueClass == "slot-warning";
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="slot-card @(selected ? "slot-selected" : "") @issueClass"
+                             @(messages.Length > 0 ? $"title=\"{messages}\"" : "")>
+                            <div class="slot-top">
+                                <span class="slot-title">@title</span>
+                                @if (hasError)
+                                {
+                                    <span class="slot-status error-icon">⛔</span>
+                                }
+                                else if (hasWarning)
+                                {
+
+                                    <span class="slot-status warning-icon">⚠️</span>
+                                }
+                                else if (selected)
+                                {
+
+                                    <span class="slot-status check-icon">✓</span>
+                                }
+                            </div>
+                            <div class="slot-name">@(selected? chosen : "Not selected")</div>
+                            @if (messages.Length > 0)
+                            {
+                                <div class="slot-issue-msg @(hasError ? "msg-error" : "msg-warning")">
+                                    @messages
+                                </div>
+                            }
+                            <a href="@href" class="slot-btn">@(selected ? "Change" : "Choose")</a>
+                        </div>
+                    </div>
+                }
+            }
+
+            @{
+                SlotCard("CPU", "CPU", Model.Cpu != null ? $"{Model.Cpu.Brand} {Model.Cpu.Model}" : null, "/CPUs");
+            }
+            @{
+                SlotCard("GPU", "GPU", Model.Gpu != null ? $"{Model.Gpu.Brand} {Model.Gpu.Model}" : null, "/GPUs");
+            }
+            @{
+                SlotCard("RAM", "RAM", Model.Ram != null ? $"{Model.Ram.Brand} {Model.Ram.Model}" : null, "/RAMs");
+            }
+            @{
+                SlotCard("Motherboard", "Motherboard", Model.Motherboard != null ? $"{Model.Motherboard.Brand} {Model.Motherboard.Model}" : null, "/MotherBoards");
+            }
+            @{
+                SlotCard("PSU", "PSU", Model.Psu != null ? $"{Model.Psu.Brand} {Model.Psu.Model}" : null, "/PSUs");
+            }
+            @{
+                SlotCard("Storage", "Storage", Model.Storage != null ? $"{Model.Storage.Brand} {Model.Storage.Model}" : null, "/Storages");
+            }
+            @{
+                SlotCard("Case Fan", "Fan", Model.Fan != null ? $"{Model.Fan.Brand} {Model.Fan.Model}" : null, "/Fans");
+            }
+
+            <!-- CPU Cooling (dual choose buttons) -->
+            @{
+                string coolingKey = "CPU Fan";
+                string coolingAioKey = "AIO";
+                bool coolingError = SlotHasError(coolingKey) || SlotHasError(coolingAioKey);
+                bool coolingWarning = SlotHasWarning(coolingKey) || SlotHasWarning(coolingAioKey);
+                string coolingClass = coolingError ? "slot-error" : coolingWarning ? "slot-warning" : "";
+                string coolingMsg = SlotMessages(coolingKey) + (SlotMessages(coolingAioKey).Length > 0 ? " | " + SlotMessages(coolingAioKey) : "");
+                bool coolingSelected = Model.CpuFan != null || Model.Aio != null;
+            }
             <div class="col-md-6 col-lg-4">
-                <div class="product-card text-center p-4">
-                    <h5>CPU</h5>
-                    <p>
-                        @(Model.Cpu != null
-                            ? $"{Model.Cpu.Brand} {Model.Cpu.Model}"
-                            : "Not selected")
-                    </p>
-                    <a href="/CPUs" class="btn-details">Choose CPU</a>
-                </div>
-            </div>
+                <div class="slot-card @(coolingSelected ? "slot-selected" : "") @coolingClass"
+                     @(coolingMsg.Length > 0 ? $"title=\"{coolingMsg}\"" : "")>
+                    <div class="slot-top">
+                        <span class="slot-title">CPU Cooling</span>
+                        @if (coolingError)
+                        {
+                            <span class="slot-status error-icon">⛔</span>
+                        }
+                        else if (coolingWarning)
+                        {
 
-            <!-- GPU -->
-            <div class="col-md-6 col-lg-4">
-                <div class="product-card text-center p-4">
-                    <h5>GPU</h5>
-                    <p>
-                        @(Model.Gpu != null
-                            ? $"{Model.Gpu.Brand} {Model.Gpu.Model}"
-                            : "Not selected")
-                    </p>
-                    <a href="/GPUs" class="btn-details">Choose GPU</a>
-                </div>
-            </div>
+                            <span class="slot-status warning-icon">⚠️</span>
+                        }
+                        else if (coolingSelected)
+                        {
 
-            <!-- RAM -->
-            <div class="col-md-6 col-lg-4">
-                <div class="product-card text-center p-4">
-                    <h5>RAM</h5>
-                    <p>
-                        @(Model.Ram != null
-                            ? $"{Model.Ram.Brand} {Model.Ram.Model}"
-                            : "Not selected")
-                    </p>
-                    <a href="/RAMs" class="btn-details">Choose RAM</a>
-                </div>
-            </div>
-
-            <!-- Motherboard -->
-            <div class="col-md-6 col-lg-4">
-                <div class="product-card text-center p-4">
-                    <h5>Motherboard</h5>
-                    <p>
-                        @(Model.Motherboard != null
-                            ? $"{Model.Motherboard.Brand} {Model.Motherboard.Model}"
-                            : "Not selected")
-                    </p>
-                    <a href="/MotherBoards" class="btn-details">Choose Board</a>
-                </div>
-            </div>
-
-            <!-- PSU -->
-            <div class="col-md-6 col-lg-4">
-                <div class="product-card text-center p-4">
-                    <h5>PSU</h5>
-                    <p>
-                        @(Model.Psu != null
-                            ? $"{Model.Psu.Brand} {Model.Psu.Model}"
-                            : "Not selected")
-                    </p>
-                    <a href="/PSUs" class="btn-details">Choose PSU</a>
-                </div>
-            </div>
-
-            <!-- Storage -->
-            <div class="col-md-6 col-lg-4">
-                <div class="product-card text-center p-4">
-                    <h5>Storage</h5>
-                    <p>
-                        @(Model.Storage != null
-                            ? $"{Model.Storage.Brand} {Model.Storage.Model}"
-                            : "Not selected")
-                    </p>
-                    <a href="/Storages" class="btn-details">Choose Storage</a>
-                </div>
-            </div>
-
-            
-
-            <!-- Case Fan -->
-            <div class="col-md-6 col-lg-4">
-                <div class="product-card text-center p-4">
-                    <h5>Case Fan</h5>
-                    <p>
-                        @(Model.Fan != null
-                            ? $"{Model.Fan.Brand} {Model.Fan.Model}"
-                            : "Not selected")
-                    </p>
-                    <a href="/Fans" class="btn-details">Choose Fan</a>
-                </div>
-            </div>
-
-            <!-- CPU Cooling -->
-            <div class="col-md-6 col-lg-4">
-                <div class="product-card text-center p-4">
-                    <h5>CPU Cooling</h5>
-
-                    <p>
+                            <span class="slot-status check-icon">✓</span>
+                        }
+                    </div>
+                    <div class="slot-name">
                         @if (Model.CpuFan != null)
                         {
-                            <span>@Model.CpuFan.Brand @Model.CpuFan.Model</span>
+                            @($"{Model.CpuFan.Brand} {Model.CpuFan.Model}")
                         }
                         else if (Model.Aio != null)
                         {
-                            <span>@Model.Aio.Brand @Model.Aio.Model</span>
+
+                            @($"{Model.Aio.Brand} {Model.Aio.Model}")
                         }
                         else
                         {
+
                             <span>Not selected</span>
                         }
-                    </p>
-
-                    <a href="/CPUFans" class="btn-details">CPU Fan</a>
-                    <a href="/AIOs" class="btn-details">AIO</a>
+                    </div>
+                    @if (coolingMsg.Length > 0)
+                    {
+                        <div class="slot-issue-msg @(coolingError ? "msg-error" : "msg-warning")">@coolingMsg</div>
+                    }
+                    <div class="d-flex gap-2 mt-auto">
+                        <a href="/CPUFans" class="slot-btn flex-fill">CPU Fan</a>
+                        <a href="/AIOs" class="slot-btn flex-fill">AIO</a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Case -->
-            <div class="col-md-6 col-lg-4">
-                <div class="product-card text-center p-4">
-                    <h5>Case</h5>
-                    <p>
-                        @(Model.Case != null
-                            ? $"{Model.Case.Brand} {Model.Case.Model}"
-                            : "Not selected")
-                    </p>
-                    <a href="/Cases" class="btn-details">Choose Case</a>
-                </div>
-            </div>
+            @{
+                SlotCard("Case", "Case", Model.Case != null ? $"{Model.Case.Brand} {Model.Case.Model}" : null, "/Cases");
+            }
 
         </div>
-        <form asp-controller="PcBuilder"
-              asp-action="AddBuildToCart"
-              method="post">
 
-            <button type="submit" class="btn btn-success">
-                Add Build To Cart
-            </button>
+        <!-- ── TOTAL + ADD TO CART ────────────────────────────────── -->
+        <div class="builder-footer">
+            @if (total > 0)
+            {
+                <div class="build-total">Total: ₪@total.ToString("N0")</div>
+            }
+            <form asp-controller="PcBuilder" asp-action="AddBuildToCart" method="post" style="display:inline">
+                <button type="submit"
+                        class="add-cart-btn @(errors.Any() ? "btn-warn" : "")"
+                        @(errors.Any() ? "onclick=\"return confirm('There are compatibility errors in your build. Add to cart anyway?')\"" : "")>
+                    @(errors.Any() ? "⚠️ Add to Cart Anyway" : "🛒 Add Build to Cart")
+                </button>
+            </form>
+        </div>
 
-        </form>
     </div>
 </div>
 
 <style>
-    .epc-products {
+    .builder-page {
         min-height: 100vh;
         background: radial-gradient(circle at top, rgba(0,242,254,0.08), transparent 40%), radial-gradient(circle at bottom, rgba(79,172,254,0.06), transparent 50%), radial-gradient(circle at center, #1a2235 0%, #0b0f19 100%);
         color: white;
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
-    .product-card {
-        background: rgba(22, 30, 46, 0.95);
-        border: 1px solid rgba(0, 242, 254, 0.25);
+    .builder-title {
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 0 12px rgba(0,242,254,0.4);
+    }
+
+    /* ── Slot cards ── */
+    .slot-card {
+        background: rgba(22,30,46,0.95);
+        border: 1px solid rgba(0,242,254,0.2);
         border-radius: 18px;
-        padding: 20px;
+        padding: 22px;
+        height: 100%;
         transition: 0.3s ease;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
 
-        .product-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 30px 70px rgba(0, 242, 254, 0.18), 0 0 25px rgba(0, 242, 254, 0.12);
-            border-color: rgba(0, 242, 254, 0.5);
+        .slot-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(0,242,254,0.45);
+            box-shadow: 0 25px 60px rgba(0,242,254,0.15);
         }
 
-    /* BUTTONS */
-    .btn-details {
-        background: rgba(0, 242, 254, 0.12);
-        color: #00f2fe;
-        border: 1px solid rgba(0, 242, 254, 0.45);
+        .slot-card.slot-selected {
+            border-color: rgba(0,242,254,0.5);
+            background: rgba(0,242,254,0.06);
+        }
+
+        .slot-card.slot-error {
+            border-color: rgba(239,68,68,0.7) !important;
+            background: rgba(239,68,68,0.08) !important;
+            box-shadow: 0 0 20px rgba(239,68,68,0.25);
+        }
+
+        .slot-card.slot-warning {
+            border-color: rgba(234,179,8,0.7) !important;
+            background: rgba(234,179,8,0.07) !important;
+            box-shadow: 0 0 20px rgba(234,179,8,0.2);
+        }
+
+    .slot-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .slot-title {
+        font-weight: 700;
+        font-size: 1rem;
+        color: #7dd3fc;
+        letter-spacing: 0.5px;
+    }
+
+    .slot-status {
+        font-size: 1.1rem;
+    }
+
+    .check-icon {
+        color: #86efac;
         font-weight: 800;
-        padding: 12px;
-        border-radius: 10px;
+    }
+
+    .slot-name {
+        font-size: 0.9rem;
+        color: #e2e8f0;
+        min-height: 2.5em;
+    }
+
+    .slot-issue-msg {
+        font-size: 0.78rem;
+        line-height: 1.4;
+        border-radius: 8px;
+        padding: 6px 10px;
+    }
+
+    .msg-error {
+        background: rgba(239,68,68,0.15);
+        color: #fca5a5;
+        border: 1px solid rgba(239,68,68,0.3);
+    }
+
+    .msg-warning {
+        background: rgba(234,179,8,0.12);
+        color: #fde047;
+        border: 1px solid rgba(234,179,8,0.3);
+    }
+
+    .slot-btn {
         display: block;
         text-align: center;
         text-decoration: none;
-        transition: 0.25s ease;
-        margin-top: 10px;
-        backdrop-filter: blur(6px);
-        box-shadow: 0 0 12px rgba(0, 242, 254, 0.15);
+        padding: 10px;
+        border-radius: 10px;
+        background: rgba(0,242,254,0.1);
+        color: #00f2fe;
+        border: 1px solid rgba(0,242,254,0.35);
+        font-weight: 700;
+        font-size: 0.9rem;
+        transition: 0.2s ease;
+        margin-top: auto;
     }
 
-        .btn-details:hover {
-            background: rgba(0, 242, 254, 0.25);
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4), 0 0 35px rgba(0, 242, 254, 0.25);
-            transform: scale(1.03);
+        .slot-btn:hover {
+            background: rgba(0,242,254,0.22);
+            box-shadow: 0 0 14px rgba(0,242,254,0.35);
+            transform: scale(1.02);
+            color: #00f2fe;
         }
+
+    /* ── Footer ── */
+    .builder-footer {
+        margin-top: 2.5rem;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .build-total {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #00f2fe;
+        text-shadow: 0 0 10px rgba(0,242,254,0.5);
+    }
+
+    .add-cart-btn {
+        padding: 14px 36px;
+        border-radius: 50px;
+        border: none;
+        background: linear-gradient(90deg, #00f2fe, #4facfe);
+        color: #0b0f19;
+        font-weight: 900;
+        font-size: 1rem;
+        cursor: pointer;
+        box-shadow: 0 0 25px rgba(0,242,254,0.4);
+        transition: 0.25s ease;
+    }
+
+        .add-cart-btn:hover {
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 0 40px rgba(0,242,254,0.7);
+        }
+
+        .add-cart-btn.btn-warn {
+            background: linear-gradient(90deg, #f59e0b, #ef4444);
+            box-shadow: 0 0 20px rgba(239,68,68,0.4);
+        }
+
+            .add-cart-btn.btn-warn:hover {
+                box-shadow: 0 0 35px rgba(239,68,68,0.6);
+            }
 </style>

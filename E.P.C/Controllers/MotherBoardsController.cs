@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,9 +21,24 @@ namespace E.P.C.Controllers
         }
 
         // GET: MotherBoards
-        public async Task<IActionResult> Index()
+        public IActionResult Index(string socket)
         {
-            return View(await _context.MotherBoards.ToListAsync());
+            // 1. Start with a general query that retrieves all motherboards
+            IQueryable<MotherBoard> query = _context.Products.OfType<MotherBoard>();
+
+            // 2. If a socket parameter is provided in the URL (i.e., the user came from the simulator after selecting a CPU)
+            if (!string.IsNullOrEmpty(socket))
+            {
+                // Filter the motherboards so that only those with the exact matching socket type are displayed
+                query = query.Where(m => m.SocketType == socket);
+
+                // Save the socket type in ViewBag so we can display a nice header to the user
+                ViewBag.FilteredSocket = socket;
+            }
+
+            // 3. Convert the query to a list and send it to the View
+            var motherboards = query.ToList();
+            return View(motherboards);
         }
 
         // GET: MotherBoards/Details/5
@@ -44,6 +60,7 @@ namespace E.P.C.Controllers
         }
 
         // GET: MotherBoards/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -53,6 +70,7 @@ namespace E.P.C.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Brand,Model,Chipset,SocketType,RAMSlots,MaxRAMCapacity,FormFactor,Id,Description,Price,ImageUrl")] MotherBoard motherBoard)
         {
@@ -66,6 +84,7 @@ namespace E.P.C.Controllers
         }
 
         // GET: MotherBoards/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -85,6 +104,7 @@ namespace E.P.C.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Brand,Model,Chipset,SocketType,RAMSlots,MaxRAMCapacity,FormFactor,Id,Description,Price,ImageUrl")] MotherBoard motherBoard)
         {
@@ -117,6 +137,7 @@ namespace E.P.C.Controllers
         }
 
         // GET: MotherBoards/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,6 +157,7 @@ namespace E.P.C.Controllers
 
         // POST: MotherBoards/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

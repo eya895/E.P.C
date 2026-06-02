@@ -5,6 +5,13 @@
 
         <h2 class="text-white mb-4">Motherboards</h2>
 
+        @if (ViewBag.FilteredSocket != null)
+        {
+            <div class="mb-4" style="color: #00f2fe; font-weight: bold;">
+                <i class="bi bi-funnel-fill"></i> מציג לוחות אם התואמים לתושבת המעבד שלך: <span class="badge bg-info text-dark">@ViewBag.FilteredSocket</span>
+            </div>
+        }
+
         <div class="row g-4">
 
             @foreach (var motherboard in Model)

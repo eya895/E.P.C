@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace E.P.C.Migrations
 {
     /// <inheritdoc />
-    public partial class addmigration : Migration
+    public partial class mig : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -514,7 +514,7 @@ namespace E.P.C.Migrations
                 name: "IX_ShoppingCarts_UserId",
                 table: "ShoppingCarts",
                 column: "UserId",
-                unique: true);
+                unique: false);
         }
 
         /// <inheritdoc />

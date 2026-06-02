@@ -11,7 +11,7 @@
     <div class="product-card danger">
 
         <div class="row g-0">
-            <!-- IMAGE -->
+            <!-- IMAGE SECTION -->
             <div class="col-lg-5 product-image-section">
                 <div class="image-card">
                     <img src="@Model.ImageUrl" alt="Product Image" class="floating-img">
@@ -128,7 +128,7 @@
                 <div class="actions">
                     <a asp-action="Index" class="neon-outline-btn">Cancel</a>
 
-                    <form asp-action="DeleteConfirmed" method="post" class="flex-grow-1">
+                    <form asp-action="Delete" method="post" class="flex-grow-1">
                         <input type="hidden" asp-for="Id" />
                         <button type="submit" class="neon-btn danger w-100">
                             Delete Product
@@ -176,25 +176,7 @@
             border-color: rgba(255, 77, 77, 0.5);
         }
 
-    .product-image-section {
-        padding: 2rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .image-card {
-        background: white;
-        border-radius: 18px;
-        padding: 18px;
-        max-width: 420px;
-        box-shadow: 0 25px 60px rgba(0,0,0,0.25);
-    }
-
-    .floating-img {
-        max-height: 420px;
-        object-fit: contain;
-    }
+    
 
     .neon-badge {
         background: rgba(0, 242, 254, 0.15);
@@ -270,5 +252,33 @@
         color: #7dd3fc;
         font-weight: 800;
         text-decoration: none;
+    }
+
+    /* ---------- IMAGE CARD ---------- */
+    .product-image-section {
+        background: transparent;
+        padding: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .image-card {
+        background: white;
+        border-radius: 18px;
+        padding: 18px;
+        width: 125%;
+        height: 100%;
+        max-width: 420px;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .floating-img {
+        max-height: 420px;
+        object-fit: contain;
+        transition: 0.3s;
     }
 </style>

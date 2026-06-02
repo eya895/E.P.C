@@ -1,28 +1,241 @@
 ﻿@model E.P.C.Models.ShoppingCart
 
-<h2>Checkout</h2>
+@{
+    ViewData["Title"] = "Checkout";
+    ViewData["FullWidth"] = true;
+}
 
-<table class="table">
-    <tr>
-        <th>Product</th>
-        <th>Price</th>
-        <th>Qty</th>
-        <th>Total</th>
-    </tr>
+<div class="checkout-page">
+    <div class="container py-5">
 
-    @foreach (var item in Model.Items)
-    {
-        <tr>
-            <td>@item.Product.Description</td>
-            <td>@item.Product.Price</td>
-            <td>@item.Quantity</td>
-            <td>@(item.Product.Price * item.Quantity)</td>
-        </tr>
+        <h2 class="page-title">🧾 Checkout</h2>
+
+        <div class="checkout-layout">
+
+            <!-- ── Order summary ── -->
+            <div class="summary-card">
+                <h3 class="section-heading">Order Summary</h3>
+
+                <div class="order-items">
+                    @foreach (var item in Model.Items)
+                    {
+                        <div class="order-row">
+                            <img src="@item.Product.ImageUrl"
+                                 class="order-img"
+                                 alt="@item.Product.Description" />
+                            <div class="order-info">
+                                <div class="order-name">@item.Product.Description</div>
+                                <div class="order-meta">₪@item.Product.Price.ToString("N0") × @item.Quantity</div>
+                            </div>
+                            <div class="order-subtotal">₪@((item.Product.Price * item.Quantity).ToString("N0"))</div>
+                        </div>
+                    }
+                </div>
+
+                <div class="order-divider"></div>
+
+                <div class="order-total-row">
+                    <span class="order-total-label">Total</span>
+                    <span class="order-total-value">₪@Model.TotalPrice.ToString("N0")</span>
+                </div>
+            </div>
+
+            <!-- ── Place order panel ── -->
+            <div class="place-order-card">
+                <h3 class="section-heading">Ready to order?</h3>
+                <p class="place-order-note">
+                    Review your items on the left, then click Place Order to confirm your purchase.
+                </p>
+                <form asp-action="PlaceOrder" method="post">
+                    <button type="submit" class="neon-btn place-btn">
+                        ✅ Place Order
+                    </button>
+                </form>
+                <a asp-controller="ShoppingCart" asp-action="Index" class="ghost-btn back-btn">
+                    ← Back to Cart
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .checkout-page {
+        min-height: 100vh;
+        background: radial-gradient(circle at top, rgba(0,242,254,0.08), transparent 40%), radial-gradient(circle at bottom, rgba(79,172,254,0.06), transparent 50%), radial-gradient(circle at center, #1a2235 0%, #0b0f19 100%);
+        color: white;
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
-</table>
 
-<h3>Total: @Model.TotalPrice</h3>
+    .page-title {
+        font-weight: 800;
+        margin-bottom: 2rem;
+        text-shadow: 0 0 12px rgba(0,242,254,0.4);
+    }
 
-<form asp-action="PlaceOrder" method="post">
-    <button class="btn btn-success">Place Order</button>
-</form>
+    .checkout-layout {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 24px;
+        align-items: start;
+    }
+    
+    /* ── Shared card base ── */
+    .summary-card, .place-order-card {
+        background: rgba(22,30,46,0.95);
+        border: 1px solid rgba(0,242,254,0.18);
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    .section-heading {
+        font-weight: 700;
+        font-size: 1.05rem;
+        color: #7dd3fc;
+        letter-spacing: 0.5px;
+        margin-bottom: 1.2rem;
+        text-transform: uppercase;
+    }
+
+    /* ── Order items ── */
+    .order-items {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .order-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .order-img {
+        width: 58px;
+        height: 58px;
+        object-fit: contain;
+        border-radius: 8px;
+        background: rgba(0,0,0,0.3);
+        padding: 4px;
+        flex-shrink: 0;
+    }
+
+    .order-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .order-name {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #e2e8f0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .order-meta {
+        font-size: 0.78rem;
+        color: #64748b;
+        margin-top: 3px;
+    }
+
+    .order-subtotal {
+        font-weight: 800;
+        font-size: 0.95rem;
+        color: #00f2fe;
+        flex-shrink: 0;
+        min-width: 80px;
+        text-align: right;
+    }
+
+    .order-divider {
+        height: 1px;
+        background: rgba(0,242,254,0.12);
+        margin: 20px 0;
+    }
+
+    .order-total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .order-total-label {
+        font-size: 0.85rem;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .order-total-value {
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: #00f2fe;
+        text-shadow: 0 0 14px rgba(0,242,254,0.5);
+    }
+
+    /* ── Place order card ── */
+    .place-order-card {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        position: sticky;
+        top: 100px;
+    }
+
+    .place-order-note {
+        font-size: 0.88rem;
+        color: #64748b;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    /* ── Buttons ── */
+    .neon-btn {
+        display: inline-block;
+        padding: 14px 28px;
+        border-radius: 50px;
+        border: none;
+        background: linear-gradient(90deg, #00f2fe, #4facfe);
+        color: #0b0f19;
+        font-weight: 900;
+        font-size: 1rem;
+        text-decoration: none;
+        cursor: pointer;
+        box-shadow: 0 0 25px rgba(0,242,254,0.4);
+        transition: 0.25s ease;
+        text-align: center;
+        width: 100%;
+    }
+
+        .neon-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 0 40px rgba(0,242,254,0.7);
+            color: #0b0f19;
+        }
+
+    .ghost-btn {
+        display: inline-block;
+        padding: 13px 28px;
+        border-radius: 50px;
+        border: 1px solid rgba(0,242,254,0.3);
+        background: rgba(0,242,254,0.06);
+        color: #00f2fe;
+        font-weight: 700;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: 0.25s ease;
+        text-align: center;
+        width: 100%;
+    }
+
+        .ghost-btn:hover {
+            background: rgba(0,242,254,0.14);
+            box-shadow: 0 0 16px rgba(0,242,254,0.25);
+            color: #00f2fe;
+        }
+</style>

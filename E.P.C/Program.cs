@@ -47,6 +47,13 @@ using (var scope = app.Services.CreateScope())
     await DbInitializer.SeedAdminAsync(services);
 }
 
+// ===================== SEED User =====================
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await DbInitializer.SeedUserAsync(services);
+}
+
 // ===================== PIPELINE =====================
 if (!app.Environment.IsDevelopment())
 {

@@ -1,104 +1,81 @@
-﻿@model E.P.C.Models.Case
+﻿@model E.P.C.Models.GPU
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit GPU";
 }
 
-<h1>Create</h1>
-
-<h4>Case</h4>
-<hr />
-<div class="create-form-container">
-    
-    <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="edit-form-container">
+    <h1>Edit GPU</h1>
+    <hr />
+    <form asp-action="Edit" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
         <div class="form-grid">
             <div class="form-group">
-                <label asp-for="Brand"></label>
+                <label>Brand</label>
                 <input asp-for="Brand" class="form-control" />
-                <span asp-validation-for="Brand" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Model"></label>
+                <label>Model</label>
                 <input asp-for="Model" class="form-control" />
-                <span asp-validation-for="Model" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <label asp-for="MaxGPULength"></label>
-                <input asp-for="MaxGPULength" class="form-control" />
-                <span asp-validation-for="MaxGPULength" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MaxCPUCoolerHeight"></label>
-                <input asp-for="MaxCPUCoolerHeight" class="form-control" />
-                <span asp-validation-for="MaxCPUCoolerHeight" class="text-danger"></span>
+                <label>Memory Size (MB)</label>
+                <input asp-for="MemorySize" class="form-control" type="number" />
             </div>
             <div class="form-group">
-                <label asp-for="DriveBays"></label>
-                <input asp-for="DriveBays" class="form-control" />
-                <span asp-validation-for="DriveBays" class="text-danger"></span>
+                <label>Memory Type (e.g. GDDR6)</label>
+                <input asp-for="MemoryType" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="FanSlots"></label>
-                <input asp-for="FanSlots" class="form-control" />
-                <span asp-validation-for="FanSlots" class="text-danger"></span>
+                <label>Core Clock (MHz)</label>
+                <input asp-for="CoreClock" class="form-control" type="number" />
             </div>
             <div class="form-group">
-                <label asp-for="Description"></label>
+                <label>Boost Clock (MHz)</label>
+                <input asp-for="BoostClock" class="form-control" type="number" />
+            </div>
+            <div class="form-group">
+                <label>TDP (Watts)</label>
+                <input asp-for="TDP" class="form-control" type="number" />
+            </div>
+            <div class="form-group">
+                <label>Interface (e.g. PCIe 4.0)</label>
+                <input asp-for="Interface" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Dimensions (L×W×H mm)</label>
+                <input asp-for="dimensions" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Ports (e.g. HDMI, DP)</label>
+                <input asp-for="Ports" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Description</label>
                 <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price"></label>
+                <label>Price (₪)</label>
                 <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageUrl"></label>
+                <label>Image URL</label>
                 <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-group socket-group">
-            <label>Form Factor</label>
 
-            <div class="socket-checkboxes">
-                @{
-                    var factors = new List<string>
-                                {"ATX","Micro-ATX","ITX","EATX"};
-                }
-
-                @foreach (var factor in factors)
-                {
-                    <label class="socket-label">
-                        <input asp-for="FormFactor"
-                               type="radio"
-                               value="@factor" />
-                        <span>@factor</span>
-                    </label>
-                }
-            </div>
-
-            <span asp-validation-for="FormFactor" class="text-danger"></span>
+        <div class="form-group mt-4">
+            <input type="submit" value="Save Changes" />
         </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
     </form>
+    <div class="mt-3">
+        <a asp-controller="Products" asp-action="Index">← Back to Products</a>
+    </div>
 </div>
 
-<a asp-controller="Products"
-   asp-action="Index"
-   class="hero-btn">
-    Back To Product List
-</a>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
 <style>
-    .create-form-container {
+    .edit-form-container {
         max-width: 1200px;
         margin: 40px auto;
         padding: 40px;
@@ -110,7 +87,7 @@
         color: #00f2fe;
     }
 
-        .create-form-container h1 {
+        .edit-form-container h1 {
             font-weight: 700;
             margin-bottom: 20px;
             text-shadow: 0 0 6px rgba(0,242,254,0.7);
@@ -131,7 +108,7 @@
         flex-direction: column;
     }
 
-        .form-group{
+        .form-group label {
             font-weight: 600;
             margin-bottom: 6px;
             text-shadow: 0 0 4px rgba(0,242,254,0.6);
@@ -184,24 +161,17 @@
             box-shadow: 0 0 18px rgba(0,242,254,0.45);
         }
 
-    /* ---------- SOCKET SELECTOR ---------- */
-
-    .socket-group {
-        grid-column: 1 / -1;
-    }
-
     .socket-checkboxes {
         display: flex;
         flex-wrap: wrap;
         gap: 12px;
-        margin-top: 10px;
     }
 
     .socket-label {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 130px;
+        position: relative;
+        display: inline-block;
+        min-width: 60px;
+        text-align: center;
         padding: 10px 18px;
         border-radius: 20px;
         background: rgba(10,15,26,0.85);
@@ -209,31 +179,31 @@
         color: #00f2fe;
         font-weight: 700;
         cursor: pointer;
-        transition: all .25s ease;
+        transition: all 0.25s ease;
         box-shadow: 0 4px 12px rgba(0,242,254,0.15);
+        overflow: hidden;
     }
 
-        .socket-label input[type="radio"] {
+        .socket-label input[type="checkbox"] {
             display: none;
         }
 
         .socket-label span {
             display: block;
             width: 100%;
-            text-align: center;
+            padding: 8px 0;
             border-radius: 20px;
-            padding: 8px 12px;
-            transition: all .25s ease;
+            transition: all 0.25s ease;
         }
 
-        .socket-label input[type="radio"]:checked + span {
+        .socket-label input[type="checkbox"]:checked + span {
             background: linear-gradient(90deg,#00f2fe,#4facfe);
             color: #0b0f19;
-            box-shadow: 0 0 15px rgba(0,242,254,.7), inset 0 0 25px rgba(0,242,254,.3);
+            box-shadow: 0 0 15px rgba(0,242,254,0.7), inset 0 0 25px rgba(0,242,254,0.3);
         }
 
-        .socket-label:hover {
+        .socket-label:hover span {
             transform: translateY(-2px);
-            box-shadow: 0 4px 14px rgba(0,242,254,.35);
+            box-shadow: 0 4px 14px rgba(0,242,254,0.35);
         }
 </style>

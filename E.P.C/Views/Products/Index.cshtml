@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<E.P.C.Models.Product>
+
+@{
     ViewData["Title"] = "Products";
     ViewData["FullWidth"] = true;
 }
@@ -44,7 +46,7 @@
                         </div>
 
                         <div class="card-body text-center">
-                            <h5 class="modelname">@product.Brand @product.Model</h5>
+                            <h5 class="modelname">@product.Description</h5>
                             <p class="price">₪@product.Price</p>
 
                             <div class="d-grid gap-2 mt-4">
@@ -72,6 +74,42 @@
                                 @if (product is E.P.C.Models.AIO)
                                 {
                                     <a asp-controller="AIOs" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-admin-edit">Edit</a>
+                                }
+                                else if (product is E.P.C.Models.CPU)
+                                {
+                                    <a asp-controller="CPUs" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-admin-edit">Edit</a>
+                                }
+                                else if (product is E.P.C.Models.GPU)
+                                {
+                                    <a asp-controller="GPUs" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-admin-edit">Edit</a>
+                                }
+                                else if (product is E.P.C.Models.RAM)
+                                {
+                                    <a asp-controller="RAMs" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-admin-edit">Edit</a>
+                                }
+                                else if (product is E.P.C.Models.Storage)
+                                {
+                                    <a asp-controller="Storages" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-admin-edit">Edit</a>
+                                }
+                                else if (product is E.P.C.Models.MotherBoard)
+                                {
+                                    <a asp-controller="MotherBoards" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-admin-edit">Edit</a>
+                                }
+                                else if (product is E.P.C.Models.PSU)
+                                {
+                                    <a asp-controller="PSUs" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-admin-edit">Edit</a>
+                                }
+                                else if (product is E.P.C.Models.CPUFan)
+                                {
+                                    <a asp-controller="CPUFans" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-admin-edit">Edit</a>
+                                }
+                                else if (product is E.P.C.Models.Fan)
+                                {
+                                    <a asp-controller="Fans" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-admin-edit">Edit</a>
+                                }
+                                else if (product is E.P.C.Models.Case)
+                                {
+                                    <a asp-controller="Cases" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-admin-edit">Edit</a>
                                 }
                                 <a asp-action="Delete"
                                    asp-route-id="@product.Id"

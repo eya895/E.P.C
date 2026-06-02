@@ -20,15 +20,18 @@ public class ShoppingCartService
         return _http.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 
-    // 🔑 Find or create active cart for the current user
+    // Find or create active cart — only called when actually adding items
     public async Task<ShoppingCart> GetOrCreateCartAsync()
     {
         var userId = GetUserId();
-
         if (userId == null)
             throw new InvalidOperationException("User must be logged in.");
 
-        // ONLY active cart
+        // Verify the user actually exists in AspNetUsers before inserting
+        var userExists = await _context.Users.AnyAsync(u => u.Id == userId);
+        if (!userExists)
+            throw new InvalidOperationException("User account not found.");
+
         var cart = await _context.ShoppingCarts
             .Include(c => c.Items)
             .ThenInclude(i => i.Product)
@@ -37,7 +40,6 @@ public class ShoppingCartService
         if (cart != null)
             return cart;
 
-        // Create new cart
         cart = new ShoppingCart
         {
             UserId = userId,
@@ -52,10 +54,16 @@ public class ShoppingCartService
         return cart;
     }
 
-    // 📦 Get current cart
-    public async Task<ShoppingCart> GetCartAsync()
+    // Read-only — returns null if no cart exists yet, never creates one
+    public async Task<ShoppingCart?> GetCartAsync()
     {
-        return await GetOrCreateCartAsync();
+        var userId = GetUserId();
+        if (userId == null) return null;
+
+        return await _context.ShoppingCarts
+            .Include(c => c.Items)
+            .ThenInclude(i => i.Product)
+            .FirstOrDefaultAsync(c => c.UserId == userId && !c.IsCheckedOut);
     }
 
     // ➕ Add a product to the cart (or increase quantity)

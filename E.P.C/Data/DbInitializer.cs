@@ -34,6 +34,36 @@ namespace E.P.C.Data
                 await userManager.AddToRoleAsync(adminUser, adminRole);
             }
         }
+        public static async Task SeedUserAsync(IServiceProvider services)
+        {
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+
+            const string userRole = "User";
+            const string userEmail = "user@epc.com";
+            const string userPassword = "User123!";
+
+            // Create role if not exists
+            if (!await roleManager.RoleExistsAsync(userRole))
+            {
+                await roleManager.CreateAsync(new IdentityRole(userRole));
+            }
+
+            // Create user if not exists
+            var user = await userManager.FindByEmailAsync(userEmail);
+            if (user == null)
+            {
+                user = new IdentityUser
+                {
+                    UserName = userEmail,
+                    Email = userEmail,
+                    EmailConfirmed = true
+                };
+
+                await userManager.CreateAsync(user, userPassword);
+                await userManager.AddToRoleAsync(user, userRole);
+            }
+        }
     }
 }
 

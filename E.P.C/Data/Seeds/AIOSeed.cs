@@ -18,7 +18,7 @@ namespace E.P.C.Data.Seeds
                     FanSize = 120,
                     FanRPM = 2400,
                     NoiseLevel = 36,
-                    SupportedSockets = "LGA1200, AM4",
+                    SupportedSockets = "LGA1200, LGA1150, LGA1151, LGA1155, LGA1156, LGA1366, LGA2011, LGA2066, AM4, AM5, AM3, AM2, sTR4, sTRX4",
                     Price = 569.00,
                     ImageUrl = "https://nanotroniconline.com/wp-content/uploads/2020/09/enfriamiento-liquido-corsair-h100i-elite-capllix-nanotroniconline.png",
                     Description = "Corsair iCUE H100i RGB PRO XT AIO"
@@ -33,7 +33,7 @@ namespace E.P.C.Data.Seeds
                     FanSize = 140,
                     FanRPM = 2000,
                     NoiseLevel = 38,
-                    SupportedSockets = "LGA1200, AM4",
+                    SupportedSockets = "LGA1700, LGA1200, LGA1150, LGA1151, LGA1155, LGA1156, LGA1366, LGA2011, LGA2011-3, LGA2066, LGA1851, AM4, AM5",
                     Price = 880.00,
                     Description = "NZXT Kraken X63 AIO",
                     ImageUrl = "https://www.topmarket.co.il/images/detailed/88/GoRTpzh37R.png",
@@ -48,7 +48,7 @@ namespace E.P.C.Data.Seeds
                     FanSize = 120,
                     FanRPM = 2000,
                     NoiseLevel = 30,
-                    SupportedSockets = "LGA1200, AM4",
+                    SupportedSockets = "LGA1851, LGA1700, LGA1200, LGA1156, LGA1155, LGA1151, LGA1150, LGA2066, LGA2011, AM5, AM4, AM3+, AM3, AM2+, AM2, FM2+, FM2, and FM1",
                     Description = "Cooler Master MasterLiquid ML240L V2 RGB AIO",
                     ImageUrl = "https://tms.co.il/image/catalog/products/MLW-D24M-A18PC-R2/yZCRgRdRhR.jpg",   
                     Price = 295.00

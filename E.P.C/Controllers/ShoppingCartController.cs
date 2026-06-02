@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using E.P.C.Data;
+using E.P.C.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using E.P.C.Data;
 
 namespace E.P.C.Controllers
 {
@@ -16,7 +17,17 @@ namespace E.P.C.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var cart =  await _cart.GetCartAsync();
+            var cart = await _cart.GetCartAsync();
+
+            // No cart yet — show an empty cart view instead of crashing
+            if (cart == null)
+            {
+                cart = new ShoppingCart
+                {
+                    Items = new List<ShoppingCartItem>()
+                };
+            }
+
             return View(cart);
         }
 
@@ -28,7 +39,7 @@ namespace E.P.C.Controllers
         }
 
         [HttpPost]
-        public  async Task<IActionResult> RemoveAsync(int itemId)
+        public  async Task<IActionResult> Remove(int itemId)
         {
              await _cart.RemoveAsync(itemId);
             return RedirectToAction(nameof(Index));

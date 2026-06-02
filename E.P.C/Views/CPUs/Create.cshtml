@@ -9,15 +9,31 @@
 <h4>CPU</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label for="Brand">Brand</label>
-                <select id="Brand" name="Brand">
-                    <option value="Intel">Intel</option>
-                    <option value="AMD">AMD</option>
-                </select>
+        <div class="form-grid">
+            <div class="form-group socket-group">
+                <label>Brand</label>
+
+                <div class="socket-checkboxes">
+                    @{
+                        var brands = new List<string>
+                                        {"Intel","AMD"};
+                    }
+
+                    @foreach (var brand in brands)
+                    {
+                        <label class="socket-label">
+                            <input asp-for="Brand"
+                                   type="radio"
+                                   value="@brand" />
+                            <span>@brand</span>
+                        </label>
+                    }
+                </div>
+
+                <span asp-validation-for="Brand" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Model" class="control-label">Model:</label>
@@ -44,25 +60,7 @@
                 <input asp-for="BoostClock" class="form-control" />
                 <span asp-validation-for="BoostClock" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label for="SocketType">Socket:</label>
-                <select id="SocketType" name="SocketType">
-                    <option value="LGA1200">LGA1200</option>
-                    <option value="LGA1700">LGA1700</option>
-                    <option value="LGA1851">LGA1851</option>
-                    <option value="LGA1150">LGA1150</option>
-                    <option value="LGA1151">LGA1151</option>
-                    <option value="LGA1155">LGA1155</option>
-                    <option value="LGA1156">LGA1156</option>
-                    <option value="LGA2066">LGA2066</option>
-                    <option value="LGA4677">LGA4677</option>
-                    <option value="STRx4">STRx4</option>
-                    <option value="STR4">STR4</option>
-                    <option value="STR5">STR5</option>
-                    <option value="AM4">AM4</option>
-                    <option value="AM5">AM5</option>
-                </select>
-            </div>
+            
             <div class="form-group form-check">
                 <label class="form-check-label">Has Integrated Graphics
                     <input class="form-check-input" asp-for="IntegratedGraphics" /> 
@@ -83,12 +81,41 @@
                 <input asp-for="ImageUrl" class="form-control" />
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
+            </div>
+        <div class="form-group socket-group">
+            <label>Socket Type</label>
+
+            <div class="socket-checkboxes">
+                @{
+                    var sockets = new List<string>
+                                {
+                                "LGA1155", "LGA1156", "LGA1150", "LGA1151",
+                                "LGA1200", "LGA1700", "LGA1851",
+                                "LGA2011", "LGA2011-v3", "LGA2066",
+                                "LGA3647", "LGA4189", "LGA4677",
+                                "AM3+", "FM2+", "AM4", "AM5",
+                                "sTR4", "sTRX4", "sWRX8", "sTR5"
+                                };
+                }
+
+                @foreach (var socket in sockets)
+                {
+                    <label class="socket-label">
+                        <input asp-for="SocketType"
+                               type="radio"
+                               value="@socket" />
+                        <span>@socket</span>
+                    </label>
+                }
+            </div>
+
+            <span asp-validation-for="SocketType" class="text-danger"></span>
+        </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
 <a asp-controller="Products"
    asp-action="Index"
    class="hero-btn">
@@ -98,3 +125,131 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<style>
+    /* ---------- FORM CONTAINER ---------- */
+    .create-form-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 40px;
+        background: rgba(10, 15, 26, 0.95);
+        border-radius: 18px;
+        border: 1px solid rgba(0, 242, 254, 0.15);
+        box-shadow: 0 5px 25px rgba(0, 242, 254, 0.2);
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        color: #00f2fe;
+    }
+
+        .create-form-container h1 {
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 0 6px rgba(0,242,254,0.7);
+        }
+
+    hr {
+        border-color: rgba(0,242,254,0.25);
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+        gap: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            text-shadow: 0 0 4px rgba(0,242,254,0.6);
+        }
+
+    .form-control {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(0,242,254,0.25);
+        background: rgba(10,15,26,0.85);
+        color: #00f2fe;
+        transition: 0.25s;
+    }
+
+        .form-control:focus {
+            border-color: #00f2fe;
+            box-shadow: 0 0 10px rgba(0,242,254,0.25);
+            outline: none;
+        }
+
+    /* ---------- SAVE BUTTON ---------- */
+    input[type="submit"] {
+        background: linear-gradient(90deg,#00f2fe,#4facfe);
+        color: #0b0f19;
+        font-weight: 700;
+        padding: 14px 24px;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 0 12px rgba(0,242,254,0.3);
+        cursor: pointer;
+        transition: 0.25s;
+    }
+
+        input[type="submit"]:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 18px rgba(0,242,254,0.45);
+        }
+
+    /* ---------- SOCKET SELECTOR ---------- */
+
+    .socket-group {
+        grid-column: 1 / -1;
+    }
+
+    .socket-checkboxes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 10px;
+    }
+
+    .socket-label {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 130px;
+        padding: 10px 18px;
+        border-radius: 20px;
+        background: rgba(10,15,26,0.85);
+        border: 2px solid rgba(0,242,254,0.25);
+        color: #00f2fe;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all .25s ease;
+        box-shadow: 0 4px 12px rgba(0,242,254,0.15);
+    }
+
+        .socket-label input[type="radio"] {
+            display: none;
+        }
+
+        .socket-label span {
+            display: block;
+            width: 100%;
+            text-align: center;
+            border-radius: 20px;
+            padding: 8px 12px;
+            transition: all .25s ease;
+        }
+
+        .socket-label input[type="radio"]:checked + span {
+            background: linear-gradient(90deg,#00f2fe,#4facfe);
+            color: #0b0f19;
+            box-shadow: 0 0 15px rgba(0,242,254,.7), inset 0 0 25px rgba(0,242,254,.3);
+        }
+
+        .socket-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(0,242,254,.35);
+        }
+</style>

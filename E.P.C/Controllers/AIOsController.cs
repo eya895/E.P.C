@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using E.P.C.Data;
 using E.P.C.Models;
@@ -29,10 +30,12 @@ namespace E.P.C.Controllers
         }
 
         // CREATE GET
+        [Authorize(Roles = "Admin")]
         public IActionResult Create() => View();
 
         // CREATE POST
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AIO aio, string[] SupportedSockets)
         {
@@ -46,6 +49,7 @@ namespace E.P.C.Controllers
         }
 
         // EDIT GET
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -58,6 +62,7 @@ namespace E.P.C.Controllers
 
         // EDIT POST
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, AIO aio, string[] SupportedSockets)
         {
@@ -86,6 +91,7 @@ namespace E.P.C.Controllers
         }
 
         // DELETE GET
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -98,6 +104,7 @@ namespace E.P.C.Controllers
 
         // DELETE POST
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
